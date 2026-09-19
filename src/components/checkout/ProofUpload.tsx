@@ -31,17 +31,17 @@ export function ProofUpload({
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Upload a screenshot image.')
+      toast.error('That needs to be a screenshot image.')
       return
     }
     if (file.size > MAX_SCREENSHOT_BYTES * 3) {
-      toast.error('That image is far too large.')
+      toast.error('That image is way too big.')
       return
     }
 
     setUploading(true)
     try {
-      // Shrink on-device first: phone screenshots are routinely 4–8MB.
+      // Shrink on-device first: phone screenshots are routinely 4-8MB.
       const compressed = await compressImage(file)
       const form = new FormData()
       form.append('file', compressed)
@@ -51,7 +51,7 @@ export function ProofUpload({
       onScreenshot(result.url)
       toast.success('Screenshot attached.')
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : 'Upload failed. Try again.')
+      toast.error(err instanceof ApiError ? err.message : 'That upload did not go through. Try again.')
     } finally {
       setUploading(false)
     }
@@ -60,10 +60,10 @@ export function ProofUpload({
   return (
     <div className="space-y-4">
       <Glass tone="strong" className="p-5">
-        <h3 className="text-[16px] font-semibold tracking-tight">Upload your payment screenshot</h3>
-        <p className="mt-1.5 text-[13.5px] leading-relaxed text-[var(--muted-fg)]">
-          The success screen from your UPI app. This is what the coordinator checks against their
-          own statement, so make sure the amount and time are visible.
+        <h3 className="t-callout font-semibold tracking-tight">Send your payment screenshot</h3>
+        <p className="mt-1.5 t-footnote leading-relaxed text-[var(--label-2)]">
+          The success screen from your UPI app. The coordinator matches this against their own
+          statement, so make sure the amount and time are readable.
         </p>
 
         <input
@@ -84,7 +84,7 @@ export function ProofUpload({
           >
             <div
               className="relative overflow-hidden rounded-2xl"
-              style={{ boxShadow: 'inset 0 0 0 1px var(--hairline)' }}
+              style={{ boxShadow: 'inset 0 0 0 1px var(--separator)' }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -105,14 +105,14 @@ export function ProofUpload({
               <button
                 type="button"
                 onClick={() => inputRef.current?.click()}
-                className="press glass flex-1 rounded-xl py-2.5 text-[13.5px] font-semibold"
+                className="press glass flex-1 rounded-xl py-2.5 t-footnote font-semibold"
               >
                 Replace
               </button>
               <button
                 type="button"
                 onClick={() => onScreenshot(null)}
-                className="press glass rounded-xl px-4 py-2.5 text-[13.5px] font-semibold"
+                className="press glass rounded-xl px-4 py-2.5 t-footnote font-semibold"
                 style={{ color: 'var(--danger)' }}
               >
                 Remove
@@ -136,22 +136,22 @@ export function ProofUpload({
             disabled={uploading}
             className="press mt-4 flex w-full flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-6 py-10 transition-colors"
             style={{
-              borderColor: dragging ? 'var(--accent)' : 'var(--hairline)',
-              background: dragging ? 'var(--accent-glow)' : 'var(--field-bg)',
+              borderColor: dragging ? 'var(--tint)' : 'var(--separator)',
+              background: dragging ? 'var(--tint-glow)' : 'var(--field-bg)',
             }}
           >
             <span
               className="grid h-12 w-12 place-items-center rounded-2xl"
-              style={{ background: 'var(--accent-glow)', color: 'var(--accent)' }}
+              style={{ background: 'var(--tint-glow)', color: 'var(--tint)' }}
             >
               {uploading ? <Spinner /> : <Icon.Camera size={22} />}
             </span>
             <span className="text-center">
-              <span className="block text-[14.5px] font-semibold">
+              <span className="block t-subhead font-semibold">
                 {uploading ? 'Uploading…' : 'Tap to add screenshot'}
               </span>
-              <span className="mt-0.5 block text-[12.5px] text-[var(--faint-fg)]">
-                PNG or JPG, up to 5MB. Large images are shrunk automatically.
+              <span className="mt-0.5 block t-caption-1 text-[var(--label-3)]">
+                PNG or JPG, up to 5MB. Big ones get shrunk for you.
               </span>
             </span>
           </button>
@@ -161,7 +161,7 @@ export function ProofUpload({
       <Glass className="p-5">
         <Input
           label="UPI reference / UTR number"
-          hint="Optional, but it makes verification almost instant."
+          hint="Optional, but it gets your order checked off way faster."
           placeholder="e.g. 412345678901"
           inputMode="numeric"
           autoComplete="off"

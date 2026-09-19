@@ -10,7 +10,7 @@ export const POST = route(async (req) => {
   await connectDB()
 
   const user = await User.findOne({ email }).select('+passwordHash')
-  // Same message either way — never reveal which accounts exist.
+  // Same message either way, never reveal which accounts exist.
   if (!user || !(await verifyPassword(password, user.passwordHash))) {
     return fail('That email and password do not match.', 401)
   }

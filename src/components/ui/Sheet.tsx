@@ -69,31 +69,36 @@ export function Sheet({ open, onClose, title, description, children, size = 'md'
             exit={{ y: '100%', opacity: 0.4 }}
             transition={{ type: 'spring', damping: 34, stiffness: 340 }}
             className={cn(
-              'glass glass-lens glass-lifted relative flex max-h-[92dvh] w-full flex-col',
-              'rounded-t-[var(--radius-sheet)] sm:rounded-[var(--radius-sheet)]',
+              'glass glass-strong glass-lens glass-lifted relative flex max-h-[92dvh] w-full flex-col',
+              'rounded-t-[var(--radius-sheet)] sm:rounded-[28px]',
               WIDTHS[size],
             )}
           >
-            {/* Grab handle — the affordance that says "you can drag me away" */}
-            <div className="flex shrink-0 justify-center pt-2.5 sm:hidden">
-              <span className="h-1.5 w-10 rounded-full" style={{ background: 'var(--hairline)' }} />
+            {/* The grabber: 36×5pt, as UIKit draws it. */}
+            <div className="flex shrink-0 justify-center pt-[5px] sm:hidden">
+              <span
+                className="h-[5px] w-[36px] rounded-full"
+                style={{ background: 'var(--label-4)' }}
+              />
             </div>
 
             {(title || description) && (
-              <header className="shrink-0 px-6 pb-4 pt-4 sm:pt-6">
-                {title && <h2 className="text-xl font-semibold tracking-tight">{title}</h2>}
+              <header className="shrink-0 px-5 pb-4 pt-4 sm:px-6 sm:pt-6">
+                {title && <h2 className="t-title-2">{title}</h2>}
                 {description && (
-                  <p className="mt-1 text-sm text-[var(--muted-fg)]">{description}</p>
+                  <p className="t-subhead mt-1.5 text-[var(--label-2)]">{description}</p>
                 )}
               </header>
             )}
 
-            <div className="scroll-slim min-h-0 flex-1 overflow-y-auto px-6 pb-6">{children}</div>
+            <div className="scroll-slim min-h-0 flex-1 overflow-y-auto px-5 pb-6 sm:px-6">
+              {children}
+            </div>
 
             {footer && (
               <footer
-                className="shrink-0 border-t px-6 py-4 pb-[max(1rem,env(safe-area-inset-bottom))]"
-                style={{ borderColor: 'var(--hairline-soft)' }}
+                className="shrink-0 border-t px-5 py-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6"
+                style={{ borderColor: 'var(--separator-soft)' }}
               >
                 {footer}
               </footer>

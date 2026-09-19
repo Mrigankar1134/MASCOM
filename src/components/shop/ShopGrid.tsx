@@ -7,6 +7,8 @@ import { ProductCard } from './ProductCard'
 import { Segmented } from '@/components/ui/Segmented'
 import { EmptyState } from '@/components/ui/Feedback'
 import { Icon } from '@/components/shell/Icons'
+import { NavBar } from '@/components/shell/NavBar'
+import { Button } from '@/components/ui/Button'
 
 export function ShopGrid({ products }: { products: ShopProduct[] }) {
   const categories = useMemo(() => {
@@ -28,48 +30,47 @@ export function ShopGrid({ products }: { products: ShopProduct[] }) {
   const openCount = products.filter((p) => p.available).length
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:pt-10">
-      <header className="mb-6 lg:mb-9">
-        <p className="eyebrow">{openCount > 0 ? 'Orders open' : 'Catalogue'}</p>
-        <h1 className="display mt-2.5 text-[clamp(2.2rem,7vw,3.5rem)]">The drop</h1>
-        <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-[var(--muted-fg)]">
-          {openCount > 0
-            ? 'Pick your colour and size, pay any coordinator by UPI, and upload the screenshot. They confirm it and your order is locked in.'
-            : 'Nothing is open for orders right now. Everything here is from past drops.'}
-        </p>
-      </header>
+    <div className="mx-auto max-w-7xl">
+      <NavBar
+        title="The drop"
+        subtitle={
+          openCount > 0
+            ? 'Grab your size, pay a coordinator on UPI, send the screenshot. That is the whole thing.'
+            : 'Nothing is open right now. Everything here is from past drops.'
+        }
+      >
+        {categories.length > 1 && (
+          <Segmented
+            options={[{ value: 'all', label: 'All', count: products.length }, ...categories]}
+            value={filter}
+            onChange={setFilter}
+            className="max-w-md"
+          />
+        )}
+      </NavBar>
 
-      {categories.length > 1 && (
-        <Segmented
-          className="mb-5"
-          options={[{ value: 'all', label: 'Everything', count: products.length }, ...categories]}
-          value={filter}
-          onChange={setFilter}
-        />
-      )}
-
-      {visible.length > 0 ? (
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          {visible.map((product, i) => (
-            <ProductCard key={product._id} product={product} index={i} />
-          ))}
-        </div>
-      ) : (
-        <EmptyState
-          icon={<Icon.Box size={24} />}
-          title="No drop is live right now"
-          description="Drops open for a short window and sell out fast. Check back, or follow the Instagram for the announcement."
-          action={
-            <Link
-              href="/"
-              className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-[14.5px] font-semibold"
-              style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
-            >
-              Back to home
-            </Link>
-          }
-        />
-      )}
+      <div className="px-4 pt-3">
+        {visible.length > 0 ? (
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+            {visible.map((product, i) => (
+              <ProductCard key={product._id} product={product} index={i} />
+            ))}
+          </div>
+        ) : (
+          <div className="ios-group">
+            <EmptyState
+              icon={<Icon.Box size={24} />}
+              title="Nothing live right now"
+              description="Drops go up for a few days and sell out fast. Check back soon, or keep an eye on our Instagram."
+              action={
+                <Link href="/">
+                  <Button>Back to home</Button>
+                </Link>
+              }
+            />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

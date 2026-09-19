@@ -6,7 +6,12 @@ import { cn } from './cn'
 
 type Option<T extends string> = { value: T; label: string; count?: number }
 
-/** iOS-style segmented control with a sliding glass thumb. */
+/**
+ * UISegmentedControl, as it actually looks: a 32pt track on a neutral fill
+ * with a white (or elevated grey) thumb that slides. The thumb is not
+ * tinted, in UIKit the selection reads through elevation and weight, and
+ * tinting it is the giveaway that a control was drawn rather than used.
+ */
 export function Segmented<T extends string>({
   options,
   value,
@@ -26,10 +31,11 @@ export function Segmented<T extends string>({
     <div
       role="tablist"
       className={cn(
-        'glass no-scrollbar relative flex overflow-x-auto rounded-full p-1',
-        size === 'sm' ? 'gap-0.5' : 'gap-1',
+        'no-scrollbar relative flex overflow-x-auto rounded-[9px] p-[2px]',
+        size === 'sm' ? 'h-[28px]' : 'h-[32px]',
         className,
       )}
+      style={{ background: 'var(--segment-track)' }}
     >
       {options.map((opt) => {
         const active = opt.value === value
@@ -40,26 +46,30 @@ export function Segmented<T extends string>({
             aria-selected={active}
             onClick={() => onChange(opt.value)}
             className={cn(
-              'press relative flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full font-semibold transition-colors',
-              size === 'sm' ? 'px-3 py-1.5 text-[12.5px]' : 'px-4 py-2 text-[13.5px]',
-              active ? 'text-[var(--accent-contrast)]' : 'text-[var(--muted-fg)] hover:text-[var(--page-fg)]',
+              'relative flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-[7px]',
+              'px-3.5 transition-colors duration-200',
+              size === 'sm' ? 't-caption-1' : 't-footnote',
+              active ? 'font-semibold text-[var(--label)]' : 'font-medium text-[var(--label-2)]',
             )}
           >
             {active && (
               <motion.span
                 layoutId={layoutId}
-                className="absolute inset-0 rounded-full"
-                style={{ background: 'var(--accent-solid)' }}
-                transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+                className="absolute inset-0 rounded-[7px]"
+                style={{
+                  background: 'var(--segment-thumb)',
+                  boxShadow: '0 3px 8px rgba(0,0,0,0.12), 0 3px 1px rgba(0,0,0,0.04)',
+                }}
+                transition={{ type: 'spring', damping: 30, stiffness: 420 }}
               />
             )}
             <span className="relative z-10">{opt.label}</span>
             {typeof opt.count === 'number' && (
               <span
-                className="relative z-10 rounded-full px-1.5 py-0.5 text-[10.5px] tabular"
-                style={{
-                  background: active ? 'rgba(0,0,0,0.14)' : 'var(--hairline-soft)',
-                }}
+                className={cn(
+                  'relative z-10 text-[11px] tabular',
+                  active ? 'text-[var(--label-2)]' : 'text-[var(--label-3)]',
+                )}
               >
                 {opt.count}
               </span>

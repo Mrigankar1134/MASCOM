@@ -41,7 +41,7 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
         method: 'POST',
         body: JSON.stringify(payload),
       })
-      toast.success(isSignUp ? 'Account created. Welcome in.' : 'Welcome back.')
+      toast.success(isSignUp ? 'You are in. Welcome.' : 'Welcome back.')
       router.push(next ?? '/shop')
       router.refresh()
     } catch (err) {
@@ -93,10 +93,10 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
             </h1>
             <ul className="mt-8 space-y-3">
               {portalPoints.map((point) => (
-                <li key={point} className="flex items-center gap-3 text-[15px] text-white/80">
+                <li key={point} className="flex items-center gap-3 t-subhead text-white/80">
                   <span
                     className="grid h-6 w-6 shrink-0 place-items-center rounded-full"
-                    style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
+                    style={{ background: 'var(--tint-solid)', color: 'var(--tint-contrast)' }}
                   >
                     <Icon.Check size={13} strokeWidth={2.75} />
                   </span>
@@ -106,8 +106,8 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
             </ul>
           </div>
 
-          <p className="text-[12.5px] text-white/40">
-            © {new Date().getFullYear()} {site.name} — {site.institute}
+          <p className="t-caption-1 text-white/40">
+            © {new Date().getFullYear()} {site.name}, {site.institute}
           </p>
         </div>
       </aside>
@@ -130,12 +130,12 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
           <Glass tone="strong" className="p-6 sm:p-8">
             <p className="eyebrow">{isSignUp ? 'Join the drop' : 'Student portal'}</p>
             <h2 className="display mt-2.5 text-[30px]">
-              {isSignUp ? 'Create your account' : 'Welcome back'}
+              {isSignUp ? 'Make an account' : 'Welcome back'}
             </h2>
-            <p className="mt-2 text-[14.5px] text-[var(--muted-fg)]">
+            <p className="mt-2 t-subhead text-[var(--label-2)]">
               {isSignUp
                 ? 'Use your college email. Takes about a minute.'
-                : 'Sign in with your college email to continue.'}
+                : 'Sign in with your college email and you are good to go.'}
             </p>
 
             <form onSubmit={onSubmit} className="mt-7 space-y-4">
@@ -171,7 +171,7 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
                 required
                 error={errors.password}
-                hint={isSignUp ? 'Mix letters and numbers.' : undefined}
+                hint={isSignUp ? 'Mix in some letters and numbers.' : undefined}
               />
 
               {isSignUp && (
@@ -182,29 +182,29 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
               )}
 
               <Button type="submit" size="lg" block loading={busy} className="mt-2">
-                {isSignUp ? 'Create account' : 'Sign in'}
+                {isSignUp ? 'Make my account' : 'Sign in'}
               </Button>
             </form>
 
-            <p className="mt-6 text-center text-[13.5px] text-[var(--muted-fg)]">
+            <p className="mt-6 text-center t-footnote text-[var(--label-2)]">
               {isSignUp ? 'Already have an account?' : 'New here?'}{' '}
               <Link
                 href={isSignUp ? '/signin' : '/signup'}
                 className="font-semibold"
-                style={{ color: 'var(--accent)' }}
+                style={{ color: 'var(--tint)' }}
               >
-                {isSignUp ? 'Sign in' : 'Create one'}
+                {isSignUp ? 'Sign in' : 'Make one'}
               </Link>
             </p>
           </Glass>
 
-          <p className="mt-5 text-center text-[12.5px] text-[var(--faint-fg)]">
-            Access is restricted to college email addresses.
+          <p className="mt-5 text-center t-caption-1 text-[var(--label-3)]">
+            College email addresses only.
           </p>
 
           <Link
             href="/"
-            className="press mt-6 inline-flex items-center justify-center gap-1.5 text-[13.5px] text-[var(--muted-fg)]"
+            className="press mt-6 inline-flex items-center justify-center gap-1.5 t-footnote text-[var(--label-2)]"
           >
             <Icon.ChevronLeft size={15} />
             Back to home

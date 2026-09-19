@@ -4,7 +4,7 @@ export const site = {
   institute: 'IIM Amritsar',
   tagline: 'Drop your fit.',
   intro:
-    'Exclusive merch for our people. Limited drops, premium quality. Sign in with your college email to order.',
+    'Merch made for us, by us. Small drops, good stuff, gone fast. Sign in with your college email and grab yours.',
   instagram: 'https://www.instagram.com/mascom_iimamritsar/',
   linkedin: 'https://www.linkedin.com/company/mascom-iimasr/',
   instagramHandle: '@mascom_iimamritsar',
@@ -18,30 +18,30 @@ export const stats = [
 
 export const about = {
   eyebrow: 'Who we are',
-  title: 'The committee behind every drop',
-  body: 'MASCOM — the Merchandising and Sponsorship Committee — is the creative and commercial backbone of our college. We design, produce, and drop exclusive merch our community is proud to wear. From concept to delivery, every drop is ours.',
+  title: "So who's behind the drops?",
+  body: "We're MASCOM, the Merchandising and Sponsorship Committee. Basically, we make the stuff you actually want to wear around campus. Every drop starts as a rough sketch and ends up in your hands, and we look after all of it in between.",
 } as const
 
 export const services = [
   {
     no: '01',
-    title: 'Brand collaborations',
-    body: 'We partner with relevant brands to increase the scale, visibility, and impact of student events and campus moments.',
+    title: 'Getting brands on campus',
+    body: 'We get brands on board so campus events can be bigger, louder, and a lot better funded than they would be otherwise.',
   },
   {
     no: '02',
-    title: 'Sponsorship management',
-    body: 'We identify sponsor opportunities, pitch partners, secure funding, and manage sponsor deliverables with clear coordination.',
+    title: 'Chasing the sponsors',
+    body: 'We find them, make the pitch, bring in the money, then actually deliver on what we promised.',
   },
   {
     no: '03',
-    title: 'Merchandising & customisation',
-    body: 'We design, procure, and manage customised merch for students, clubs, committees, institute events, and batch memories.',
+    title: 'Making the merch',
+    body: 'Hoodies, polos, kits, whatever the occasion calls for. We design it, source it, and get it printed properly.',
   },
   {
     no: '04',
-    title: 'Vendor & event operations',
-    body: 'We coordinate vendors for quality, cost efficiency, timelines, food stalls, event requirements, and delivery on ground.',
+    title: 'Keeping events running',
+    body: 'Someone has to chase vendors on quality, price and timelines so nothing falls apart on the day. That someone is us.',
   },
 ] as const
 
@@ -68,8 +68,8 @@ export const coordinators: Coordinator[] = [
 
 /** The three promises shown on the sign-in screen. */
 export const portalPoints = [
-  'Browse exclusive merch drops',
-  'Pay by UPI — no transaction fees',
-  'Track your order in real time',
-  'Collect with your order code',
+  'See every drop before it sells out',
+  'Pay by UPI, no extra fees',
+  'Watch your order move, live',
+  'Pick it up with your order code',
 ] as const

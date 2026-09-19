@@ -12,7 +12,7 @@ function csvCell(value: unknown): string {
 }
 
 /**
- * One row per order line — the shape the fulfilment team actually packs from.
+ * One row per order line, the shape the fulfilment team actually packs from.
  */
 export const GET = route(async (req) => {
   const user = await requireUser('console')

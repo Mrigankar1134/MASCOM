@@ -15,6 +15,7 @@ import { api, ApiError } from '@/lib/client/api'
 import { compressImage } from '@/lib/client/compress'
 import { money } from '@/lib/format'
 import { swatch } from '@/components/shop/ProductCard'
+import { ConsoleHeader } from './ConsoleHeader'
 
 export type DropRow = {
   _id: string
@@ -46,26 +47,23 @@ export function DropsBoard({
 
   return (
     <div className="mx-auto max-w-[1600px]">
-      <header className="mb-5 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="display text-[clamp(1.8rem,4vw,2.5rem)]">Drops</h1>
-          <p className="mt-2 max-w-xl text-[14.5px] leading-relaxed text-[var(--muted-fg)]">
-            A drop is orderable only when it is both live and open. Changing the price starts a new
-            price band, so orders already placed keep the price they were bought at.
-          </p>
-        </div>
-        <Button onClick={() => setEditing('new')} icon={<Icon.Plus size={17} />}>
-          New drop
-        </Button>
-      </header>
+      <ConsoleHeader
+        title="Drops"
+        subtitle="A drop is only orderable when it is both live and open. Changing the price starts a new band, so orders already placed keep what they paid."
+        actions={
+          <Button size="sm" onClick={() => setEditing('new')} icon={<Icon.Plus size={15} />}>
+            New drop
+          </Button>
+        }
+      />
 
       {products.length === 0 ? (
         <Glass>
           <EmptyState
             icon={<Icon.Box size={24} />}
             title="No drops yet"
-            description="Create one, add colours and photos, then open it for orders."
-            action={<Button onClick={() => setEditing('new')}>Create the first drop</Button>}
+            description="Make one, add colours and photos, then open it up for orders."
+            action={<Button onClick={() => setEditing('new')}>Make the first one</Button>}
           />
         </Glass>
       ) : (
@@ -77,20 +75,20 @@ export function DropsBoard({
                 <div className="flex gap-3.5">
                   <span
                     className="relative h-24 w-20 shrink-0 overflow-hidden rounded-xl"
-                    style={{ background: 'var(--hairline-soft)' }}
+                    style={{ background: 'var(--separator-soft)' }}
                   >
                     {cover ? (
                       <Image src={cover} alt="" fill sizes="80px" className="object-cover" />
                     ) : (
-                      <span className="grid h-full place-items-center text-[var(--faint-fg)]">
+                      <span className="grid h-full place-items-center text-[var(--label-3)]">
                         <Icon.Box size={20} />
                       </span>
                     )}
                   </span>
 
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-[15px] font-semibold">{product.name}</p>
-                    <p className="mt-0.5 text-[14px] font-semibold tabular">{money(product.price)}</p>
+                    <p className="truncate t-subhead font-semibold">{product.name}</p>
+                    <p className="mt-0.5 t-subhead font-semibold tabular">{money(product.price)}</p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {product.available && product.isLive ? (
                         <Badge tone="ok" dot>
@@ -114,7 +112,7 @@ export function DropsBoard({
                             className="h-3.5 w-3.5 rounded-full"
                             style={{
                               background: swatch(v.color),
-                              boxShadow: 'inset 0 0 0 1px var(--hairline)',
+                              boxShadow: 'inset 0 0 0 1px var(--separator)',
                             }}
                           />
                         ))}
@@ -125,7 +123,7 @@ export function DropsBoard({
 
                 <button
                   onClick={() => setEditing(product)}
-                  className="press glass mt-3 w-full rounded-xl py-2 text-[13px] font-semibold"
+                  className="press glass mt-3 w-full rounded-xl py-2 t-footnote font-semibold"
                 >
                   Edit drop
                 </button>
@@ -248,7 +246,7 @@ function DropEditor({
           name="description"
           label="Description"
           defaultValue={product?.description}
-          placeholder="Fabric, fit, what makes it worth it."
+          placeholder="Fabric, fit, why it is worth it."
         />
 
         <div className="grid gap-4 sm:grid-cols-3">
@@ -272,18 +270,18 @@ function DropEditor({
           value={sizes}
           onChange={(e) => setSizes(e.target.value)}
           placeholder="XS, S, M, L, XL, XXL"
-          hint="Comma separated. Leave empty for one-size items."
+          hint="Comma separated. Leave it empty for one-size items."
         />
 
         {/* ── Variants ─────────────────────────────────────────────────── */}
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <p className="text-[13px] font-medium text-[var(--muted-fg)]">Colours & photos</p>
+            <p className="t-footnote font-medium text-[var(--label-2)]">Colours & photos</p>
             <button
               type="button"
               onClick={() => setVariants((prev) => [...prev, { color: '', imageUrls: [] }])}
-              className="press text-[12.5px] font-semibold"
-              style={{ color: 'var(--accent)' }}
+              className="press t-caption-1 font-semibold"
+              style={{ color: 'var(--tint)' }}
             >
               + Add colour
             </button>
@@ -358,11 +356,11 @@ function Toggle({
         type="checkbox"
         name={name}
         defaultChecked={defaultChecked}
-        className="h-5 w-5 shrink-0 accent-[var(--accent)]"
+        className="h-5 w-5 shrink-0 accent-[var(--tint)]"
       />
-      <span className="min-w-0 text-[13px]">
+      <span className="min-w-0 t-footnote">
         <span className="block font-semibold">{label}</span>
-        <span className="block truncate text-[11.5px] text-[var(--muted-fg)]">{hint}</span>
+        <span className="block truncate t-caption-1 text-[var(--label-2)]">{hint}</span>
       </span>
     </label>
   )
@@ -409,15 +407,15 @@ function VariantEditor({
         <span
           className="h-8 w-8 shrink-0 rounded-full"
           style={{
-            background: variant.color ? swatch(variant.color) : 'var(--hairline-soft)',
-            boxShadow: 'inset 0 0 0 1px var(--hairline)',
+            background: variant.color ? swatch(variant.color) : 'var(--separator-soft)',
+            boxShadow: 'inset 0 0 0 1px var(--separator)',
           }}
         />
         <input
           value={variant.color}
           onChange={(e) => onChange({ color: e.target.value })}
           placeholder="Colour name, e.g. Navy"
-          className="h-10 min-w-0 flex-1 rounded-xl border px-3 text-[14px] outline-none focus:border-[var(--accent)]"
+          className="h-10 min-w-0 flex-1 rounded-xl border px-3 t-subhead outline-none focus:border-[var(--tint)]"
           style={{ background: 'var(--field-bg)', borderColor: 'var(--field-border)' }}
         />
         <button
@@ -432,7 +430,7 @@ function VariantEditor({
           <button
             type="button"
             onClick={onRemove}
-            className="press grid h-10 w-10 shrink-0 place-items-center rounded-xl text-[var(--faint-fg)]"
+            className="press grid h-10 w-10 shrink-0 place-items-center rounded-xl text-[var(--label-3)]"
             aria-label="Remove colour"
           >
             <Icon.X size={16} />

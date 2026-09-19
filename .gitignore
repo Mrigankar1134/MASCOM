@@ -18,3 +18,4 @@ tsconfig.tsbuildinfo
 # Local verification scratch (in-memory Mongo)
 .mongo-dev.mjs
 .seed-dev.mjs
+.extras-dev.mjs

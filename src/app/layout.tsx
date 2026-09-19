@@ -13,10 +13,10 @@ export const metadata: Metadata = {
     template: '%s · MASCOM',
   },
   description:
-    'Merchandising & Sponsorship Committee, IIM Amritsar. Limited merch drops, ordered and tracked from your phone.',
+    'Merchandising & Sponsorship Committee, IIM Amritsar. Small merch drops, ordered and tracked from your phone.',
   openGraph: {
     title: 'MASCOM · IIM Amritsar',
-    description: 'Limited merch drops for our people. Order, pay by UPI, track delivery.',
+    description: 'Merch made for us, by us. Order, pay on UPI, track it to collection day.',
     type: 'website',
   },
   appleWebApp: { capable: true, title: 'MASCOM', statusBarStyle: 'black-translucent' },
@@ -54,13 +54,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Paints the right palette before first paint — no white flash. */}
+        {/* Paints the right palette before first paint, no white flash. */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="grain antialiased">
-        <div className="aurora" aria-hidden>
-          <span />
-        </div>
+      <body className="antialiased">
         <ThemeProvider>
           <SessionProvider user={sessionUser}>
             <CartProvider>

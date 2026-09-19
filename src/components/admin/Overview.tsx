@@ -4,11 +4,13 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Glass } from '@/components/ui/Glass'
+import { Counter } from '@/components/ui/Counter'
 import { Badge } from '@/components/ui/Badge'
 import { Avatar } from '@/components/ui/Avatar'
 import { EmptyState } from '@/components/ui/Feedback'
 import { Icon } from '@/components/shell/Icons'
-import { money, relativeTime } from '@/lib/format'
+import { money } from '@/lib/format'
+import { TimeAgo } from '@/components/ui/Time'
 
 export type OverviewData = {
   scope: 'all' | 'mine'
@@ -43,21 +45,21 @@ export function Overview({ data }: { data: OverviewData }) {
 
   return (
     <div className="mx-auto max-w-[1600px]">
-      <header className="mb-6">
+      <header className="mb-5">
         <p className="eyebrow">
           {data.scope === 'all' ? 'Everything' : `Collecting as ${data.recipientName ?? 'recipient'}`}
         </p>
-        <h1 className="display mt-2 text-[clamp(1.8rem,4vw,2.5rem)]">Hey {firstName}</h1>
-        <p className="mt-2 text-[14.5px] text-[var(--muted-fg)]">
+        <h1 className="t-title-1 mt-1.5">Hey {firstName}</h1>
+        <p className="t-subhead mt-1.5 text-[var(--label-2)]">
           {totals.pending > 0 ? (
             <>
-              <span className="font-semibold text-[var(--page-fg)]">
+              <span className="font-semibold text-[var(--label)]">
                 {totals.pending} {totals.pending === 1 ? 'payment' : 'payments'}
               </span>{' '}
-              waiting on you — {money(totals.awaiting)} unverified.
+              waiting on you, {money(totals.awaiting)} still unverified.
             </>
           ) : (
-            'Nothing is waiting on you. Everything sent your way has been checked.'
+            'Nothing waiting on you. Everything sent your way is checked off.'
           )}
         </p>
       </header>
@@ -72,12 +74,12 @@ export function Overview({ data }: { data: OverviewData }) {
               <Icon.Clock size={21} />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-[15px] font-semibold">Verify {totals.pending} pending</p>
-              <p className="text-[13px] text-[var(--muted-fg)]">
-                Students are waiting on confirmation before their orders move.
+              <p className="t-subhead font-semibold">Verify {totals.pending} pending</p>
+              <p className="t-footnote text-[var(--label-2)]">
+                Students are waiting on you before their orders can move.
               </p>
             </div>
-            <Icon.Chevron size={18} className="shrink-0 text-[var(--faint-fg)]" />
+            <Icon.Chevron size={18} className="shrink-0 text-[var(--label-3)]" />
           </Glass>
         </Link>
       )}
@@ -99,8 +101,8 @@ export function Overview({ data }: { data: OverviewData }) {
         <CollectionsChart series={data.series} />
 
         <Glass className="p-5">
-          <h2 className="text-[15px] font-semibold tracking-tight">Payment status</h2>
-          <p className="mt-1 text-[12.5px] text-[var(--muted-fg)]">
+          <h2 className="t-subhead font-semibold tracking-tight">Payment status</h2>
+          <p className="mt-1 t-caption-1 text-[var(--label-2)]">
             Across {totals.orders} {totals.orders === 1 ? 'order' : 'orders'}.
           </p>
 
@@ -113,7 +115,7 @@ export function Overview({ data }: { data: OverviewData }) {
           {data.counts && (
             <div
               className="mt-5 grid grid-cols-3 gap-3 border-t pt-4"
-              style={{ borderColor: 'var(--hairline-soft)' }}
+              style={{ borderColor: 'var(--separator-soft)' }}
             >
               <MiniStat label="Students" value={data.counts.students} />
               <MiniStat label="Drops" value={data.counts.products} />
@@ -126,8 +128,8 @@ export function Overview({ data }: { data: OverviewData }) {
       <div className="mt-4 grid gap-4 xl:grid-cols-2">
         <Glass className="p-5">
           <div className="mb-4 flex items-baseline justify-between">
-            <h2 className="text-[15px] font-semibold tracking-tight">Latest orders</h2>
-            <Link href="/admin/verify" className="text-[12.5px] font-semibold" style={{ color: 'var(--accent)' }}>
+            <h2 className="t-subhead font-semibold tracking-tight">Just in</h2>
+            <Link href="/admin/verify" className="t-caption-1 font-semibold" style={{ color: 'var(--tint)' }}>
               See all
             </Link>
           </div>
@@ -140,15 +142,15 @@ export function Overview({ data }: { data: OverviewData }) {
                 <li key={order._id}>
                   <Link
                     href="/admin/verify"
-                    className="press flex items-center gap-3 rounded-xl px-2.5 py-2 transition-colors hover:bg-[var(--hairline-soft)]"
+                    className="press flex items-center gap-3 rounded-xl px-2.5 py-2 transition-colors hover:bg-[var(--separator-soft)]"
                   >
                     <Avatar name={order.userId?.name} size={32} />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-[13.5px] font-medium">
+                      <p className="truncate t-footnote font-medium">
                         {order.userId?.name ?? 'Unknown'}
                       </p>
-                      <p className="truncate font-mono text-[11.5px] text-[var(--faint-fg)]">
-                        {order.orderId} · {relativeTime(order.createdAt)}
+                      <p className="truncate font-mono t-caption-1 text-[var(--label-3)]">
+                        {order.orderId} · <TimeAgo value={order.createdAt} />
                       </p>
                     </div>
                     <Badge
@@ -163,7 +165,7 @@ export function Overview({ data }: { data: OverviewData }) {
                     >
                       {order.paymentStatus}
                     </Badge>
-                    <span className="shrink-0 text-[13.5px] font-semibold tabular">
+                    <span className="shrink-0 t-footnote font-semibold tabular">
                       {money(order.finalAmountPaid)}
                     </span>
                   </Link>
@@ -176,8 +178,8 @@ export function Overview({ data }: { data: OverviewData }) {
         {data.topProducts.length > 0 && (
           <Glass className="p-5">
             <div className="mb-4 flex items-baseline justify-between">
-              <h2 className="text-[15px] font-semibold tracking-tight">Best sellers</h2>
-              <Link href="/admin/products" className="text-[12.5px] font-semibold" style={{ color: 'var(--accent)' }}>
+              <h2 className="t-subhead font-semibold tracking-tight">Selling best</h2>
+              <Link href="/admin/products" className="t-caption-1 font-semibold" style={{ color: 'var(--tint)' }}>
                 Manage drops
               </Link>
             </div>
@@ -187,24 +189,24 @@ export function Overview({ data }: { data: OverviewData }) {
                 const max = Math.max(...data.topProducts.map((p) => p.totalSold), 1)
                 return (
                   <li key={product._id}>
-                    <div className="flex items-baseline justify-between gap-3 text-[13.5px]">
+                    <div className="flex items-baseline justify-between gap-3 t-footnote">
                       <span className="min-w-0 truncate font-medium">
-                        <span className="mr-2 text-[var(--faint-fg)] tabular">{i + 1}</span>
+                        <span className="mr-2 text-[var(--label-3)] tabular">{i + 1}</span>
                         {product.name}
                       </span>
-                      <span className="shrink-0 tabular text-[var(--muted-fg)]">
+                      <span className="shrink-0 tabular text-[var(--label-2)]">
                         {product.totalSold} sold
                       </span>
                     </div>
                     <div
                       className="mt-1.5 h-1.5 overflow-hidden rounded-full"
-                      style={{ background: 'var(--hairline-soft)' }}
+                      style={{ background: 'var(--separator-soft)' }}
                     >
                       <div
                         className="h-full rounded-full"
                         style={{
                           width: `${(product.totalSold / max) * 100}%`,
-                          background: 'var(--accent)',
+                          background: 'var(--tint)',
                         }}
                       />
                     </div>
@@ -234,14 +236,14 @@ function Stat({
     tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : tone === 'danger' ? 'var(--danger)' : undefined
 
   return (
-    <Glass className="p-4">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--faint-fg)]">
+    <Glass spotlight className="p-4">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
         {label}
       </p>
       <p className="mt-2 text-[clamp(1.35rem,3.2vw,1.75rem)] font-semibold tabular" style={{ color }}>
-        {value}
+        <Counter value={value} />
       </p>
-      {hint && <p className="mt-1 text-[12px] text-[var(--muted-fg)]">{hint}</p>}
+      {hint && <p className="mt-1 t-caption-1 text-[var(--label-2)]">{hint}</p>}
     </Glass>
   )
 }
@@ -249,8 +251,8 @@ function Stat({
 function MiniStat({ label, value }: { label: string; value: number }) {
   return (
     <div>
-      <p className="text-[18px] font-semibold tabular">{value}</p>
-      <p className="text-[11px] text-[var(--faint-fg)]">{label}</p>
+      <p className="t-title-3 font-semibold tabular">{value}</p>
+      <p className="text-[11px] text-[var(--label-3)]">{label}</p>
     </div>
   )
 }
@@ -273,17 +275,17 @@ function StatusRow({
 
   return (
     <li>
-      <div className="flex items-center gap-2 text-[13px]">
+      <div className="flex items-center gap-2 t-footnote">
         {/* Icon + label, never colour alone */}
         <span style={{ color }}>{icon}</span>
         <span className="flex-1 font-medium">{label}</span>
-        <span className="tabular text-[var(--muted-fg)]">
+        <span className="tabular text-[var(--label-2)]">
           {count} · {pct}%
         </span>
       </div>
       <div
         className="mt-1.5 h-1.5 overflow-hidden rounded-full"
-        style={{ background: 'var(--hairline-soft)' }}
+        style={{ background: 'var(--separator-soft)' }}
       >
         <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
       </div>
@@ -292,7 +294,7 @@ function StatusRow({
 }
 
 /**
- * Daily collections. One measure, one hue — orders and rupees are different
+ * Daily collections. One measure, one hue, orders and rupees are different
  * scales, so orders ride in the tooltip rather than a second axis.
  */
 function CollectionsChart({ series }: { series: OverviewData['series'] }) {
@@ -307,14 +309,14 @@ function CollectionsChart({ series }: { series: OverviewData['series'] }) {
     <Glass className="p-5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <div>
-          <h2 className="text-[15px] font-semibold tracking-tight">Collections · last 14 days</h2>
-          <p className="mt-1 text-[12.5px] text-[var(--muted-fg)]">
+          <h2 className="t-subhead font-semibold tracking-tight">Collections · last 14 days</h2>
+          <p className="mt-1 t-caption-1 text-[var(--label-2)]">
             Confirmed payments only.
           </p>
         </div>
         <div className="text-right">
-          <p className="text-[20px] font-semibold tabular">{money(totalRevenue)}</p>
-          <p className="text-[12px] text-[var(--faint-fg)]">{totalOrders} orders placed</p>
+          <p className="t-title-3 font-semibold tabular">{money(totalRevenue)}</p>
+          <p className="t-caption-1 text-[var(--label-3)]">{totalOrders} orders placed</p>
         </div>
       </div>
 
@@ -322,7 +324,7 @@ function CollectionsChart({ series }: { series: OverviewData['series'] }) {
         {/* Tooltip */}
         {active && (
           <div
-            className="glass glass-lifted pointer-events-none absolute -top-2 z-10 -translate-y-full rounded-xl px-3 py-2 text-[12px]"
+            className="glass glass-lifted pointer-events-none absolute -top-2 z-10 -translate-y-full rounded-xl px-3 py-2 t-caption-1"
             style={{
               left: `${((hover! + 0.5) / series.length) * 100}%`,
               transform: 'translate(-50%, -100%)',
@@ -334,7 +336,7 @@ function CollectionsChart({ series }: { series: OverviewData['series'] }) {
                 month: 'short',
               })}
             </p>
-            <p className="mt-0.5 tabular text-[var(--muted-fg)]">
+            <p className="mt-0.5 tabular text-[var(--label-2)]">
               {money(active.revenue)} · {active.orders} {active.orders === 1 ? 'order' : 'orders'}
             </p>
           </div>
@@ -359,7 +361,7 @@ function CollectionsChart({ series }: { series: OverviewData['series'] }) {
                   transition={{ duration: 0.6, delay: i * 0.02, ease: [0.32, 0.72, 0, 1] }}
                   className="w-full rounded-t-[4px] transition-opacity"
                   style={{
-                    background: day.revenue > 0 ? 'var(--accent)' : 'var(--hairline)',
+                    background: day.revenue > 0 ? 'var(--tint)' : 'var(--separator)',
                     opacity: hover === null || hover === i ? 1 : 0.45,
                   }}
                 />
@@ -369,8 +371,8 @@ function CollectionsChart({ series }: { series: OverviewData['series'] }) {
         </div>
 
         <div
-          className="mt-2 flex justify-between border-t pt-2 text-[11px] text-[var(--faint-fg)]"
-          style={{ borderColor: 'var(--hairline-soft)' }}
+          className="mt-2 flex justify-between border-t pt-2 text-[11px] text-[var(--label-3)]"
+          style={{ borderColor: 'var(--separator-soft)' }}
         >
           <span>
             {new Date(series[0].date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}

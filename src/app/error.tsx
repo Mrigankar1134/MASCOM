@@ -32,14 +32,14 @@ export default function ErrorBoundary({
           <Icon.Alert size={24} />
         </span>
 
-        <h1 className="mt-5 text-[20px] font-semibold tracking-tight">Something broke</h1>
-        <p className="mt-2 text-[14.5px] leading-relaxed text-[var(--muted-fg)]">
-          This is on us, not you. Try again — if it keeps happening, send a coordinator the code
-          below.
+        <h1 className="mt-5 t-title-3 font-semibold tracking-tight">Well, that broke</h1>
+        <p className="mt-2 t-subhead leading-relaxed text-[var(--label-2)]">
+          That one is on us, not you. Give it another go, and if it keeps happening send a
+          coordinator the code below.
         </p>
 
         {error.digest && (
-          <p className="mt-3 font-mono text-[12px] text-[var(--faint-fg)]">{error.digest}</p>
+          <p className="mt-3 font-mono t-caption-1 text-[var(--label-3)]">{error.digest}</p>
         )}
 
         <div className="mt-7 flex flex-col gap-2.5 sm:flex-row sm:justify-center">

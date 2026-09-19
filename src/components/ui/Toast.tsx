@@ -79,11 +79,11 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             >
               <span
                 className="grid h-7 w-7 shrink-0 place-items-center rounded-full"
-                style={{ color: COLORS[item.tone], background: 'var(--hairline-soft)' }}
+                style={{ color: COLORS[item.tone], background: 'var(--separator-soft)' }}
               >
                 {ICONS[item.tone]}
               </span>
-              <p className="text-[14px] font-medium leading-snug">{item.message}</p>
+              <p className="t-subhead font-medium leading-snug">{item.message}</p>
             </motion.div>
           ))}
         </AnimatePresence>

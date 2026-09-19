@@ -10,6 +10,7 @@ import { Glass } from '@/components/ui/Glass'
 import { Button } from '@/components/ui/Button'
 import { EmptyState, Skeleton } from '@/components/ui/Feedback'
 import { Icon } from '@/components/shell/Icons'
+import { NavBar } from '@/components/shell/NavBar'
 import { swatch } from './ProductCard'
 
 export function BagScreen() {
@@ -18,8 +19,8 @@ export function BagScreen() {
 
   if (!cart.ready) {
     return (
-      <div className="mx-auto max-w-3xl space-y-3 px-4 pt-8 sm:px-6">
-        <Skeleton className="h-9 w-40" />
+      <div className="mx-auto max-w-3xl space-y-3 px-4 pt-8">
+        <Skeleton className="h-10 w-40" />
         <Skeleton className="h-28 w-full" />
         <Skeleton className="h-28 w-full" />
       </div>
@@ -28,41 +29,39 @@ export function BagScreen() {
 
   if (cart.lines.length === 0) {
     return (
-      <div className="mx-auto max-w-3xl px-4 pt-6 sm:px-6">
-        <h1 className="display text-[clamp(2rem,6vw,2.8rem)]">Your bag</h1>
-        <Glass className="mt-6">
+      <div className="mx-auto max-w-3xl">
+        <NavBar title="Your bag" />
+        <div className="ios-group mx-4">
           <EmptyState
             icon={<Icon.Bag size={24} />}
             title="Nothing in here yet"
-            description="Once a drop is open, everything you pick lands here and stays put until you check out."
+            description="Anything you pick lands here and stays put, even if you close the tab."
             action={
-              <Link
-                href="/shop"
-                className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-[14.5px] font-semibold"
-                style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
-              >
-                Browse the drop
-                <Icon.ArrowRight size={16} />
+              <Link href="/shop">
+                <Button icon={<Icon.ArrowRight size={16} />}>Browse the drop</Button>
               </Link>
             }
           />
-        </Glass>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-6 sm:px-6">
-      <header className="mb-5 flex items-baseline justify-between">
-        <h1 className="display text-[clamp(2rem,6vw,2.8rem)]">Your bag</h1>
-        <button
-          onClick={cart.clear}
-          className="press text-[13.5px] font-medium text-[var(--muted-fg)] hover:text-[var(--danger)]"
-        >
-          Clear all
-        </button>
-      </header>
+    <div className="mx-auto max-w-3xl">
+      <NavBar
+        title="Your bag"
+        trailing={
+          <button
+            onClick={cart.clear}
+            className="press t-callout text-[var(--tint)]"
+          >
+            Clear
+          </button>
+        }
+      />
 
+      <div className="px-4 pt-2">
       <ul className="space-y-3">
         <AnimatePresence initial={false}>
           {cart.lines.map((line) => {
@@ -80,12 +79,12 @@ export function BagScreen() {
                   <Link
                     href={`/shop/${line.slug}`}
                     className="relative h-24 w-20 shrink-0 overflow-hidden rounded-xl"
-                    style={{ background: 'var(--hairline-soft)' }}
+                    style={{ background: 'var(--separator-soft)' }}
                   >
                     {line.image ? (
                       <Image src={line.image} alt="" fill sizes="80px" className="object-cover" />
                     ) : (
-                      <span className="grid h-full place-items-center text-[var(--faint-fg)]">
+                      <span className="grid h-full place-items-center text-[var(--label-3)]">
                         <Icon.Box size={20} />
                       </span>
                     )}
@@ -95,16 +94,16 @@ export function BagScreen() {
                     <div className="flex items-start justify-between gap-2">
                       <div className="min-w-0">
                         <Link href={`/shop/${line.slug}`}>
-                          <h2 className="truncate text-[15px] font-semibold">{line.name}</h2>
+                          <h2 className="truncate t-subhead font-semibold">{line.name}</h2>
                         </Link>
-                        <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[12.5px] text-[var(--muted-fg)]">
+                        <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 t-caption-1 text-[var(--label-2)]">
                           {line.color && (
                             <span className="inline-flex items-center gap-1.5">
                               <span
                                 className="h-3 w-3 rounded-full"
                                 style={{
                                   background: swatch(line.color),
-                                  boxShadow: 'inset 0 0 0 1px var(--hairline)',
+                                  boxShadow: 'inset 0 0 0 1px var(--separator)',
                                 }}
                               />
                               {line.color}
@@ -112,7 +111,7 @@ export function BagScreen() {
                           )}
                           {line.size && <span>Size {line.size}</span>}
                           {line.customName && (
-                            <span className="font-medium" style={{ color: 'var(--accent)' }}>
+                            <span className="font-medium" style={{ color: 'var(--tint)' }}>
                               “{line.customName}”
                             </span>
                           )}
@@ -120,7 +119,7 @@ export function BagScreen() {
                       </div>
                       <button
                         onClick={() => cart.remove(key)}
-                        className="press -mr-1 -mt-1 grid h-8 w-8 place-items-center rounded-full text-[var(--faint-fg)] hover:text-[var(--danger)]"
+                        className="press -mr-1 -mt-1 grid h-8 w-8 place-items-center rounded-full text-[var(--label-3)] hover:text-[var(--danger)]"
                         aria-label={`Remove ${line.name}`}
                       >
                         <Icon.X size={16} />
@@ -136,7 +135,7 @@ export function BagScreen() {
                         >
                           <Icon.Minus size={15} />
                         </button>
-                        <span className="w-7 text-center text-[14px] font-semibold tabular">
+                        <span className="w-7 text-center t-subhead font-semibold tabular">
                           {line.quantity}
                         </span>
                         <button
@@ -147,7 +146,7 @@ export function BagScreen() {
                           <Icon.Plus size={15} />
                         </button>
                       </div>
-                      <p className="text-[15px] font-semibold tabular">
+                      <p className="t-subhead font-semibold tabular">
                         {money(line.unitPrice * line.quantity)}
                       </p>
                     </div>
@@ -160,20 +159,20 @@ export function BagScreen() {
       </ul>
 
       <Glass tone="strong" className="mt-5 p-5">
-        <dl className="space-y-2.5 text-[14.5px]">
+        <dl className="space-y-2.5 t-subhead">
           <div className="flex justify-between">
-            <dt className="text-[var(--muted-fg)]">
+            <dt className="text-[var(--label-2)]">
               Subtotal · {cart.count} {cart.count === 1 ? 'item' : 'items'}
             </dt>
             <dd className="font-medium tabular">{money(cart.subtotal)}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-[var(--muted-fg)]">Collection</dt>
-            <dd className="font-medium">On campus — free</dd>
+            <dt className="text-[var(--label-2)]">Collection</dt>
+            <dd className="font-medium">Free, on campus</dd>
           </div>
           <div
-            className="flex items-baseline justify-between border-t pt-3 text-[18px] font-semibold"
-            style={{ borderColor: 'var(--hairline-soft)' }}
+            className="flex items-baseline justify-between border-t pt-3 t-title-3 font-semibold"
+            style={{ borderColor: 'var(--separator-soft)' }}
           >
             <dt>Total</dt>
             <dd className="tabular">{money(cart.subtotal)}</dd>
@@ -187,10 +186,11 @@ export function BagScreen() {
           </Button>
         </Link>
 
-        <p className="mt-3 text-center text-[12.5px] text-[var(--faint-fg)]">
-          You will pay a coordinator by UPI and upload the screenshot.
+        <p className="t-caption-1 mt-3 text-center text-[var(--label-3)]">
+          Next up: pay a coordinator on UPI and send the screenshot.
         </p>
       </Glass>
+      </div>
     </div>
   )
 }

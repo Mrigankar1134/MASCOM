@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 /**
  * A single cached connection shared across hot reloads and serverless
- * invocations — Next.js re-evaluates modules far more often than a long-lived
+ * invocations, Next.js re-evaluates modules far more often than a long-lived
  * Express process did, so without this we would open a connection per request.
  */
 declare global {

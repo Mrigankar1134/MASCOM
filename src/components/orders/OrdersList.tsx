@@ -4,12 +4,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { money, relativeTime } from '@/lib/format'
+import { money } from '@/lib/format'
+import { TimeAgo } from '@/components/ui/Time'
 import { Glass } from '@/components/ui/Glass'
 import { StatusBadge } from '@/components/ui/Badge'
 import { EmptyState } from '@/components/ui/Feedback'
 import { Segmented } from '@/components/ui/Segmented'
 import { Icon } from '@/components/shell/Icons'
+import { NavBar } from '@/components/shell/NavBar'
+import { Button } from '@/components/ui/Button'
 
 export type OrderSummary = {
   _id: string
@@ -44,37 +47,31 @@ export function OrdersList({ orders }: { orders: OrderSummary[] }) {
   })
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-6 sm:px-6">
-      <header className="mb-5">
-        <h1 className="display text-[clamp(2rem,6vw,2.8rem)]">Your orders</h1>
-        <p className="mt-2 text-[14.5px] text-[var(--muted-fg)]">
-          Every drop you have ordered, and exactly where it has got to.
-        </p>
-      </header>
+    <div className="mx-auto max-w-3xl">
+      <NavBar
+        title="Your orders"
+        subtitle="Everything you have ordered, and exactly where it has got to."
+      >
+        {orders.length > 0 && (
+          <Segmented options={FILTERS} value={filter} onChange={setFilter} className="max-w-md" />
+        )}
+      </NavBar>
 
-      {orders.length > 0 && (
-        <Segmented className="mb-4" options={FILTERS} value={filter} onChange={setFilter} />
-      )}
-
+      <div className="px-4 pt-3">
       {visible.length === 0 ? (
         <Glass>
           <EmptyState
             icon={<Icon.Receipt size={24} />}
-            title={orders.length === 0 ? 'No orders yet' : 'Nothing in this view'}
+            title={orders.length === 0 ? 'No orders yet' : 'Nothing here'}
             description={
               orders.length === 0
-                ? 'When you order from a drop it shows up here, with live status right through to collection.'
-                : 'Try another filter to see the rest of your orders.'
+                ? 'Order from a drop and it shows up here, updating all the way to collection day.'
+                : 'Try another filter to see the rest.'
             }
             action={
               orders.length === 0 ? (
-                <Link
-                  href="/shop"
-                  className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-[14.5px] font-semibold"
-                  style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
-                >
-                  Browse the drop
-                  <Icon.ArrowRight size={16} />
+                <Link href="/shop">
+                  <Button icon={<Icon.ArrowRight size={16} />}>Browse the drop</Button>
                 </Link>
               ) : undefined
             }
@@ -105,7 +102,7 @@ export function OrdersList({ orders }: { orders: OrderSummary[] }) {
                             key={`${src}-${n}`}
                             className="relative h-12 w-11 overflow-hidden rounded-lg"
                             style={{
-                              background: 'var(--hairline-soft)',
+                              background: 'var(--separator-soft)',
                               boxShadow: '0 0 0 2px var(--page-bg)',
                               zIndex: preview.length - n,
                             }}
@@ -115,8 +112,8 @@ export function OrdersList({ orders }: { orders: OrderSummary[] }) {
                         ))
                       ) : (
                         <span
-                          className="grid h-12 w-11 place-items-center rounded-lg text-[var(--faint-fg)]"
-                          style={{ background: 'var(--hairline-soft)' }}
+                          className="grid h-12 w-11 place-items-center rounded-lg text-[var(--label-3)]"
+                          style={{ background: 'var(--separator-soft)' }}
                         >
                           <Icon.Box size={18} />
                         </span>
@@ -125,12 +122,13 @@ export function OrdersList({ orders }: { orders: OrderSummary[] }) {
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <p className="font-mono text-[13px] font-semibold">{order.orderId}</p>
-                        <span className="text-[12px] text-[var(--faint-fg)]">
-                          {relativeTime(order.createdAt)}
-                        </span>
+                        <p className="font-mono t-footnote font-semibold">{order.orderId}</p>
+                        <TimeAgo
+                          value={order.createdAt}
+                          className="t-caption-1 text-[var(--label-3)]"
+                        />
                       </div>
-                      <p className="mt-1 truncate text-[13.5px] text-[var(--muted-fg)]">
+                      <p className="mt-1 truncate t-footnote text-[var(--label-2)]">
                         {units} {units === 1 ? 'item' : 'items'}
                         {order.paidTo ? ` · paid to ${order.paidTo}` : ''}
                       </p>
@@ -140,10 +138,10 @@ export function OrdersList({ orders }: { orders: OrderSummary[] }) {
                     </div>
 
                     <div className="shrink-0 text-right">
-                      <p className="text-[15px] font-semibold tabular">
+                      <p className="t-subhead font-semibold tabular">
                         {money(order.finalAmountPaid)}
                       </p>
-                      <Icon.Chevron size={16} className="ml-auto mt-1 text-[var(--faint-fg)]" />
+                      <Icon.Chevron size={16} className="ml-auto mt-1 text-[var(--label-3)]" />
                     </div>
                   </Glass>
                 </Link>
@@ -152,6 +150,7 @@ export function OrdersList({ orders }: { orders: OrderSummary[] }) {
           })}
         </ul>
       )}
+      </div>
     </div>
   )
 }

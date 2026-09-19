@@ -42,19 +42,19 @@ export function RecipientPicker({
               )}
               style={
                 selected
-                  ? { boxShadow: '0 0 0 2px var(--accent), var(--glass-shadow-lifted)' }
+                  ? { boxShadow: '0 0 0 2px var(--tint), var(--glass-shadow-lifted)' }
                   : undefined
               }
             >
               <Avatar name={recipient.name} size={46} />
 
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[15px] font-semibold">{recipient.name}</p>
-                <p className="mt-0.5 truncate font-mono text-[12.5px] text-[var(--muted-fg)]">
+                <p className="truncate t-subhead font-semibold">{recipient.name}</p>
+                <p className="mt-0.5 truncate font-mono t-caption-1 text-[var(--label-2)]">
                   {recipient.upiId}
                 </p>
                 {recipient.description && (
-                  <p className="mt-0.5 truncate text-[12px] text-[var(--faint-fg)]">
+                  <p className="mt-0.5 truncate t-caption-1 text-[var(--label-3)]">
                     {recipient.description}
                   </p>
                 )}
@@ -63,9 +63,9 @@ export function RecipientPicker({
               <span
                 className="grid h-6 w-6 shrink-0 place-items-center rounded-full transition-colors"
                 style={{
-                  background: selected ? 'var(--accent-solid)' : 'transparent',
-                  color: selected ? 'var(--accent-contrast)' : 'transparent',
-                  boxShadow: selected ? 'none' : 'inset 0 0 0 1.5px var(--hairline)',
+                  background: selected ? 'var(--tint-solid)' : 'transparent',
+                  color: selected ? 'var(--tint-contrast)' : 'transparent',
+                  boxShadow: selected ? 'none' : 'inset 0 0 0 1.5px var(--separator)',
                 }}
               >
                 <Icon.Check size={13} strokeWidth={3} />

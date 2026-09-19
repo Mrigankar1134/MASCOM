@@ -42,7 +42,7 @@ export default async function RecipientsPage() {
     },
   ])
   // The aggregate rows carry an ObjectId _id, which cannot cross into a client
-  // component — keep only the numbers.
+  // component, keep only the numbers.
   const byId = new Map(
     totals.map((t) => [
       String(t._id),

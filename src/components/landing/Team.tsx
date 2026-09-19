@@ -15,8 +15,8 @@ export function Team() {
       <SectionHeading
         id="team"
         eyebrow="The team"
-        title="Meet the coordinators"
-        body="The people who design the drops, chase the sponsors, and hand you the kit."
+        title="Say hi to the team"
+        body="These are the people designing the drops, chasing the sponsors, and handing you your kit on collection day."
       />
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
@@ -56,7 +56,7 @@ function PersonCard({
     >
       <div
         className="relative aspect-[4/5] w-full overflow-hidden rounded-[1.05rem]"
-        style={{ background: 'var(--hairline-soft)' }}
+        style={{ background: 'var(--separator-soft)' }}
       >
         {person.photo ? (
           <Image
@@ -69,7 +69,7 @@ function PersonCard({
         ) : (
           <span
             className="display absolute inset-0 grid place-items-center text-4xl"
-            style={{ color: 'var(--accent)' }}
+            style={{ color: 'var(--tint)' }}
           >
             {initials(person.name)}
           </span>
@@ -82,7 +82,7 @@ function PersonCard({
           aria-hidden
         />
         <div className="absolute inset-x-0 bottom-0 p-3">
-          <p className="text-[13.5px] font-semibold leading-tight text-white drop-shadow">
+          <p className="t-footnote font-semibold leading-tight text-white drop-shadow">
             {person.name}
           </p>
           <p className="mt-0.5 text-[11px] font-medium text-white/70">{person.role}</p>

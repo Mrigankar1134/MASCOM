@@ -10,7 +10,8 @@ import { EmptyState } from '@/components/ui/Feedback'
 import { Icon } from '@/components/shell/Icons'
 import { useToast } from '@/components/ui/Toast'
 import { api, ApiError } from '@/lib/client/api'
-import { formatDate, relativeTime } from '@/lib/format'
+import { DateTime, TimeAgo } from '@/components/ui/Time'
+import { ConsoleHeader } from './ConsoleHeader'
 
 export type PersonRow = {
   _id: string
@@ -30,7 +31,7 @@ export type PersonRow = {
 const ROLES = [
   { key: 'isAdmin' as const, label: 'Admin', hint: 'Full access, can override anything.' },
   { key: 'isModerator' as const, label: 'Moderator', hint: 'Manage orders and drops.' },
-  { key: 'isRecipient' as const, label: 'Recipient', hint: 'Verifies payments sent to them.' },
+  { key: 'isRecipient' as const, label: 'Recipient', hint: 'Checks off payments sent to them.' },
 ]
 
 export function PeopleTable({
@@ -80,13 +81,10 @@ export function PeopleTable({
 
   return (
     <div className="mx-auto max-w-[1600px]">
-      <header className="mb-5">
-        <h1 className="display text-[clamp(1.8rem,4vw,2.5rem)]">People</h1>
-        <p className="mt-2 max-w-xl text-[14.5px] leading-relaxed text-[var(--muted-fg)]">
-          Everyone with an account. Recipients see their own verification queue; moderators manage
-          orders and drops; admins can do everything, including overriding a verification.
-        </p>
-      </header>
+      <ConsoleHeader
+        title="People"
+        subtitle="Everyone with an account. Recipients see their own queue, moderators run orders and drops, and admins can do the lot, including overriding a check."
+      />
 
       <div className="mb-4 flex flex-wrap items-center gap-2.5">
         <Segmented
@@ -99,23 +97,23 @@ export function PeopleTable({
           onChange={setFilter}
         />
         <div className="glass flex h-10 min-w-[200px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
-          <Icon.Search size={16} className="shrink-0 text-[var(--faint-fg)]" />
+          <Icon.Search size={16} className="shrink-0 text-[var(--label-3)]" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Name, email or roll no"
-            className="min-w-0 flex-1 bg-transparent text-[13.5px] outline-none placeholder:text-[var(--faint-fg)]"
+            className="min-w-0 flex-1 bg-transparent t-footnote outline-none placeholder:text-[var(--label-3)]"
           />
         </div>
       </div>
 
       {visible.length === 0 ? (
         <Glass>
-          <EmptyState icon={<Icon.Users size={24} />} title="Nobody matches that" />
+          <EmptyState icon={<Icon.Users size={24} />} title="Nobody matches" />
         </Glass>
       ) : (
         <Glass className="overflow-hidden">
-          <ul className="divide-y" style={{ borderColor: 'var(--hairline-soft)' }}>
+          <ul className="divide-y" style={{ borderColor: 'var(--separator-soft)' }}>
             {visible.map((person) => (
               <li
                 key={person._id}
@@ -125,14 +123,23 @@ export function PeopleTable({
 
                 <div className="min-w-[180px] flex-1">
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-[14px] font-semibold">{person.name}</p>
+                    <p className="t-subhead font-semibold">{person.name}</p>
                     {person._id === viewerId && <Badge tone="accent">You</Badge>}
                   </div>
-                  <p className="truncate text-[12.5px] text-[var(--muted-fg)]">{person.email}</p>
-                  <p className="mt-0.5 text-[11.5px] text-[var(--faint-fg)]">
+                  <p className="truncate t-caption-1 text-[var(--label-2)]">{person.email}</p>
+                  <p className="mt-0.5 t-caption-1 text-[var(--label-3)]">
                     {[person.rollNo, person.section, person.hostel].filter(Boolean).join(' · ')}
-                    {person.lastLogin ? ` · seen ${relativeTime(person.lastLogin)}` : ''}
-                    {!person.lastLogin ? ` · joined ${formatDate(person.createdAt)}` : ''}
+                    {person.lastLogin ? (
+                      <>
+                        {' · seen '}
+                        <TimeAgo value={person.lastLogin} />
+                      </>
+                    ) : (
+                      <>
+                        {' · joined '}
+                        <DateTime value={person.createdAt} mode="date" />
+                      </>
+                    )}
                   </p>
                 </div>
 
@@ -157,10 +164,10 @@ export function PeopleTable({
                         disabled={busy === `${person._id}:${role.key}`}
                         title={role.hint}
                         aria-pressed={on}
-                        className="press rounded-full px-2.5 py-1 text-[11.5px] font-semibold transition-colors disabled:opacity-50"
+                        className="press rounded-full px-2.5 py-1 t-caption-1 font-semibold transition-colors disabled:opacity-50"
                         style={{
-                          background: on ? 'var(--accent-glow)' : 'var(--hairline-soft)',
-                          color: on ? 'var(--accent)' : 'var(--faint-fg)',
+                          background: on ? 'var(--tint-glow)' : 'var(--separator-soft)',
+                          color: on ? 'var(--tint)' : 'var(--label-3)',
                         }}
                       >
                         {on ? '✓ ' : ''}

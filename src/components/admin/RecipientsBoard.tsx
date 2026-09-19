@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { Glass } from '@/components/ui/Glass'
+import { Counter } from '@/components/ui/Counter'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Input, Select } from '@/components/ui/Field'
@@ -15,6 +16,7 @@ import { useToast } from '@/components/ui/Toast'
 import { api, ApiError } from '@/lib/client/api'
 import { compressImage } from '@/lib/client/compress'
 import { money } from '@/lib/format'
+import { ConsoleHeader } from './ConsoleHeader'
 
 export type RecipientRow = {
   _id: string
@@ -52,20 +54,17 @@ export function RecipientsBoard({
 
   return (
     <div className="mx-auto max-w-[1600px]">
-      <header className="mb-5 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="display text-[clamp(1.8rem,4vw,2.5rem)]">Collections</h1>
-          <p className="mt-2 max-w-xl text-[14.5px] leading-relaxed text-[var(--muted-fg)]">
-            The coordinators students can pay. Each one verifies the payments sent to them, so
-            whoever is on this list needs a linked account.
-          </p>
-        </div>
-        {canEdit && (
-          <Button onClick={() => setEditing('new')} icon={<Icon.Plus size={17} />}>
-            Add recipient
-          </Button>
-        )}
-      </header>
+      <ConsoleHeader
+        title="Collections"
+        subtitle="The coordinators students can pay. Each one checks off the payments sent to them, so everyone on this list needs a linked account."
+        actions={
+          canEdit ? (
+            <Button size="sm" onClick={() => setEditing('new')} icon={<Icon.Plus size={15} />}>
+              Add recipient
+            </Button>
+          ) : undefined
+        }
+      />
 
       <div className="mb-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Tile label="Collected" value={money(grandTotal)} />
@@ -82,8 +81,8 @@ export function RecipientsBoard({
         <Glass>
           <EmptyState
             icon={<Icon.Wallet size={24} />}
-            title="No one is collecting payments yet"
-            description="Add a coordinator with their UPI ID and QR so students have someone to pay at checkout."
+            title="Nobody is collecting yet"
+            description="Add a coordinator with their UPI ID and QR so students have someone to pay."
             action={
               canEdit ? <Button onClick={() => setEditing('new')}>Add the first one</Button> : undefined
             }
@@ -92,18 +91,18 @@ export function RecipientsBoard({
       ) : (
         <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
           {recipients.map((recipient) => (
-            <Glass key={recipient._id} className="flex flex-col p-4">
+            <Glass key={recipient._id} spotlight className="flex flex-col p-4">
               <div className="flex items-start gap-3">
                 <Avatar name={recipient.name} size={44} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="truncate text-[15px] font-semibold">{recipient.name}</p>
+                    <p className="truncate t-subhead font-semibold">{recipient.name}</p>
                     {!recipient.isActive && <Badge tone="neutral">Inactive</Badge>}
                   </div>
-                  <p className="truncate font-mono text-[12px] text-[var(--muted-fg)]">
+                  <p className="truncate font-mono t-caption-1 text-[var(--label-2)]">
                     {recipient.upiId}
                   </p>
-                  <p className="truncate text-[12px] text-[var(--faint-fg)]">
+                  <p className="truncate t-caption-1 text-[var(--label-3)]">
                     {typeof recipient.userId === 'object'
                       ? `Verifies as ${recipient.userId?.name ?? recipient.userId?.email}`
                       : 'No linked account'}
@@ -128,29 +127,29 @@ export function RecipientsBoard({
 
               <dl
                 className="mt-4 grid grid-cols-3 gap-2 border-t pt-3 text-center"
-                style={{ borderColor: 'var(--hairline-soft)' }}
+                style={{ borderColor: 'var(--separator-soft)' }}
               >
                 <div>
-                  <dt className="text-[10.5px] uppercase tracking-wide text-[var(--faint-fg)]">
+                  <dt className="t-caption-2 uppercase tracking-wide text-[var(--label-3)]">
                     Collected
                   </dt>
-                  <dd className="mt-0.5 text-[14px] font-semibold tabular" style={{ color: 'var(--ok)' }}>
+                  <dd className="mt-0.5 t-subhead font-semibold tabular" style={{ color: 'var(--ok)' }}>
                     {money(recipient.totals.collected)}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-[10.5px] uppercase tracking-wide text-[var(--faint-fg)]">
+                  <dt className="t-caption-2 uppercase tracking-wide text-[var(--label-3)]">
                     Pending
                   </dt>
-                  <dd className="mt-0.5 text-[14px] font-semibold tabular" style={{ color: 'var(--warn)' }}>
+                  <dd className="mt-0.5 t-subhead font-semibold tabular" style={{ color: 'var(--warn)' }}>
                     {recipient.totals.pending}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-[10.5px] uppercase tracking-wide text-[var(--faint-fg)]">
+                  <dt className="t-caption-2 uppercase tracking-wide text-[var(--label-3)]">
                     Rejected
                   </dt>
-                  <dd className="mt-0.5 text-[14px] font-semibold tabular">
+                  <dd className="mt-0.5 t-subhead font-semibold tabular">
                     {recipient.totals.failed}
                   </dd>
                 </div>
@@ -159,7 +158,7 @@ export function RecipientsBoard({
               {canEdit && (
                 <button
                   onClick={() => setEditing(recipient)}
-                  className="press glass mt-3 w-full rounded-xl py-2 text-[13px] font-semibold"
+                  className="press glass mt-3 w-full rounded-xl py-2 t-footnote font-semibold"
                 >
                   Edit
                 </button>
@@ -182,15 +181,15 @@ export function RecipientsBoard({
 
 function Tile({ label, value, tone }: { label: string; value: string; tone?: 'warn' }) {
   return (
-    <Glass className="p-4">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--faint-fg)]">
+    <Glass spotlight className="p-4">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
         {label}
       </p>
       <p
         className="mt-2 text-[clamp(1.2rem,3vw,1.6rem)] font-semibold tabular"
         style={tone === 'warn' ? { color: 'var(--warn)' } : undefined}
       >
-        {value}
+        <Counter value={value} />
       </p>
     </Glass>
   )
@@ -298,7 +297,7 @@ function RecipientEditor({
       open
       onClose={onClose}
       title={recipient ? `Edit ${recipient.name}` : 'Add a payment recipient'}
-      description="Students see this person at checkout, scan their QR, and their orders land in this person's verification queue."
+      description="Students see this person at checkout, scan their QR, and their orders land in that person's queue."
       size="lg"
     >
       <form onSubmit={save} className="space-y-4" id="recipient-form">
@@ -321,7 +320,7 @@ function RecipientEditor({
             spellCheck={false}
             required
             error={errors.upiId}
-            hint="Used to generate the amount-locked QR."
+            hint="Used to build the amount-locked QR."
           />
           <Input
             name="phoneNumber"
@@ -341,12 +340,12 @@ function RecipientEditor({
           }
           required
           error={errors.userId}
-          hint="This account gets the verification queue for payments sent here."
+          hint="This account gets the queue for payments sent here."
         >
           <option value="">Choose an account…</option>
           {candidates.map((c) => (
             <option key={c._id} value={c._id}>
-              {c.name} — {c.email}
+              {c.name}, {c.email}
             </option>
           ))}
         </Select>
@@ -359,7 +358,7 @@ function RecipientEditor({
         />
 
         <div>
-          <p className="mb-1.5 text-[13px] font-medium text-[var(--muted-fg)]">Payment QR</p>
+          <p className="mb-1.5 t-footnote font-medium text-[var(--label-2)]">Payment QR</p>
           <input
             ref={fileRef}
             type="file"
@@ -374,23 +373,23 @@ function RecipientEditor({
           >
             <span
               className="relative grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl"
-              style={{ background: qrCodeUrl ? '#fff' : 'var(--hairline-soft)' }}
+              style={{ background: qrCodeUrl ? '#fff' : 'var(--separator-soft)' }}
             >
               {uploading ? (
                 <Spinner />
               ) : qrCodeUrl ? (
                 <Image src={qrCodeUrl} alt="" fill unoptimized sizes="80px" className="object-contain p-1" />
               ) : (
-                <Icon.QR size={24} className="text-[var(--faint-fg)]" />
+                <Icon.QR size={24} className="text-[var(--label-3)]" />
               )}
             </span>
             <span className="min-w-0">
-              <span className="block text-[13.5px] font-semibold">
+              <span className="block t-footnote font-semibold">
                 {qrCodeUrl ? 'Replace QR image' : 'Upload their UPI QR'}
               </span>
-              <span className="mt-0.5 block text-[12px] leading-relaxed text-[var(--muted-fg)]">
-                A screenshot of their GPay / PhonePe QR. Students can fall back to this if the
-                generated one does not scan.
+              <span className="mt-0.5 block t-caption-1 leading-relaxed text-[var(--label-2)]">
+                A screenshot of their GPay or PhonePe QR. Students can fall back to this if the
+                generated one will not scan.
               </span>
             </span>
           </button>
@@ -401,12 +400,12 @@ function RecipientEditor({
             type="checkbox"
             name="isActive"
             defaultChecked={recipient?.isActive ?? true}
-            className="h-5 w-5 accent-[var(--accent)]"
+            className="h-5 w-5 accent-[var(--tint)]"
           />
-          <span className="text-[13.5px]">
+          <span className="t-footnote">
             <span className="font-semibold">Available at checkout</span>
-            <span className="mt-0.5 block text-[12.5px] text-[var(--muted-fg)]">
-              Turn off to stop new payments without touching past orders.
+            <span className="mt-0.5 block t-caption-1 text-[var(--label-2)]">
+              Switch this off to stop new payments without touching past orders.
             </span>
           </span>
         </label>

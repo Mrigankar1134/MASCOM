@@ -9,7 +9,11 @@ import { Footer } from '@/components/shell/Footer'
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <TopNav />
+      {/* Phones navigate through the large-title bar on each screen plus the
+          tab bar below; the top nav is desktop wayfinding. */}
+      <div className="hidden lg:block">
+        <TopNav />
+      </div>
       {/* Bottom padding clears the floating tab bar on phones. */}
       <main className="min-h-[60dvh] pb-32 lg:pb-16">{children}</main>
       <div className="hidden lg:block">

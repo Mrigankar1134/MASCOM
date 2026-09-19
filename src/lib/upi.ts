@@ -1,6 +1,6 @@
 /**
  * Builds a UPI intent link. On a phone this opens GPay / PhonePe / Paytm with
- * the payee, amount and note already filled in — the student only confirms.
+ * the payee, amount and note already filled in, the student only confirms.
  * Desktop browsers ignore it, which is why the QR is always shown as well.
  */
 export function buildUpiUri(input: {

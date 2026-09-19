@@ -52,6 +52,7 @@ export function ConsoleShell({
     { href: '/admin/orders', label: 'Orders', icon: Icon.Receipt, staffOnly: true },
     { href: '/admin/products', label: 'Drops', icon: Icon.Box, staffOnly: true },
     { href: '/admin/recipients', label: 'Collections', icon: Icon.Wallet, staffOnly: true },
+    { href: '/admin/batches', label: 'Runs & coupons', icon: Icon.Truck, staffOnly: true },
     { href: '/admin/users', label: 'People', icon: Icon.Users, staffOnly: true },
   ]
 

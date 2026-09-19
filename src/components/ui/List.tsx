@@ -3,7 +3,7 @@ import { cn } from './cn'
 import { Icon } from '@/components/shell/Icons'
 
 /**
- * The inset grouped list from Settings — a rounded section, a caption above,
+ * The inset grouped list from Settings, a rounded section, a caption above,
  * an optional explanatory footnote below, and hairlines that stop short of
  * the leading content. It is the most recognisable structure in iOS, and it
  * suits forms and detail screens far better than a stack of cards.

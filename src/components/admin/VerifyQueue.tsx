@@ -135,7 +135,7 @@ export function VerifyQueue({
       )
       router.refresh()
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : 'Could not update that order.')
+      toast.error(err instanceof ApiError ? err.message : 'Could not update that one.')
     } finally {
       setBusyId(null)
     }
@@ -147,8 +147,8 @@ export function VerifyQueue({
         title="Verify payments"
         subtitle={
           viewer.isStaff
-            ? 'Every order students said they paid. Only the coordinator the money went to can confirm it — admins can override.'
-            : `Orders students said they paid to you${viewer.recipientName ? ` as ${viewer.recipientName}` : ''}. Check each screenshot against your own UPI history before confirming.`
+            ? 'Every order a student says they paid for. Only the coordinator who got the money can confirm it, though admins can override.'
+            : `Orders students say they paid you${viewer.recipientName ? ` as ${viewer.recipientName}` : ''}. Check each screenshot against your own UPI history before you confirm.`
         }
       />
 
@@ -209,11 +209,11 @@ export function VerifyQueue({
         <Glass>
           <EmptyState
             icon={<Icon.CheckCircle size={24} />}
-            title={status === 'Pending' ? 'Nothing waiting on you' : 'Nothing here'}
+            title={status === 'Pending' ? 'All clear' : 'Nothing here'}
             description={
               status === 'Pending'
-                ? 'Every payment sent your way has been checked off. New orders show up here the moment they are placed.'
-                : 'Try another filter or clear the search.'
+                ? 'Every payment sent your way is checked off. New orders land here the moment someone places one.'
+                : 'Try another filter, or clear the search.'
             }
           />
         </Glass>
@@ -374,7 +374,7 @@ function VerifyDetail({
                 <Icon.Alert size={16} />
               </span>
               <p className="t-caption-1 leading-relaxed" style={{ color: 'var(--warn)' }}>
-                Worth a closer look: {order.fraudFlags.join(', ').replace(/_/g, ' ')}.
+                Worth a second look: {order.fraudFlags.join(', ').replace(/_/g, ' ')}.
               </p>
             </div>
           )}
@@ -495,8 +495,8 @@ function VerifyDetail({
                 className="rounded-xl p-3.5 t-caption-1 leading-relaxed"
                 style={{ background: 'var(--info-bg)', color: 'var(--info)' }}
               >
-                This payment went to {order.paidTo ?? 'another coordinator'}, so only they can
-                confirm it.
+                This one went to {order.paidTo ?? 'another coordinator'}, so only they can confirm
+                it.
                 {viewer.isStaff && !viewer.isAdmin && ' An admin can override.'}
               </div>
             ) : rejectOpen ? (
@@ -504,7 +504,7 @@ function VerifyDetail({
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value.slice(0, 300))}
-                  placeholder="What was wrong? The student sees this."
+                  placeholder="What went wrong? The student sees this."
                   className="h-24 w-full rounded-xl border p-3 t-footnote outline-none focus:border-[var(--danger)]"
                   style={{ background: 'var(--field-bg)', borderColor: 'var(--field-border)' }}
                 />
@@ -539,7 +539,7 @@ function VerifyDetail({
                       I cannot find this payment
                     </Button>
                     <p className="pt-1 text-center t-caption-1 leading-relaxed text-[var(--label-3)]">
-                      Confirming moves the order into production and counts the units as sold.
+                      Confirming sends the order into production and counts the units as sold.
                     </p>
                   </>
                 ) : (
@@ -569,7 +569,7 @@ function VerifyDetail({
                         onDecide(order, order.paymentStatus === 'Paid' ? 'Failed' : 'Paid')
                       }
                     >
-                      {order.paymentStatus === 'Paid' ? 'Undo — mark unverified' : 'Actually, confirm it'}
+                      {order.paymentStatus === 'Paid' ? 'Undo, mark unverified' : 'Actually, confirm it'}
                     </Button>
                   </>
                 )}
@@ -599,7 +599,7 @@ function Fact({
         {label}
       </dt>
       <dd className={cn('mt-0.5 truncate font-medium', mono && 'font-mono t-caption-1')}>
-        {node ?? value ?? '—'}
+        {node ?? value ?? '-'}
       </dd>
     </div>
   )

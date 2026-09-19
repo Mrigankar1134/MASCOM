@@ -75,7 +75,7 @@ export function ProductCard({ product, index = 0 }: { product: ShopProduct; inde
           )}
 
           {/* A capsule on the material, the way a badge sits on artwork in
-              the App Store — not a chip floating on its own. */}
+              the App Store, not a chip floating on its own. */}
           <div className="absolute left-2 top-2 flex gap-1.5">
             {soldOut ? (
               <span className="glass rounded-full px-2 py-[3px] text-[11px] font-semibold leading-[13px] text-[var(--label-2)]">
@@ -93,7 +93,7 @@ export function ProductCard({ product, index = 0 }: { product: ShopProduct; inde
         </div>
       </Link>
 
-      {/* Name, then price beneath it — a title never has to compete with a
+      {/* Name, then price beneath it, a title never has to compete with a
           number for the same line, so nothing truncates at phone width. */}
       <div className="pt-2.5">
         <Link href={`/shop/${product.slug}`}>

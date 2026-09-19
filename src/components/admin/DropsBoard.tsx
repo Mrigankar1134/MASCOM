@@ -49,7 +49,7 @@ export function DropsBoard({
     <div className="mx-auto max-w-[1600px]">
       <ConsoleHeader
         title="Drops"
-        subtitle="A drop is orderable only when it is both live and open. Changing the price starts a new price band, so orders already placed keep the price they were bought at."
+        subtitle="A drop is only orderable when it is both live and open. Changing the price starts a new band, so orders already placed keep what they paid."
         actions={
           <Button size="sm" onClick={() => setEditing('new')} icon={<Icon.Plus size={15} />}>
             New drop
@@ -62,8 +62,8 @@ export function DropsBoard({
           <EmptyState
             icon={<Icon.Box size={24} />}
             title="No drops yet"
-            description="Create one, add colours and photos, then open it for orders."
-            action={<Button onClick={() => setEditing('new')}>Create the first drop</Button>}
+            description="Make one, add colours and photos, then open it up for orders."
+            action={<Button onClick={() => setEditing('new')}>Make the first one</Button>}
           />
         </Glass>
       ) : (
@@ -246,7 +246,7 @@ function DropEditor({
           name="description"
           label="Description"
           defaultValue={product?.description}
-          placeholder="Fabric, fit, what makes it worth it."
+          placeholder="Fabric, fit, why it is worth it."
         />
 
         <div className="grid gap-4 sm:grid-cols-3">
@@ -270,7 +270,7 @@ function DropEditor({
           value={sizes}
           onChange={(e) => setSizes(e.target.value)}
           placeholder="XS, S, M, L, XL, XXL"
-          hint="Comma separated. Leave empty for one-size items."
+          hint="Comma separated. Leave it empty for one-size items."
         />
 
         {/* ── Variants ─────────────────────────────────────────────────── */}

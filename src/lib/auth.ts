@@ -11,7 +11,7 @@ const COOKIE_NAME = 'mascom_session'
 function secret(): Uint8Array {
   const value = process.env.JWT_SECRET
   if (!value || value.length < 16) {
-    throw new Error('JWT_SECRET is missing or too short — set it in .env.local')
+    throw new Error('JWT_SECRET is missing or too short, set it in .env.local')
   }
   return new TextEncoder().encode(value)
 }

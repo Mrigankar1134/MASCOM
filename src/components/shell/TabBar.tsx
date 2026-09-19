@@ -18,7 +18,7 @@ type Tab = {
 
 /**
  * A floating glass tab bar. Selection reads through tint and weight rather
- * than a heavy filled pill — the capsule behind the active tab stays at low
+ * than a heavy filled pill, the capsule behind the active tab stays at low
  * opacity so the bar still looks like glass over the content beneath it.
  */
 export function TabBar() {

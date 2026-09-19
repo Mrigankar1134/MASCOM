@@ -48,7 +48,7 @@ def main() -> None:
             for f in sorted(os.listdir(hero_dir)) if not f.startswith('.')]
 
     out = (
-        '// Generated from public/gallery — re-run scripts/gallery.py after adding photos.\n\n'
+        '// Generated from public/gallery, re-run scripts/gallery.py after adding photos.\n\n'
         'export type GalleryItem = { src: string; title: string }\n'
         'export type GallerySection = { title: string; blurb: string; items: GalleryItem[] }\n\n'
         f'export const heroShots: string[] = {json.dumps(hero, indent=2)}\n\n'

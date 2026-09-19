@@ -82,7 +82,7 @@ export function NavBar({
         {subtitle && <p className="t-subhead mt-1.5 max-w-lg text-[var(--label-2)]">{subtitle}</p>}
       </motion.div>
 
-      {/* Desktop keeps a static title — no collapse, nothing to scroll away. */}
+      {/* Desktop keeps a static title, no collapse, nothing to scroll away. */}
       <div className="hidden px-4 pb-2 pt-4 lg:block">
         <h1 className="display text-[2.75rem]">{title}</h1>
         {subtitle && <p className="t-body mt-2 max-w-xl text-[var(--label-2)]">{subtitle}</p>}

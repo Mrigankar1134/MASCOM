@@ -41,7 +41,7 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
         method: 'POST',
         body: JSON.stringify(payload),
       })
-      toast.success(isSignUp ? 'Account created. Welcome in.' : 'Welcome back.')
+      toast.success(isSignUp ? 'You are in. Welcome.' : 'Welcome back.')
       router.push(next ?? '/shop')
       router.refresh()
     } catch (err) {
@@ -107,7 +107,7 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
           </div>
 
           <p className="t-caption-1 text-white/40">
-            © {new Date().getFullYear()} {site.name} — {site.institute}
+            © {new Date().getFullYear()} {site.name}, {site.institute}
           </p>
         </div>
       </aside>
@@ -130,12 +130,12 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
           <Glass tone="strong" className="p-6 sm:p-8">
             <p className="eyebrow">{isSignUp ? 'Join the drop' : 'Student portal'}</p>
             <h2 className="display mt-2.5 text-[30px]">
-              {isSignUp ? 'Create your account' : 'Welcome back'}
+              {isSignUp ? 'Make an account' : 'Welcome back'}
             </h2>
             <p className="mt-2 t-subhead text-[var(--label-2)]">
               {isSignUp
                 ? 'Use your college email. Takes about a minute.'
-                : 'Sign in with your college email to continue.'}
+                : 'Sign in with your college email and you are good to go.'}
             </p>
 
             <form onSubmit={onSubmit} className="mt-7 space-y-4">
@@ -171,7 +171,7 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
                 autoComplete={isSignUp ? 'new-password' : 'current-password'}
                 required
                 error={errors.password}
-                hint={isSignUp ? 'Mix letters and numbers.' : undefined}
+                hint={isSignUp ? 'Mix in some letters and numbers.' : undefined}
               />
 
               {isSignUp && (
@@ -182,7 +182,7 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
               )}
 
               <Button type="submit" size="lg" block loading={busy} className="mt-2">
-                {isSignUp ? 'Create account' : 'Sign in'}
+                {isSignUp ? 'Make my account' : 'Sign in'}
               </Button>
             </form>
 
@@ -193,13 +193,13 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
                 className="font-semibold"
                 style={{ color: 'var(--tint)' }}
               >
-                {isSignUp ? 'Sign in' : 'Create one'}
+                {isSignUp ? 'Sign in' : 'Make one'}
               </Link>
             </p>
           </Glass>
 
           <p className="mt-5 text-center t-caption-1 text-[var(--label-3)]">
-            Access is restricted to college email addresses.
+            College email addresses only.
           </p>
 
           <Link

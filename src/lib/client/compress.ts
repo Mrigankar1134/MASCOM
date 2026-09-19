@@ -4,7 +4,7 @@
  * Downscales and re-encodes an image in the browser before upload.
  *
  * Payment screenshots come straight from a phone's camera roll and are often
- * 4–8MB. Shrinking them here keeps uploads fast on campus wifi and keeps the
+ * 4-8MB. Shrinking them here keeps uploads fast on campus wifi and keeps the
  * upload directory small, while staying more than legible for verification.
  */
 export async function compressImage(
@@ -17,7 +17,7 @@ export async function compressImage(
     const bitmap = await createImageBitmap(file)
     const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height))
 
-    // Already small enough and reasonably sized — leave it alone.
+    // Already small enough and reasonably sized, leave it alone.
     if (scale === 1 && file.size < 900_000) {
       bitmap.close()
       return file
@@ -44,7 +44,7 @@ export async function compressImage(
 
     return new File([blob], file.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' })
   } catch {
-    // Unsupported format (HEIC on some browsers) — send the original.
+    // Unsupported format (HEIC on some browsers), send the original.
     return file
   }
 }

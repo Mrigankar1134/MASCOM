@@ -6,7 +6,7 @@ import { ok, parseBody, requireUser, route } from '@/lib/api-helpers'
 import { recipientSchema } from '@/lib/validators'
 import { plain } from '@/lib/json'
 
-/** Every recipient plus what they have collected — the admin overview. */
+/** Every recipient plus what they have collected, the admin overview. */
 export const GET = route(async () => {
   await requireUser('staff')
   await connectDB()

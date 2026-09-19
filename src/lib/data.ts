@@ -103,7 +103,7 @@ export async function getActiveRecipients(): Promise<ShopRecipient[]> {
 
 /**
  * Wraps a data call so a missing/unreachable database renders an empty state
- * instead of crashing the page — the marketing site still has to work.
+ * instead of crashing the page, the marketing site still has to work.
  */
 export async function safely<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
   try {

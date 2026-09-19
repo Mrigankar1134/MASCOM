@@ -15,8 +15,8 @@ export function Team() {
       <SectionHeading
         id="team"
         eyebrow="The team"
-        title="Meet the coordinators"
-        body="The people who design the drops, chase the sponsors, and hand you the kit."
+        title="Say hi to the team"
+        body="These are the people designing the drops, chasing the sponsors, and handing you your kit on collection day."
       />
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">

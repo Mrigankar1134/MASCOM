@@ -40,8 +40,8 @@ export function GalleryWall() {
     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:py-24">
       <SectionHeading
         id="gallery"
-        eyebrow="Captured moments"
-        title="Photo gallery"
+        eyebrow="Caught on camera"
+        title="The good bits"
         body={section?.blurb}
       />
 
@@ -52,7 +52,7 @@ export function GalleryWall() {
         className="mb-6 max-w-full"
       />
 
-      {/* Masonry via CSS columns — keeps portrait and landscape shots honest */}
+      {/* Masonry via CSS columns, keeps portrait and landscape shots honest */}
       <motion.div
         key={active}
         initial={{ opacity: 0, y: 16 }}

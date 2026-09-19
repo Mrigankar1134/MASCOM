@@ -3,7 +3,7 @@
 import { forwardRef, useId } from 'react'
 import { cn } from './cn'
 
-/* Fields sit on a fill rather than inside a stroked box — UIKit uses
+/* Fields sit on a fill rather than inside a stroked box, UIKit uses
    elevation and inset, not outlines. 44pt tall so they clear the minimum
    touch target. */
 const CONTROL =

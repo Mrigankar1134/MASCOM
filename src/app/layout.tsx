@@ -57,10 +57,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         {/* Paints the right palette before first paint — no white flash. */}
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="grain antialiased">
-        <div className="aurora" aria-hidden>
-          <span />
-        </div>
+      <body className="antialiased">
         <ThemeProvider>
           <SessionProvider user={sessionUser}>
             <CartProvider>

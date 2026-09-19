@@ -46,7 +46,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
               className="bg-clip-text text-transparent"
               style={{
                 backgroundImage:
-                  'linear-gradient(120deg, var(--accent) 0%, color-mix(in srgb, var(--accent) 55%, var(--page-fg)) 60%, var(--page-fg) 100%)',
+                  'linear-gradient(120deg, var(--tint) 0%, color-mix(in srgb, var(--tint) 55%, var(--label)) 60%, var(--label) 100%)',
               }}
             >
               fit.
@@ -57,7 +57,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.14, ease: [0.32, 0.72, 0, 1] }}
-            className="mt-6 max-w-md text-[16.5px] leading-relaxed text-[var(--muted-fg)]"
+            className="mt-6 max-w-md t-callout leading-relaxed text-[var(--label-2)]"
           >
             {site.intro}
           </motion.p>
@@ -70,15 +70,15 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
           >
             <Link
               href="/shop"
-              className="press inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-[15px] font-semibold shadow-[0_10px_30px_-10px_var(--accent-glow)]"
-              style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
+              className="press inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 t-subhead font-semibold shadow-[0_10px_30px_-10px_var(--tint-glow)]"
+              style={{ background: 'var(--tint-solid)', color: 'var(--tint-contrast)' }}
             >
               {ordersOpen ? 'Shop the drop' : 'Browse merch'}
               <Icon.ArrowRight size={18} />
             </Link>
             <Link
               href="#gallery"
-              className="glass glass-lens press inline-flex items-center gap-2 rounded-2xl px-5 py-3.5 text-[15px] font-semibold"
+              className="glass glass-lens press inline-flex items-center gap-2 rounded-2xl px-5 py-3.5 t-subhead font-semibold"
             >
               See the work
             </Link>
@@ -92,7 +92,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
             className="glass glass-lens mt-9 inline-flex max-w-md items-center gap-4 rounded-3xl p-4 pr-6"
           >
             <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-2xl"
-              style={{ background: ordersOpen ? 'var(--ok-bg)' : 'var(--hairline-soft)', color: ordersOpen ? 'var(--ok)' : 'var(--muted-fg)' }}
+              style={{ background: ordersOpen ? 'var(--ok-bg)' : 'var(--separator-soft)', color: ordersOpen ? 'var(--ok)' : 'var(--label-2)' }}
             >
               {ordersOpen && (
                 <span className="absolute inset-0 animate-ping rounded-2xl opacity-40" style={{ background: 'var(--ok-bg)' }} />
@@ -101,7 +101,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
             </span>
             <div className="min-w-0">
               <p className="eyebrow">{ordersOpen ? 'Orders open' : 'Next drop'}</p>
-              <p className="truncate text-[15px] font-semibold">
+              <p className="truncate t-subhead font-semibold">
                 {ordersOpen
                   ? (dropName ?? 'Batch polo drop is live')
                   : 'Sign in to be first when it lands'}
@@ -118,7 +118,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
                 transition={{ duration: 0.6, delay: 0.36 + i * 0.06 }}
               >
                 <dt className="display text-[28px] sm:text-[34px]">{s.value}</dt>
-                <dd className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--faint-fg)]">
+                <dd className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--label-3)]">
                   {s.label}
                 </dd>
               </motion.div>

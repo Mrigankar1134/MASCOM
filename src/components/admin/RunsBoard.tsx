@@ -13,6 +13,7 @@ import { useToast } from '@/components/ui/Toast'
 import { api, ApiError } from '@/lib/client/api'
 import { money } from '@/lib/format'
 import { DateTime } from '@/components/ui/Time'
+import { ConsoleHeader } from './ConsoleHeader'
 
 export type BatchRow = {
   _id: string
@@ -53,20 +54,16 @@ export function RunsBoard({
 
   return (
     <div className="mx-auto max-w-[1600px]">
-      <header className="mb-5">
-        <h1 className="display text-[clamp(1.8rem,4vw,2.5rem)]">Runs & coupons</h1>
-        <p className="mt-2 max-w-2xl text-[14.5px] leading-relaxed text-[var(--muted-fg)]">
-          A run groups every order placed inside a window so the vendor gets one
-          consolidated list. Orders placed outside any run sit in the waiting pool until you
-          open one.
-        </p>
-      </header>
+      <ConsoleHeader
+        title="Runs & coupons"
+        subtitle="A run groups every order placed inside a window so the vendor gets one consolidated list. Orders placed outside any run sit in the waiting pool until you open one."
+      />
 
       <div className="grid gap-4 xl:grid-cols-2">
         {/* ── Production runs ──────────────────────────────────────────── */}
         <section>
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-[15px] font-semibold tracking-tight">Production runs</h2>
+            <h2 className="t-subhead font-semibold tracking-tight">Production runs</h2>
             <Button size="sm" onClick={() => setSheet('batch')} icon={<Icon.Plus size={15} />}>
               New run
             </Button>
@@ -80,8 +77,8 @@ export function RunsBoard({
               >
                 <Icon.Clock size={17} />
               </span>
-              <p className="text-[13px] leading-relaxed text-[var(--muted-fg)]">
-                <span className="font-semibold text-[var(--page-fg)]">
+              <p className="t-footnote leading-relaxed text-[var(--label-2)]">
+                <span className="font-semibold text-[var(--label)]">
                   {waiting.units} item{waiting.units === 1 ? '' : 's'}
                 </span>{' '}
                 are waiting for a run. Opening one that covers their order dates picks them up
@@ -113,7 +110,7 @@ export function RunsBoard({
         {/* ── Coupons ──────────────────────────────────────────────────── */}
         <section>
           <div className="mb-3 flex items-center justify-between">
-            <h2 className="text-[15px] font-semibold tracking-tight">Coupons</h2>
+            <h2 className="t-subhead font-semibold tracking-tight">Coupons</h2>
             <Button size="sm" onClick={() => setSheet('coupon')} icon={<Icon.Plus size={15} />}>
               New coupon
             </Button>
@@ -174,8 +171,8 @@ function BatchCard({ batch }: { batch: BatchRow }) {
       <span
         className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
         style={{
-          background: open ? 'var(--accent-glow)' : 'var(--hairline-soft)',
-          color: open ? 'var(--accent)' : 'var(--faint-fg)',
+          background: open ? 'var(--tint-glow)' : 'var(--separator-soft)',
+          color: open ? 'var(--tint)' : 'var(--label-3)',
         }}
       >
         <Icon.Truck size={19} />
@@ -183,15 +180,15 @@ function BatchCard({ batch }: { batch: BatchRow }) {
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="font-mono text-[14px] font-semibold">{batch.batchNumber}</p>
+          <p className="font-mono t-subhead font-semibold">{batch.batchNumber}</p>
           {open ? <Badge tone="ok" dot>Collecting</Badge> : <Badge tone="neutral">Closed</Badge>}
         </div>
-        <p className="mt-0.5 truncate text-[12.5px] text-[var(--muted-fg)]">
+        <p className="mt-0.5 truncate t-caption-1 text-[var(--label-2)]">
           {typeof batch.productId === 'object' ? batch.productId?.name : 'Product'} ·{' '}
           <DateTime value={batch.orderStartDate} mode="date" /> →{' '}
           <DateTime value={batch.orderEndDate} mode="date" />
         </p>
-        <p className="mt-0.5 text-[12px] text-[var(--faint-fg)]">
+        <p className="mt-0.5 t-caption-1 text-[var(--label-3)]">
           {batch.counts.units} unit{batch.counts.units === 1 ? '' : 's'} across{' '}
           {batch.counts.items} line{batch.counts.items === 1 ? '' : 's'}
         </p>
@@ -200,8 +197,8 @@ function BatchCard({ batch }: { batch: BatchRow }) {
       <button
         onClick={remove}
         disabled={busy}
-        className="press shrink-0 rounded-lg px-2.5 py-1.5 text-[12px] font-semibold disabled:opacity-50"
-        style={{ background: 'var(--hairline-soft)', color: 'var(--danger)' }}
+        className="press shrink-0 rounded-lg px-2.5 py-1.5 t-caption-1 font-semibold disabled:opacity-50"
+        style={{ background: 'var(--separator-soft)', color: 'var(--danger)' }}
       >
         Close
       </button>
@@ -237,8 +234,8 @@ function CouponCard({ coupon }: { coupon: CouponRow }) {
       <span
         className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
         style={{
-          background: coupon.active && !expired ? 'var(--accent-glow)' : 'var(--hairline-soft)',
-          color: coupon.active && !expired ? 'var(--accent)' : 'var(--faint-fg)',
+          background: coupon.active && !expired ? 'var(--tint-glow)' : 'var(--separator-soft)',
+          color: coupon.active && !expired ? 'var(--tint)' : 'var(--label-3)',
         }}
       >
         <Icon.Tag size={19} />
@@ -246,7 +243,7 @@ function CouponCard({ coupon }: { coupon: CouponRow }) {
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="font-mono text-[14px] font-semibold">{coupon.code}</p>
+          <p className="font-mono t-subhead font-semibold">{coupon.code}</p>
           {expired ? (
             <Badge tone="neutral">Expired</Badge>
           ) : coupon.active ? (
@@ -255,12 +252,12 @@ function CouponCard({ coupon }: { coupon: CouponRow }) {
             <Badge tone="neutral">Paused</Badge>
           )}
         </div>
-        <p className="mt-0.5 text-[12.5px] text-[var(--muted-fg)]">
+        <p className="mt-0.5 t-caption-1 text-[var(--label-2)]">
           {coupon.type === 'Percentage' ? `${coupon.value}% off` : `${money(coupon.value)} off`}
           {coupon.minOrderAmount ? ` over ${money(coupon.minOrderAmount)}` : ''}
           {coupon.maxDiscount ? ` · capped at ${money(coupon.maxDiscount)}` : ''}
         </p>
-        <p className="mt-0.5 text-[12px] text-[var(--faint-fg)]">
+        <p className="mt-0.5 t-caption-1 text-[var(--label-3)]">
           Used {coupon.usedCount}
           {coupon.usageLimit ? ` of ${coupon.usageLimit}` : ''} · until{' '}
           <DateTime value={coupon.validUntil} mode="date" />
@@ -270,8 +267,8 @@ function CouponCard({ coupon }: { coupon: CouponRow }) {
       <button
         onClick={toggle}
         disabled={busy || expired}
-        className="press shrink-0 rounded-lg px-2.5 py-1.5 text-[12px] font-semibold disabled:opacity-40"
-        style={{ background: 'var(--hairline-soft)' }}
+        className="press shrink-0 rounded-lg px-2.5 py-1.5 t-caption-1 font-semibold disabled:opacity-40"
+        style={{ background: 'var(--separator-soft)' }}
       >
         {coupon.active ? 'Pause' : 'Activate'}
       </button>

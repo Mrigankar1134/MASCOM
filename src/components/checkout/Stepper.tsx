@@ -39,16 +39,16 @@ export function Stepper({
               <span
                 className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold"
                 style={{
-                  background: done || active ? 'var(--accent-solid)' : 'var(--hairline-soft)',
-                  color: done || active ? 'var(--accent-contrast)' : 'var(--faint-fg)',
+                  background: done || active ? 'var(--tint-solid)' : 'var(--separator-soft)',
+                  color: done || active ? 'var(--tint-contrast)' : 'var(--label-3)',
                 }}
               >
                 {done ? <Icon.Check size={12} strokeWidth={3} /> : i + 1}
               </span>
               <span
                 className={cn(
-                  'hidden truncate text-[12.5px] font-semibold sm:inline',
-                  active ? 'text-[var(--page-fg)]' : 'text-[var(--muted-fg)]',
+                  'hidden truncate t-caption-1 font-semibold sm:inline',
+                  active ? 'text-[var(--label)]' : 'text-[var(--label-2)]',
                 )}
               >
                 {step.label}
@@ -56,10 +56,10 @@ export function Stepper({
             </button>
 
             {i < steps.length - 1 && (
-              <span className="h-px flex-1 overflow-hidden" style={{ background: 'var(--hairline)' }}>
+              <span className="h-px flex-1 overflow-hidden" style={{ background: 'var(--separator)' }}>
                 <motion.span
                   className="block h-full"
-                  style={{ background: 'var(--accent)' }}
+                  style={{ background: 'var(--tint)' }}
                   initial={false}
                   animate={{ width: done ? '100%' : '0%' }}
                   transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}

@@ -49,7 +49,7 @@ export function TopNav({ transparentUntilScroll = false }: { transparentUntilScr
         'sticky top-0 z-40 transition-colors duration-300',
         scrolled && 'glass-chrome border-b',
       )}
-      style={scrolled ? { borderColor: 'var(--hairline-soft)' } : undefined}
+      style={scrolled ? { borderColor: 'var(--separator-soft)' } : undefined}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 pt-[env(safe-area-inset-top)] sm:px-6 lg:h-[68px]">
         <Link href="/" className="press shrink-0" aria-label="MASCOM home">
@@ -62,10 +62,10 @@ export function TopNav({ transparentUntilScroll = false }: { transparentUntilScr
               key={link.href}
               href={link.href}
               className={cn(
-                'rounded-full px-3.5 py-2 text-[14px] font-medium transition-colors',
+                'rounded-full px-3.5 py-2 t-subhead font-medium transition-colors',
                 pathname === link.href
-                  ? 'text-[var(--page-fg)]'
-                  : 'text-[var(--muted-fg)] hover:text-[var(--page-fg)]',
+                  ? 'text-[var(--label)]'
+                  : 'text-[var(--label-2)] hover:text-[var(--label)]',
               )}
             >
               {link.label}
@@ -85,7 +85,7 @@ export function TopNav({ transparentUntilScroll = false }: { transparentUntilScr
             {count > 0 && (
               <span
                 className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[10px] font-bold tabular"
-                style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
+                style={{ background: 'var(--tint-solid)', color: 'var(--tint-contrast)' }}
               >
                 {count > 9 ? '9+' : count}
               </span>
@@ -97,7 +97,7 @@ export function TopNav({ transparentUntilScroll = false }: { transparentUntilScr
               {canOpenConsole(user) && (
                 <Link
                   href="/admin"
-                  className="glass press hidden items-center gap-2 rounded-full px-3.5 py-2 text-[13.5px] font-semibold lg:inline-flex"
+                  className="glass press hidden items-center gap-2 rounded-full px-3.5 py-2 t-footnote font-semibold lg:inline-flex"
                 >
                   <Icon.Shield size={16} />
                   Console
@@ -108,7 +108,7 @@ export function TopNav({ transparentUntilScroll = false }: { transparentUntilScr
               </Link>
               <button
                 onClick={signOut}
-                className="glass press hidden h-10 w-10 place-items-center rounded-full text-[var(--muted-fg)] lg:grid"
+                className="glass press hidden h-10 w-10 place-items-center rounded-full text-[var(--label-2)] lg:grid"
                 aria-label="Sign out"
                 title="Sign out"
               >
@@ -118,8 +118,8 @@ export function TopNav({ transparentUntilScroll = false }: { transparentUntilScr
           ) : (
             <Link
               href="/signin"
-              className="press inline-flex h-10 items-center rounded-full px-4 text-[13.5px] font-semibold"
-              style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
+              className="press inline-flex h-10 items-center rounded-full px-4 t-footnote font-semibold"
+              style={{ background: 'var(--tint-solid)', color: 'var(--tint-contrast)' }}
             >
               Sign in
             </Link>

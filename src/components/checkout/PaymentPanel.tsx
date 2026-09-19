@@ -66,7 +66,7 @@ export function PaymentPanel({
             className="relative rounded-[1.6rem] p-4"
             style={{
               background: useOwnQr ? 'transparent' : resolved === 'dark' ? '#101018' : '#ffffff',
-              boxShadow: 'inset 0 0 0 1px var(--hairline), var(--glass-shadow)',
+              boxShadow: 'inset 0 0 0 1px var(--separator), var(--glass-shadow)',
             }}
           >
             {useOwnQr ? (
@@ -80,7 +80,7 @@ export function PaymentPanel({
                   className="h-[220px] w-[220px] rounded-2xl object-contain"
                 />
               ) : (
-                <div className="grid h-[220px] w-[220px] place-items-center text-center text-[13px] text-[var(--faint-fg)]">
+                <div className="grid h-[220px] w-[220px] place-items-center text-center t-footnote text-[var(--label-3)]">
                   No saved QR — use the generated one.
                 </div>
               )
@@ -97,11 +97,11 @@ export function PaymentPanel({
           </div>
         </div>
 
-        <p className="mt-4 text-center text-[13.5px] leading-relaxed text-[var(--muted-fg)]">
+        <p className="mt-4 text-center t-footnote leading-relaxed text-[var(--label-2)]">
           {useOwnQr ? (
             <>
               This is {recipient.name}&apos;s own QR — you will need to type{' '}
-              <span className="font-semibold text-[var(--page-fg)]">{money(amount)}</span> yourself.
+              <span className="font-semibold text-[var(--label)]">{money(amount)}</span> yourself.
             </>
           ) : (
             <>
@@ -114,8 +114,8 @@ export function PaymentPanel({
           <button
             type="button"
             onClick={() => setUseOwnQr((v) => !v)}
-            className="press mx-auto mt-3 block text-[13px] font-semibold"
-            style={{ color: 'var(--accent)' }}
+            className="press mx-auto mt-3 block t-footnote font-semibold"
+            style={{ color: 'var(--tint)' }}
           >
             {useOwnQr ? 'Use the amount-locked QR' : `Use ${recipient.name}'s own QR instead`}
           </button>
@@ -124,15 +124,15 @@ export function PaymentPanel({
         {/* On a phone this hands off straight into GPay / PhonePe / Paytm */}
         <a
           href={upiUri}
-          className="press mt-5 flex h-13 w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-[15px] font-semibold sm:hidden"
-          style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
+          className="press mt-5 flex h-13 w-full items-center justify-center gap-2 rounded-2xl py-3.5 t-subhead font-semibold sm:hidden"
+          style={{ background: 'var(--tint-solid)', color: 'var(--tint-contrast)' }}
         >
           <Icon.Wallet size={18} />
           Open your UPI app
         </a>
       </Glass>
 
-      <Glass className="divide-y" style={{ borderColor: 'var(--hairline-soft)' }}>
+      <Glass className="divide-y" style={{ borderColor: 'var(--separator-soft)' }}>
         <CopyRow
           label="UPI ID"
           value={recipient.upiId}
@@ -155,8 +155,8 @@ export function PaymentPanel({
         <span className="mt-0.5 shrink-0" style={{ color: 'var(--warn)' }}>
           <Icon.Alert size={17} />
         </span>
-        <p className="text-[13px] leading-relaxed text-[var(--muted-fg)]">
-          Pay the exact amount to <span className="font-semibold text-[var(--page-fg)]">{recipient.name}</span>.
+        <p className="t-footnote leading-relaxed text-[var(--label-2)]">
+          Pay the exact amount to <span className="font-semibold text-[var(--label)]">{recipient.name}</span>.
           Your order goes to them to verify, so paying someone else leaves it stuck.
         </p>
       </Glass>
@@ -177,15 +177,15 @@ function CopyRow({
 }) {
   return (
     <div className="flex items-center gap-3 px-4 py-3">
-      <span className="w-28 shrink-0 text-[12.5px] font-medium text-[var(--faint-fg)]">{label}</span>
-      <span className={cn('min-w-0 flex-1 truncate text-[14px] font-medium', mono && 'font-mono')}>
+      <span className="w-28 shrink-0 t-caption-1 font-medium text-[var(--label-3)]">{label}</span>
+      <span className={cn('min-w-0 flex-1 truncate t-subhead font-medium', mono && 'font-mono')}>
         {value}
       </span>
       <button
         type="button"
         onClick={onCopy}
-        className="press shrink-0 rounded-lg px-2.5 py-1.5 text-[12.5px] font-semibold"
-        style={{ background: 'var(--hairline-soft)' }}
+        className="press shrink-0 rounded-lg px-2.5 py-1.5 t-caption-1 font-semibold"
+        style={{ background: 'var(--separator-soft)' }}
       >
         Copy
       </button>

@@ -22,7 +22,7 @@ export type ConsoleUser = {
 type NavItem = {
   href: string
   label: string
-  icon: (p: { size?: number; className?: string }) => React.ReactNode
+  icon: (p: { size?: number; className?: string; strokeWidth?: number }) => React.ReactNode
   staffOnly?: boolean
   adminOnly?: boolean
   badge?: number
@@ -68,9 +68,22 @@ export function ConsoleShell({
     router.refresh()
   }
 
+  // macOS groups a source list under small-caps headers rather than running
+  // every destination together.
+  const groups: { title: string; items: NavItem[] }[] = [
+    { title: 'Collect', items: items.filter((i) => ['/admin', '/admin/verify'].includes(i.href)) },
+    { title: 'Manage', items: items.filter((i) => !['/admin', '/admin/verify'].includes(i.href)) },
+  ].filter((g) => g.items.length > 0)
+
   const nav = (onNavigate?: () => void) => (
-    <nav className="flex flex-1 flex-col gap-1" aria-label="Console">
-      {items.map((item) => {
+    <nav className="flex flex-1 flex-col gap-4 overflow-y-auto" aria-label="Console">
+      {groups.map((group) => (
+        <div key={group.title}>
+          <p className="mb-1 px-3 text-[11px] font-semibold uppercase tracking-[0.06em] text-[var(--label-3)]">
+            {group.title}
+          </p>
+          <div className="flex flex-col gap-0.5">
+      {group.items.map((item) => {
         const active =
           item.href === '/admin' ? pathname === '/admin' : pathname.startsWith(item.href)
         const ItemIcon = item.icon
@@ -81,30 +94,30 @@ export function ConsoleShell({
             onClick={onNavigate}
             aria-current={active ? 'page' : undefined}
             className={cn(
-              'press relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-[14px] font-medium transition-colors',
+              'relative flex h-[30px] items-center gap-2.5 rounded-[7px] px-2.5 t-footnote transition-colors',
               active
-                ? 'text-[var(--accent-contrast)]'
-                : 'text-[var(--muted-fg)] hover:text-[var(--page-fg)]',
+                ? 'font-semibold text-[var(--tint-contrast)]'
+                : 'font-medium text-[var(--label-2)] hover:bg-[var(--fill-4)] hover:text-[var(--label)]',
             )}
           >
             {active && (
               <motion.span
                 layoutId="console-nav"
-                className="absolute inset-0 rounded-xl"
-                style={{ background: 'var(--accent-solid)' }}
+                className="absolute inset-0 rounded-[7px]"
+                style={{ background: 'var(--tint-solid)' }}
                 transition={{ type: 'spring', damping: 32, stiffness: 420 }}
               />
             )}
             <span className="relative z-10">
-              <ItemIcon size={18} />
+              <ItemIcon size={16} strokeWidth={1.9} />
             </span>
-            <span className="relative z-10 flex-1">{item.label}</span>
+            <span className="relative z-10 flex-1 truncate">{item.label}</span>
             {!!item.badge && item.badge > 0 && (
               <span
-                className="relative z-10 rounded-full px-1.5 py-0.5 text-[11px] font-bold tabular"
+                className="relative z-10 rounded-full px-1.5 text-[11px] font-semibold leading-[17px] tabular"
                 style={{
-                  background: active ? 'rgba(0,0,0,0.16)' : 'var(--warn-bg)',
-                  color: active ? 'var(--accent-contrast)' : 'var(--warn)',
+                  background: active ? 'rgba(0,0,0,0.18)' : 'var(--fill-2)',
+                  color: active ? 'var(--tint-contrast)' : 'var(--label-2)',
                 }}
               >
                 {item.badge > 99 ? '99+' : item.badge}
@@ -113,16 +126,19 @@ export function ConsoleShell({
           </Link>
         )
       })}
+          </div>
+        </div>
+      ))}
     </nav>
   )
 
   const identity = (
     <div className="space-y-3">
-      <div className="glass flex items-center gap-3 rounded-2xl p-3">
-        <Avatar name={user.name} src={user.photo} size={38} />
+      <div className="flex items-center gap-2.5 rounded-[10px] p-2" style={{ background: 'var(--fill-4)' }}>
+        <Avatar name={user.name} src={user.photo} size={30} />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-[13.5px] font-semibold">{user.name}</p>
-          <p className="truncate text-[11.5px] text-[var(--faint-fg)]">
+          <p className="truncate t-caption-1 font-semibold">{user.name}</p>
+          <p className="truncate text-[11px] text-[var(--label-3)]">
             {user.isAdmin
               ? 'Admin'
               : user.isStaff
@@ -132,19 +148,19 @@ export function ConsoleShell({
         </div>
         <button
           onClick={signOut}
-          className="press grid h-8 w-8 shrink-0 place-items-center rounded-lg text-[var(--faint-fg)]"
+          className="press grid h-7 w-7 shrink-0 place-items-center rounded-md text-[var(--label-3)] hover:text-[var(--label)]"
           aria-label="Sign out"
           title="Sign out"
         >
-          <Icon.Logout size={16} />
+          <Icon.Logout size={15} />
         </button>
       </div>
 
       <div className="flex items-center justify-between gap-2">
         <Link
           href="/shop"
-          className="press flex-1 rounded-xl px-3 py-2 text-center text-[12.5px] font-semibold text-[var(--muted-fg)]"
-          style={{ background: 'var(--hairline-soft)' }}
+          className="press flex-1 whitespace-nowrap rounded-[7px] px-2.5 py-1.5 text-center t-caption-1 font-medium text-[var(--label-2)]"
+          style={{ background: 'var(--fill-4)' }}
         >
           Back to shop
         </Link>
@@ -157,12 +173,12 @@ export function ConsoleShell({
     <div className="flex min-h-dvh">
       {/* ── Sidebar (desktop) ──────────────────────────────────────────── */}
       <aside
-        className="glass-chrome sticky top-0 hidden h-dvh w-64 shrink-0 flex-col gap-6 border-r p-4 lg:flex"
-        style={{ borderColor: 'var(--hairline-soft)' }}
+        className="glass-chrome sticky top-0 hidden h-dvh w-[232px] shrink-0 flex-col gap-4 border-r p-3 lg:flex"
+        style={{ borderColor: 'var(--separator-soft)' }}
       >
-        <Link href="/admin" className="press px-2 pt-2">
+        <Link href="/admin" className="press px-2 pb-1 pt-3">
           <Wordmark compact />
-          <p className="mt-1 text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[var(--faint-fg)]">
+          <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--label-3)]">
             Console
           </p>
         </Link>
@@ -210,21 +226,21 @@ export function ConsoleShell({
         {/* ── Mobile top bar ───────────────────────────────────────────── */}
         <header
           className="glass-chrome sticky top-0 z-30 flex items-center gap-3 border-b px-4 py-3 pt-[max(0.75rem,env(safe-area-inset-top))] lg:hidden"
-          style={{ borderColor: 'var(--hairline-soft)' }}
+          style={{ borderColor: 'var(--separator-soft)' }}
         >
           <button
             onClick={() => setDrawerOpen(true)}
             className="press grid h-10 w-10 place-items-center rounded-xl"
-            style={{ background: 'var(--hairline-soft)' }}
+            style={{ background: 'var(--separator-soft)' }}
             aria-label="Open menu"
           >
             <Icon.Menu size={19} />
           </button>
           <div className="min-w-0 flex-1">
-            <p className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-[var(--faint-fg)]">
+            <p className="t-caption-2 font-semibold uppercase tracking-[0.16em] text-[var(--label-3)]">
               Console
             </p>
-            <p className="truncate text-[15px] font-semibold">
+            <p className="truncate t-subhead font-semibold">
               {items.find((i) =>
                 i.href === '/admin' ? pathname === '/admin' : pathname.startsWith(i.href),
               )?.label ?? 'Console'}
@@ -233,7 +249,7 @@ export function ConsoleShell({
           {pendingCount > 0 && (
             <Link
               href="/admin/verify"
-              className="press rounded-full px-3 py-1.5 text-[12px] font-bold tabular"
+              className="press rounded-full px-3 py-1.5 t-caption-1 font-bold tabular"
               style={{ background: 'var(--warn-bg)', color: 'var(--warn)' }}
             >
               {pendingCount} to verify
@@ -241,7 +257,7 @@ export function ConsoleShell({
           )}
         </header>
 
-        <main className="min-w-0 flex-1 px-4 pb-16 pt-5 sm:px-6 lg:px-8 lg:pt-8">{children}</main>
+        <main className="min-w-0 flex-1 px-4 pb-16 pt-4 sm:px-6 lg:px-8 lg:pt-6">{children}</main>
       </div>
     </div>
   )

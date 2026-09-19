@@ -31,16 +31,28 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
   const [customName, setCustomName] = useState('')
   const [quantity, setQuantity] = useState(1)
   const [added, setAdded] = useState(false)
+  const [needsSizePrompt, setNeedsSizePrompt] = useState(false)
 
   const variant = product.variants[variantIndex]
   const images = variant?.imageUrls?.length ? variant.imageUrls : []
   const needsSize = product.availableSizes.length > 0
-  const canAdd = product.available && (!needsSize || !!size)
+
+  // Only a closed drop disables the buttons. A missing size leaves them
+  // active and says what is needed on tap — a greyed-out control with no
+  // explanation reads as broken, and it is the first thing you see here.
+  const canAdd = product.available
+
+  function pickSize(next: string) {
+    setSize(next)
+    setNeedsSizePrompt(false)
+  }
 
   function addToBag(thenCheckout = false) {
     if (!product.available) return
     if (needsSize && !size) {
+      setNeedsSizePrompt(true)
       toast.error('Pick a size first.')
+      document.getElementById('size-picker')?.scrollIntoView({ block: 'center', behavior: 'smooth' })
       return
     }
 
@@ -70,7 +82,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
     <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:pt-8">
       <Link
         href="/shop"
-        className="press mb-4 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-[var(--muted-fg)]"
+        className="press mb-4 inline-flex items-center gap-1.5 t-footnote font-medium text-[var(--label-2)]"
       >
         <Icon.ChevronLeft size={16} />
         All drops
@@ -82,7 +94,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
           <Glass className="overflow-hidden p-2">
             <div
               className="relative aspect-square w-full overflow-hidden rounded-[1.1rem]"
-              style={{ background: 'var(--hairline-soft)' }}
+              style={{ background: 'var(--separator-soft)' }}
             >
               <AnimatePresence mode="wait">
                 {images[imageIndex] ? (
@@ -104,7 +116,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                     />
                   </motion.div>
                 ) : (
-                  <div className="grid h-full place-items-center text-[var(--faint-fg)]">
+                  <div className="grid h-full place-items-center text-[var(--label-3)]">
                     <Icon.Box size={32} />
                   </div>
                 )}
@@ -125,8 +137,8 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                   style={{
                     boxShadow:
                       i === imageIndex
-                        ? '0 0 0 2px var(--page-bg), 0 0 0 3.5px var(--accent)'
-                        : 'inset 0 0 0 1px var(--hairline)',
+                        ? '0 0 0 2px var(--page-bg), 0 0 0 3.5px var(--tint)'
+                        : 'inset 0 0 0 1px var(--separator)',
                   }}
                   aria-label={`View photo ${i + 1}`}
                 >
@@ -155,7 +167,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
           <p className="mt-3 text-[26px] font-semibold tabular">{money(product.price)}</p>
 
           {product.description && (
-            <p className="mt-4 max-w-prose whitespace-pre-line text-[15px] leading-relaxed text-[var(--muted-fg)]">
+            <p className="mt-4 max-w-prose whitespace-pre-line t-subhead leading-relaxed text-[var(--label-2)]">
               {product.description}
             </p>
           )}
@@ -163,10 +175,10 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
           {product.variants.length > 0 && (
             <section className="mt-8">
               <div className="flex items-baseline justify-between">
-                <h2 className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[var(--faint-fg)]">
+                <h2 className="t-footnote font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
                   Colour
                 </h2>
-                <span className="text-[13.5px] font-medium">{variant?.color}</span>
+                <span className="t-footnote font-medium">{variant?.color}</span>
               </div>
               <div className="mt-3 flex flex-wrap gap-2.5">
                 {product.variants.map((v, i) => (
@@ -183,8 +195,9 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                       background: swatch(v.color),
                       boxShadow:
                         i === variantIndex
-                          ? '0 0 0 2px var(--page-bg), 0 0 0 4px var(--accent)'
-                          : 'inset 0 0 0 1px var(--hairline)',
+                          ? '0 0 0 2px var(--page-bg), 0 0 0 4px var(--tint)'
+                          : 'inset 0 0 0 1px var(--separator)',
+                      transform: i === variantIndex ? 'scale(1.06)' : undefined,
                     }}
                   />
                 ))}
@@ -193,21 +206,38 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
           )}
 
           {needsSize && (
-            <section className="mt-7">
-              <h2 className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[var(--faint-fg)]">
-                Size
-              </h2>
+            <section className="mt-7 scroll-mt-24" id="size-picker">
+              <div className="flex items-baseline justify-between">
+                <h2 className="t-footnote font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
+                  Size
+                </h2>
+                {needsSizePrompt && !size && (
+                  <span className="t-footnote font-medium text-[var(--danger)]">
+                    Choose one to continue
+                  </span>
+                )}
+              </div>
               <div className="mt-3 flex flex-wrap gap-2">
                 {product.availableSizes.map((s) => (
                   <button
                     key={s}
-                    onClick={() => setSize(s)}
+                    onClick={() => pickSize(s)}
                     aria-pressed={size === s}
                     className={cn(
-                      'press min-w-14 rounded-xl px-4 py-2.5 text-[14px] font-semibold transition-colors',
-                      size === s ? 'text-[var(--accent-contrast)]' : 'glass text-[var(--page-fg)]',
+                      'press min-w-[52px] rounded-[12px] px-4 py-2.5 t-subhead font-semibold transition-all',
+                      size === s ? 'text-[var(--tint-contrast)]' : 'text-[var(--label)]',
                     )}
-                    style={size === s ? { background: 'var(--accent-solid)' } : undefined}
+                    style={
+                      size === s
+                        ? { background: 'var(--tint-solid)' }
+                        : {
+                            background: 'var(--fill-4)',
+                            boxShadow:
+                              needsSizePrompt && !size
+                                ? 'inset 0 0 0 1.5px var(--danger)'
+                                : undefined,
+                          }
+                    }
                   >
                     {s}
                   </button>
@@ -220,7 +250,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
             <section className="mt-7">
               <label
                 htmlFor="custom-name"
-                className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[var(--faint-fg)]"
+                className="t-footnote font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]"
               >
                 Name on the back
               </label>
@@ -230,36 +260,41 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                 onChange={(e) => setCustomName(e.target.value.slice(0, 16))}
                 placeholder="Optional — up to 16 characters"
                 maxLength={16}
-                className="mt-3 h-12 w-full rounded-2xl border px-4 text-[15px] uppercase tracking-wide outline-none transition-shadow focus:border-[var(--accent)] focus:shadow-[0_0_0_4px_var(--accent-glow)]"
-                style={{ background: 'var(--field-bg)', borderColor: 'var(--field-border)' }}
+                className="custom-name mt-3 h-[44px] w-full rounded-[12px] border-0 px-4 t-body uppercase tracking-wide outline-none transition-shadow focus:shadow-[0_0_0_3.5px_var(--tint-glow)]"
+                style={{ background: 'var(--field-bg)' }}
               />
-              <p className="mt-1.5 text-[12.5px] text-[var(--faint-fg)]">
+              <p className="mt-1.5 px-1 t-caption-1 text-[var(--label-3)]">
                 Printed exactly as typed. {16 - customName.length} characters left.
               </p>
             </section>
           )}
 
           <section className="mt-7 flex items-center gap-4">
-            <h2 className="text-[13px] font-semibold uppercase tracking-[0.12em] text-[var(--faint-fg)]">
+            <h2 className="t-footnote font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
               Quantity
             </h2>
-            <div className="glass inline-flex items-center gap-1 rounded-full p-1">
+            <div
+              className="inline-flex items-center rounded-[9px] p-[2px]"
+              style={{ background: 'var(--fill-3)' }}
+            >
               <button
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 disabled={quantity <= 1}
-                className="press grid h-9 w-9 place-items-center rounded-full disabled:opacity-35"
+                className="press grid h-[30px] w-[38px] place-items-center rounded-[7px] disabled:opacity-30"
+                style={{ background: 'var(--segment-thumb)' }}
                 aria-label="Reduce quantity"
               >
-                <Icon.Minus size={16} />
+                <Icon.Minus size={15} strokeWidth={2.2} />
               </button>
-              <span className="w-8 text-center text-[15px] font-semibold tabular">{quantity}</span>
+              <span className="w-10 text-center t-subhead font-semibold tabular">{quantity}</span>
               <button
                 onClick={() => setQuantity((q) => Math.min(20, q + 1))}
                 disabled={quantity >= 20}
-                className="press grid h-9 w-9 place-items-center rounded-full disabled:opacity-35"
+                className="press grid h-[30px] w-[38px] place-items-center rounded-[7px] disabled:opacity-30"
+                style={{ background: 'var(--segment-thumb)' }}
                 aria-label="Increase quantity"
               >
-                <Icon.Plus size={16} />
+                <Icon.Plus size={15} strokeWidth={2.2} />
               </button>
             </div>
           </section>
@@ -275,11 +310,11 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
           </div>
 
           <Glass tone="faint" className="mt-8 flex gap-3 p-4">
-            <span className="mt-0.5 shrink-0 text-[var(--accent)]">
+            <span className="mt-0.5 shrink-0 text-[var(--tint)]">
               <Icon.Wallet size={18} />
             </span>
-            <p className="text-[13.5px] leading-relaxed text-[var(--muted-fg)]">
-              <span className="font-semibold text-[var(--page-fg)]">How payment works.</span> MASCOM
+            <p className="t-footnote leading-relaxed text-[var(--label-2)]">
+              <span className="font-semibold text-[var(--label)]">How payment works.</span> MASCOM
               has no payment gateway, so you pay a coordinator directly over UPI. At checkout you
               pick who you are paying, scan their QR, and upload the screenshot. That coordinator
               confirms it and your order is locked in.
@@ -292,8 +327,8 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
       <div className="fixed inset-x-0 bottom-0 z-30 px-3 pb-[calc(5.2rem+env(safe-area-inset-bottom))] lg:hidden">
         <Glass lifted className="glass-bar flex items-center gap-3 rounded-[1.4rem] p-2.5">
           <div className="min-w-0 pl-1.5">
-            <p className="text-[11px] font-medium text-[var(--faint-fg)]">Total</p>
-            <p className="text-[17px] font-semibold tabular">{money(product.price * quantity)}</p>
+            <p className="text-[11px] font-medium text-[var(--label-3)]">Total</p>
+            <p className="t-body font-semibold tabular">{money(product.price * quantity)}</p>
           </div>
           <Button
             className="ml-auto"

@@ -80,7 +80,7 @@ export function OrderDetail({
     <div className="mx-auto max-w-3xl px-4 pt-4 sm:px-6">
       <Link
         href="/orders"
-        className="press mb-4 inline-flex items-center gap-1.5 text-[13.5px] font-medium text-[var(--muted-fg)]"
+        className="press mb-4 inline-flex items-center gap-1.5 t-footnote font-medium text-[var(--label-2)]"
       >
         <Icon.ChevronLeft size={16} />
         All orders
@@ -101,8 +101,8 @@ export function OrderDetail({
               <Icon.CheckCircle size={22} />
             </span>
             <div>
-              <p className="text-[15px] font-semibold">Order placed</p>
-              <p className="mt-0.5 text-[13px] text-[var(--muted-fg)]">
+              <p className="t-subhead font-semibold">Order placed</p>
+              <p className="mt-0.5 t-footnote text-[var(--label-2)]">
                 {order.paidTo ?? 'The coordinator'} will verify your payment shortly. You will see
                 it update right here.
               </p>
@@ -117,7 +117,7 @@ export function OrderDetail({
           <h1 className="display mt-1.5 font-mono text-[clamp(1.8rem,5.5vw,2.4rem)]">
             {order.orderId}
           </h1>
-          <p className="mt-1.5 text-[13px] text-[var(--faint-fg)]">
+          <p className="mt-1.5 t-footnote text-[var(--label-3)]">
             Placed <DateTime value={order.createdAt} />
           </p>
         </div>
@@ -140,8 +140,8 @@ export function OrderDetail({
               <Icon.Alert size={20} />
             </span>
             <div>
-              <p className="text-[15px] font-semibold">Payment could not be verified</p>
-              <p className="mt-1 text-[13.5px] leading-relaxed text-[var(--muted-fg)]">
+              <p className="t-subhead font-semibold">Payment could not be verified</p>
+              <p className="mt-1 t-footnote leading-relaxed text-[var(--label-2)]">
                 {order.verificationNotes ??
                   `${order.paidTo ?? 'The coordinator'} could not match this payment in their UPI history. Reach out to them directly with your reference number.`}
               </p>
@@ -157,34 +157,34 @@ export function OrderDetail({
                   {i < JOURNEY.length - 1 && (
                     <span
                       className="absolute left-[13px] top-7 h-[calc(100%+0.5rem)] w-0.5 rounded"
-                      style={{ background: i < stage ? 'var(--accent)' : 'var(--hairline)' }}
+                      style={{ background: i < stage ? 'var(--tint)' : 'var(--separator)' }}
                       aria-hidden
                     />
                   )}
                   <span
                     className="relative z-10 grid h-7 w-7 shrink-0 place-items-center rounded-full"
                     style={{
-                      background: done ? 'var(--accent-solid)' : 'var(--hairline-soft)',
-                      color: done ? 'var(--accent-contrast)' : 'var(--faint-fg)',
+                      background: done ? 'var(--tint-solid)' : 'var(--separator-soft)',
+                      color: done ? 'var(--tint-contrast)' : 'var(--label-3)',
                     }}
                   >
                     {done ? <Icon.Check size={14} strokeWidth={3} /> : <span className="h-1.5 w-1.5 rounded-full bg-current" />}
                   </span>
                   <div className="pb-0.5">
                     <p
-                      className={`text-[14.5px] font-semibold ${current ? '' : done ? '' : 'text-[var(--faint-fg)]'}`}
+                      className={`t-subhead font-semibold ${current ? '' : done ? '' : 'text-[var(--label-3)]'}`}
                     >
                       {phase.label}
                       {current && (
                         <span
-                          className="ml-2 rounded-full px-2 py-0.5 text-[10.5px] font-bold uppercase tracking-wide"
-                          style={{ background: 'var(--accent-glow)', color: 'var(--accent)' }}
+                          className="ml-2 rounded-full px-2 py-0.5 t-caption-2 font-bold uppercase tracking-wide"
+                          style={{ background: 'var(--tint-glow)', color: 'var(--tint)' }}
                         >
                           Now
                         </span>
                       )}
                     </p>
-                    <p className="mt-0.5 text-[13px] leading-relaxed text-[var(--muted-fg)]">
+                    <p className="mt-0.5 t-footnote leading-relaxed text-[var(--label-2)]">
                       {phase.note}
                     </p>
                   </div>
@@ -196,7 +196,7 @@ export function OrderDetail({
       </Glass>
 
       {/* ── Items ────────────────────────────────────────────────────────── */}
-      <h2 className="mb-3 mt-6 text-[13px] font-semibold uppercase tracking-[0.12em] text-[var(--faint-fg)]">
+      <h2 className="mb-3 mt-6 t-footnote font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
         Items
       </h2>
       <ul className="space-y-2.5">
@@ -207,29 +207,29 @@ export function OrderDetail({
               <Glass className="flex items-center gap-3.5 p-3">
                 <span
                   className="relative h-16 w-14 shrink-0 overflow-hidden rounded-lg"
-                  style={{ background: 'var(--hairline-soft)' }}
+                  style={{ background: 'var(--separator-soft)' }}
                 >
                   {image ? (
                     <Image src={image} alt="" fill sizes="56px" className="object-cover" />
                   ) : (
-                    <span className="grid h-full place-items-center text-[var(--faint-fg)]">
+                    <span className="grid h-full place-items-center text-[var(--label-3)]">
                       <Icon.Box size={18} />
                     </span>
                   )}
                 </span>
 
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-[14.5px] font-semibold">
+                  <p className="truncate t-subhead font-semibold">
                     {item.productSnapshot?.name ?? 'Item'}
                   </p>
-                  <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-[12.5px] text-[var(--muted-fg)]">
+                  <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 t-caption-1 text-[var(--label-2)]">
                     {item.variant?.color && (
                       <span className="inline-flex items-center gap-1.5">
                         <span
                           className="h-2.5 w-2.5 rounded-full"
                           style={{
                             background: swatch(item.variant.color),
-                            boxShadow: 'inset 0 0 0 1px var(--hairline)',
+                            boxShadow: 'inset 0 0 0 1px var(--separator)',
                           }}
                         />
                         {item.variant.color}
@@ -238,7 +238,7 @@ export function OrderDetail({
                     {item.variant?.size && <span>Size {item.variant.size}</span>}
                     <span>Qty {item.quantity}</span>
                     {item.customName && (
-                      <span className="font-medium" style={{ color: 'var(--accent)' }}>
+                      <span className="font-medium" style={{ color: 'var(--tint)' }}>
                         “{item.customName}”
                       </span>
                     )}
@@ -251,7 +251,7 @@ export function OrderDetail({
                   </div>
                 </div>
 
-                <p className="shrink-0 text-[14.5px] font-semibold tabular">
+                <p className="shrink-0 t-subhead font-semibold tabular">
                   {money(item.unitPrice * item.quantity)}
                 </p>
               </Glass>
@@ -261,11 +261,11 @@ export function OrderDetail({
       </ul>
 
       {/* ── Payment ──────────────────────────────────────────────────────── */}
-      <h2 className="mb-3 mt-6 text-[13px] font-semibold uppercase tracking-[0.12em] text-[var(--faint-fg)]">
+      <h2 className="mb-3 mt-6 t-footnote font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
         Payment
       </h2>
       <Glass className="p-5">
-        <dl className="space-y-2.5 text-[14px]">
+        <dl className="space-y-2.5 t-subhead">
           <Row label="Subtotal" value={money(order.totalAmount)} />
           {order.discountAmount > 0 && (
             <Row
@@ -274,8 +274,8 @@ export function OrderDetail({
             />
           )}
           <div
-            className="flex items-baseline justify-between border-t pt-3 text-[17px] font-semibold"
-            style={{ borderColor: 'var(--hairline-soft)' }}
+            className="flex items-baseline justify-between border-t pt-3 t-body font-semibold"
+            style={{ borderColor: 'var(--separator-soft)' }}
           >
             <dt>Paid</dt>
             <dd className="tabular">{money(order.finalAmountPaid)}</dd>
@@ -284,8 +284,8 @@ export function OrderDetail({
 
         {(recipient || order.paidTo) && (
           <div
-            className="mt-4 space-y-2.5 border-t pt-4 text-[13.5px]"
-            style={{ borderColor: 'var(--hairline-soft)' }}
+            className="mt-4 space-y-2.5 border-t pt-4 t-footnote"
+            style={{ borderColor: 'var(--separator-soft)' }}
           >
             <Row label="Paid to" value={recipient?.name ?? order.paidTo ?? '—'} />
             {recipient?.upiId && <Row label="UPI ID" value={recipient.upiId} mono />}
@@ -305,12 +305,12 @@ export function OrderDetail({
           >
             <span
               className="grid h-9 w-9 shrink-0 place-items-center rounded-lg"
-              style={{ background: 'var(--hairline-soft)' }}
+              style={{ background: 'var(--separator-soft)' }}
             >
               <Icon.Camera size={17} />
             </span>
-            <span className="flex-1 text-[13.5px] font-medium">View your payment screenshot</span>
-            <Icon.Chevron size={16} className="text-[var(--faint-fg)]" />
+            <span className="flex-1 t-footnote font-medium">View your payment screenshot</span>
+            <Icon.Chevron size={16} className="text-[var(--label-3)]" />
           </button>
         )}
       </Glass>
@@ -342,8 +342,8 @@ function Row({
 }) {
   return (
     <div className="flex items-baseline justify-between gap-4">
-      <dt className="shrink-0 text-[var(--muted-fg)]">{label}</dt>
-      <dd className={`min-w-0 truncate text-right font-medium ${mono ? 'font-mono text-[13px]' : 'tabular'}`}>
+      <dt className="shrink-0 text-[var(--label-2)]">{label}</dt>
+      <dd className={`min-w-0 truncate text-right font-medium ${mono ? 'font-mono t-footnote' : 'tabular'}`}>
         {node ?? value}
       </dd>
     </div>

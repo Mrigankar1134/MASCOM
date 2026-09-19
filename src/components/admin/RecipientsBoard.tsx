@@ -15,6 +15,7 @@ import { useToast } from '@/components/ui/Toast'
 import { api, ApiError } from '@/lib/client/api'
 import { compressImage } from '@/lib/client/compress'
 import { money } from '@/lib/format'
+import { ConsoleHeader } from './ConsoleHeader'
 
 export type RecipientRow = {
   _id: string
@@ -52,20 +53,17 @@ export function RecipientsBoard({
 
   return (
     <div className="mx-auto max-w-[1600px]">
-      <header className="mb-5 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="display text-[clamp(1.8rem,4vw,2.5rem)]">Collections</h1>
-          <p className="mt-2 max-w-xl text-[14.5px] leading-relaxed text-[var(--muted-fg)]">
-            The coordinators students can pay. Each one verifies the payments sent to them, so
-            whoever is on this list needs a linked account.
-          </p>
-        </div>
-        {canEdit && (
-          <Button onClick={() => setEditing('new')} icon={<Icon.Plus size={17} />}>
-            Add recipient
-          </Button>
-        )}
-      </header>
+      <ConsoleHeader
+        title="Collections"
+        subtitle="The coordinators students can pay. Each one verifies the payments sent to them, so whoever is on this list needs a linked account."
+        actions={
+          canEdit ? (
+            <Button size="sm" onClick={() => setEditing('new')} icon={<Icon.Plus size={15} />}>
+              Add recipient
+            </Button>
+          ) : undefined
+        }
+      />
 
       <div className="mb-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Tile label="Collected" value={money(grandTotal)} />
@@ -97,13 +95,13 @@ export function RecipientsBoard({
                 <Avatar name={recipient.name} size={44} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <p className="truncate text-[15px] font-semibold">{recipient.name}</p>
+                    <p className="truncate t-subhead font-semibold">{recipient.name}</p>
                     {!recipient.isActive && <Badge tone="neutral">Inactive</Badge>}
                   </div>
-                  <p className="truncate font-mono text-[12px] text-[var(--muted-fg)]">
+                  <p className="truncate font-mono t-caption-1 text-[var(--label-2)]">
                     {recipient.upiId}
                   </p>
-                  <p className="truncate text-[12px] text-[var(--faint-fg)]">
+                  <p className="truncate t-caption-1 text-[var(--label-3)]">
                     {typeof recipient.userId === 'object'
                       ? `Verifies as ${recipient.userId?.name ?? recipient.userId?.email}`
                       : 'No linked account'}
@@ -128,29 +126,29 @@ export function RecipientsBoard({
 
               <dl
                 className="mt-4 grid grid-cols-3 gap-2 border-t pt-3 text-center"
-                style={{ borderColor: 'var(--hairline-soft)' }}
+                style={{ borderColor: 'var(--separator-soft)' }}
               >
                 <div>
-                  <dt className="text-[10.5px] uppercase tracking-wide text-[var(--faint-fg)]">
+                  <dt className="t-caption-2 uppercase tracking-wide text-[var(--label-3)]">
                     Collected
                   </dt>
-                  <dd className="mt-0.5 text-[14px] font-semibold tabular" style={{ color: 'var(--ok)' }}>
+                  <dd className="mt-0.5 t-subhead font-semibold tabular" style={{ color: 'var(--ok)' }}>
                     {money(recipient.totals.collected)}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-[10.5px] uppercase tracking-wide text-[var(--faint-fg)]">
+                  <dt className="t-caption-2 uppercase tracking-wide text-[var(--label-3)]">
                     Pending
                   </dt>
-                  <dd className="mt-0.5 text-[14px] font-semibold tabular" style={{ color: 'var(--warn)' }}>
+                  <dd className="mt-0.5 t-subhead font-semibold tabular" style={{ color: 'var(--warn)' }}>
                     {recipient.totals.pending}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-[10.5px] uppercase tracking-wide text-[var(--faint-fg)]">
+                  <dt className="t-caption-2 uppercase tracking-wide text-[var(--label-3)]">
                     Rejected
                   </dt>
-                  <dd className="mt-0.5 text-[14px] font-semibold tabular">
+                  <dd className="mt-0.5 t-subhead font-semibold tabular">
                     {recipient.totals.failed}
                   </dd>
                 </div>
@@ -159,7 +157,7 @@ export function RecipientsBoard({
               {canEdit && (
                 <button
                   onClick={() => setEditing(recipient)}
-                  className="press glass mt-3 w-full rounded-xl py-2 text-[13px] font-semibold"
+                  className="press glass mt-3 w-full rounded-xl py-2 t-footnote font-semibold"
                 >
                   Edit
                 </button>
@@ -183,7 +181,7 @@ export function RecipientsBoard({
 function Tile({ label, value, tone }: { label: string; value: string; tone?: 'warn' }) {
   return (
     <Glass className="p-4">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--faint-fg)]">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
         {label}
       </p>
       <p
@@ -359,7 +357,7 @@ function RecipientEditor({
         />
 
         <div>
-          <p className="mb-1.5 text-[13px] font-medium text-[var(--muted-fg)]">Payment QR</p>
+          <p className="mb-1.5 t-footnote font-medium text-[var(--label-2)]">Payment QR</p>
           <input
             ref={fileRef}
             type="file"
@@ -374,21 +372,21 @@ function RecipientEditor({
           >
             <span
               className="relative grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl"
-              style={{ background: qrCodeUrl ? '#fff' : 'var(--hairline-soft)' }}
+              style={{ background: qrCodeUrl ? '#fff' : 'var(--separator-soft)' }}
             >
               {uploading ? (
                 <Spinner />
               ) : qrCodeUrl ? (
                 <Image src={qrCodeUrl} alt="" fill unoptimized sizes="80px" className="object-contain p-1" />
               ) : (
-                <Icon.QR size={24} className="text-[var(--faint-fg)]" />
+                <Icon.QR size={24} className="text-[var(--label-3)]" />
               )}
             </span>
             <span className="min-w-0">
-              <span className="block text-[13.5px] font-semibold">
+              <span className="block t-footnote font-semibold">
                 {qrCodeUrl ? 'Replace QR image' : 'Upload their UPI QR'}
               </span>
-              <span className="mt-0.5 block text-[12px] leading-relaxed text-[var(--muted-fg)]">
+              <span className="mt-0.5 block t-caption-1 leading-relaxed text-[var(--label-2)]">
                 A screenshot of their GPay / PhonePe QR. Students can fall back to this if the
                 generated one does not scan.
               </span>
@@ -401,11 +399,11 @@ function RecipientEditor({
             type="checkbox"
             name="isActive"
             defaultChecked={recipient?.isActive ?? true}
-            className="h-5 w-5 accent-[var(--accent)]"
+            className="h-5 w-5 accent-[var(--tint)]"
           />
-          <span className="text-[13.5px]">
+          <span className="t-footnote">
             <span className="font-semibold">Available at checkout</span>
-            <span className="mt-0.5 block text-[12.5px] text-[var(--muted-fg)]">
+            <span className="mt-0.5 block t-caption-1 text-[var(--label-2)]">
               Turn off to stop new payments without touching past orders.
             </span>
           </span>

@@ -1,19 +1,27 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter/index.css";
 
 /* ════════════════════════════════════════════════════════════════════════
-   MASCOM · Liquid Glass Design System
-   Adaptive light/dark. Mobile-first surfaces, desktop-dense admin.
+   MASCOM — built on Apple's Human Interface foundations.
+
+   The pieces that actually make an interface read as Apple, in order of
+   how much they matter: the type ramp, the label/fill hierarchy, control
+   metrics on a 4pt grid, continuous (squircle) corners, the material
+   tiers, and spring motion. Brand gold is layered on top as the tint
+   colour — everything else is system.
    ════════════════════════════════════════════════════════════════════════ */
 
 @theme {
+  /* SF Pro on Apple hardware; Inter is the closest metric match elsewhere. */
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
+    "Inter Variable", Inter, "Segoe UI Variable Text", "Segoe UI", Roboto, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter Variable",
+    Inter, "Segoe UI Variable Display", "Segoe UI", Roboto, sans-serif;
+  --font-rounded: ui-rounded, "SF Pro Rounded", -apple-system, "Inter Variable", Inter,
+    sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
 
-  /* Brand — MASCOM gold carried over from the current site */
-  --color-gold-50: #fdf8e7;
+  /* Brand */
   --color-gold-100: #faeebd;
   --color-gold-200: #f6e08c;
   --color-gold-300: #f2d05a;
@@ -21,23 +29,16 @@
   --color-gold-500: #e0aa0f;
   --color-gold-600: #b8850a;
   --color-gold-700: #8d6408;
-  --color-gold-800: #64460a;
-  --color-gold-900: #3d2b07;
 
-  --color-ink-50: #f6f6f8;
-  --color-ink-100: #ebebf0;
-  --color-ink-200: #d6d7e0;
-  --color-ink-300: #b0b2c3;
-  --color-ink-400: #7e8198;
-  --color-ink-500: #5a5d72;
-  --color-ink-600: #434659;
-  --color-ink-700: #303243;
-  --color-ink-800: #1e1f2c;
-  --color-ink-900: #121320;
-  --color-ink-950: #08080f;
-
-  --radius-glass: 1.5rem;
-  --radius-sheet: 2rem;
+  /* Corner radii — iOS continuous curvature steps */
+  --radius-xs: 0.5rem;     /*  8pt — small chips           */
+  --radius-sm: 0.625rem;   /* 10pt — inline controls       */
+  --radius-md: 0.875rem;   /* 14pt — buttons, fields       */
+  --radius-lg: 1.125rem;   /* 18pt — cards                 */
+  --radius-xl: 1.375rem;   /* 22pt — grouped list sections */
+  --radius-2xl: 1.625rem;  /* 26pt — large cards           */
+  --radius-sheet: 2.5rem;  /* 40pt — sheets                */
+  --radius-glass: 1.375rem;
 
   --ease-glass: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -45,155 +46,228 @@
   --breakpoint-xs: 26rem;
 }
 
-/* ─── Adaptive tokens ─────────────────────────────────────────────────── */
+/* ─── Type ramp ───────────────────────────────────────────────────────────
+   Apple's scale, in rem so it still responds to the reader's font size.
+   Larger sizes tighten tracking, smaller sizes loosen it — that contrast
+   is most of what makes type read as native. */
+
+@layer components {
+  .t-large-title { font-family: var(--font-display); font-size: 2.125rem; line-height: 2.5625rem; letter-spacing: -0.026em; font-weight: 700; }
+  .t-title-1     { font-family: var(--font-display); font-size: 1.75rem;  line-height: 2.125rem;  letter-spacing: -0.024em; font-weight: 700; }
+  .t-title-2     { font-family: var(--font-display); font-size: 1.375rem; line-height: 1.75rem;   letter-spacing: -0.022em; font-weight: 700; }
+  .t-title-3     { font-family: var(--font-display); font-size: 1.25rem;  line-height: 1.5625rem; letter-spacing: -0.019em; font-weight: 600; }
+  .t-headline    { font-size: 1.0625rem; line-height: 1.375rem;  letter-spacing: -0.024em; font-weight: 600; }
+  .t-body        { font-size: 1.0625rem; line-height: 1.375rem;  letter-spacing: -0.024em; font-weight: 400; }
+  .t-callout     { font-size: 1rem;      line-height: 1.3125rem; letter-spacing: -0.020em; font-weight: 400; }
+  .t-subhead     { font-size: 0.9375rem; line-height: 1.25rem;   letter-spacing: -0.016em; font-weight: 400; }
+  .t-footnote    { font-size: 0.8125rem; line-height: 1.125rem;  letter-spacing: -0.006em; font-weight: 400; }
+  .t-caption-1   { font-size: 0.75rem;   line-height: 1rem;      letter-spacing: 0;        font-weight: 400; }
+  .t-caption-2   { font-size: 0.6875rem; line-height: 0.8125rem; letter-spacing: 0.006em;  font-weight: 400; }
+
+  /* Grouped-list section headers: uppercase footnote, tertiary label. */
+  .t-section-header {
+    font-size: 0.8125rem;
+    line-height: 1.125rem;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--label-3);
+  }
+
+  .tabular { font-variant-numeric: tabular-nums; }
+  .display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.032em; line-height: 0.96; }
+  .eyebrow { font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--label-3); }
+}
+
+/* ─── Semantic colour ─────────────────────────────────────────────────────
+   Apple layers content with four label levels and four fill levels rather
+   than inventing a new grey per component. */
 
 :root {
   color-scheme: light;
 
-  --page-bg: #f2f3f7;
-  --page-fg: #0d0e15;
-  --muted-fg: #5a5d72;
-  --faint-fg: #85889c;
+  --page-bg: #f2f2f7;            /* systemGroupedBackground  */
+  --surface: #ffffff;            /* secondarySystemGrouped   */
+  --surface-2: #f2f2f7;
 
-  /* Glass recipe: tint + border + specular highlight + cast shadow */
-  --glass-tint: rgba(255, 255, 255, 0.62);
-  --glass-tint-strong: rgba(255, 255, 255, 0.82);
-  --glass-tint-faint: rgba(255, 255, 255, 0.38);
-  --glass-border: rgba(255, 255, 255, 0.85);
-  --glass-edge: rgba(14, 15, 26, 0.08);
-  --glass-specular: rgba(255, 255, 255, 0.95);
-  --glass-shadow: 0 1px 1px rgba(13, 14, 21, 0.03), 0 8px 24px -8px rgba(13, 14, 21, 0.14),
-    0 24px 56px -24px rgba(13, 14, 21, 0.18);
-  --glass-shadow-lifted: 0 2px 2px rgba(13, 14, 21, 0.04),
-    0 18px 40px -12px rgba(13, 14, 21, 0.2), 0 48px 88px -32px rgba(13, 14, 21, 0.26);
-  --glass-blur: 28px;
-  --glass-saturate: 180%;
+  --label:   rgba(0, 0, 0, 0.92);
+  --label-2: rgba(60, 60, 67, 0.62);
+  --label-3: rgba(60, 60, 67, 0.42);
+  --label-4: rgba(60, 60, 67, 0.26);
 
-  --hairline: rgba(13, 14, 21, 0.1);
-  --hairline-soft: rgba(13, 14, 21, 0.06);
-  --field-bg: rgba(255, 255, 255, 0.7);
-  --field-border: rgba(13, 14, 21, 0.12);
+  --fill:   rgba(120, 120, 128, 0.20);
+  --fill-2: rgba(120, 120, 128, 0.16);
+  --fill-3: rgba(118, 118, 128, 0.12);
+  --fill-4: rgba(116, 116, 128, 0.08);
 
-  /* --accent is the readable ink/mark colour on the page background.
-     --accent-solid is the fill behind --accent-contrast text. In light mode
-     they differ: a dark gold reads well as text but fails behind dark text. */
-  --accent: #96690a;
-  --accent-solid: #f0c53a;
-  --accent-contrast: #211703;
-  --accent-glow: rgba(224, 170, 15, 0.3);
+  --separator: rgba(60, 60, 67, 0.18);
+  --separator-soft: rgba(60, 60, 67, 0.09);
 
-  --ok: #0f7a46;
-  --ok-bg: rgba(16, 150, 87, 0.12);
-  --warn: #a35a00;
-  --warn-bg: rgba(214, 138, 10, 0.14);
-  --danger: #b3261e;
-  --danger-bg: rgba(200, 45, 36, 0.12);
-  --info: #0a5ec9;
-  --info-bg: rgba(14, 108, 222, 0.12);
+  /* Back-compat aliases used across the app */
+  --page-fg: var(--label);
+  --muted-fg: var(--label-2);
+  --faint-fg: var(--label-3);
+  --hairline: var(--separator);
+  --hairline-soft: var(--separator-soft);
+  --field-bg: rgba(118, 118, 128, 0.10);
+  --field-border: transparent;
 
-  /* Ambient colour wash behind the glass */
-  --aurora-1: rgba(239, 194, 51, 0.26);
-  --aurora-2: rgba(120, 150, 255, 0.22);
-  --aurora-3: rgba(255, 140, 190, 0.16);
+  /* Materials */
+  --mat-tint: rgba(255, 255, 255, 0.68);
+  --mat-tint-thick: rgba(255, 255, 255, 0.84);
+  --mat-tint-thin: rgba(255, 255, 255, 0.52);
+  --mat-blur: 34px;
+  --mat-saturate: 180%;
+  --specular: rgba(255, 255, 255, 0.98);
+  --glass-edge: rgba(0, 0, 0, 0.07);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.045), 0 4px 12px -4px rgba(0, 0, 0, 0.08);
+  --shadow-2: 0 1px 2px rgba(0, 0, 0, 0.05), 0 10px 28px -8px rgba(0, 0, 0, 0.14);
+  --shadow-3: 0 2px 4px rgba(0, 0, 0, 0.06), 0 22px 48px -14px rgba(0, 0, 0, 0.2);
+
+  /* Tint (brand). --tint reads as text; --tint-solid sits behind dark text. */
+  --tint: #97690b;
+  --tint-solid: #f0c53a;
+  --tint-contrast: #1f1602;
+  --tint-glow: rgba(224, 170, 15, 0.26);
+
+  --accent: var(--tint);
+  --accent-solid: var(--tint-solid);
+  --accent-contrast: var(--tint-contrast);
+  --accent-glow: var(--tint-glow);
+
+  /* System semantics */
+  --ok: #1c7a45;      --ok-bg: rgba(28, 122, 69, 0.12);
+  --warn: #9a5b00;    --warn-bg: rgba(200, 130, 10, 0.15);
+  --danger: #c0271d;  --danger-bg: rgba(192, 39, 29, 0.11);
+  --info: #0a62cf;    --info-bg: rgba(10, 98, 207, 0.11);
+
+  --aurora-1: rgba(239, 194, 51, 0.20);
+  --aurora-2: rgba(120, 150, 255, 0.18);
+  --aurora-3: rgba(255, 140, 190, 0.13);
+
+  /* Control metrics, 4pt grid */
+  --segment-track: var(--fill-3);
+  --segment-thumb: #ffffff;
+
+  --nav-h: 2.75rem;      /* 44pt */
+  --tabbar-h: 3.0625rem; /* 49pt */
+  --toolbar-h: 3.25rem;  /* 52pt — macOS unified toolbar */
+  --row-h: 2.75rem;      /* 44pt — minimum touch target  */
 }
 
+/* Dark palette, applied by explicit choice or by system preference. */
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --page-bg: #07070c;
-  --page-fg: #f4f4f8;
-  --muted-fg: #a2a5bb;
-  --faint-fg: #75788d;
+  --page-bg: #000000;
+  --surface: #1c1c1e;
+  --surface-2: #2c2c2e;
 
-  --glass-tint: rgba(255, 255, 255, 0.07);
-  --glass-tint-strong: rgba(255, 255, 255, 0.12);
-  --glass-tint-faint: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.14);
-  --glass-edge: rgba(255, 255, 255, 0.06);
-  --glass-specular: rgba(255, 255, 255, 0.4);
-  --glass-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 10px 30px -10px rgba(0, 0, 0, 0.7),
-    0 28px 64px -28px rgba(0, 0, 0, 0.85);
-  --glass-shadow-lifted: 0 2px 4px rgba(0, 0, 0, 0.6),
-    0 20px 48px -14px rgba(0, 0, 0, 0.8), 0 56px 100px -36px rgba(0, 0, 0, 0.95);
-  --glass-blur: 30px;
-  --glass-saturate: 170%;
+  --label:   rgba(255, 255, 255, 0.96);
+  --label-2: rgba(235, 235, 245, 0.62);
+  --label-3: rgba(235, 235, 245, 0.42);
+  --label-4: rgba(235, 235, 245, 0.22);
 
-  --hairline: rgba(255, 255, 255, 0.12);
-  --hairline-soft: rgba(255, 255, 255, 0.07);
-  --field-bg: rgba(255, 255, 255, 0.06);
-  --field-border: rgba(255, 255, 255, 0.14);
+  --fill:   rgba(120, 120, 128, 0.36);
+  --fill-2: rgba(120, 120, 128, 0.32);
+  --fill-3: rgba(118, 118, 128, 0.24);
+  --fill-4: rgba(116, 116, 128, 0.18);
 
-  --accent: #efc233;
-  --accent-solid: #efc233;
-  --accent-contrast: #1a1204;
-  --accent-glow: rgba(239, 194, 51, 0.28);
+  --separator: rgba(84, 84, 88, 0.72);
+  --separator-soft: rgba(84, 84, 88, 0.4);
 
-  --ok: #4ade80;
-  --ok-bg: rgba(74, 222, 128, 0.14);
-  --warn: #fbbf24;
-  --warn-bg: rgba(251, 191, 36, 0.14);
-  --danger: #ff6b63;
-  --danger-bg: rgba(255, 107, 99, 0.14);
-  --info: #7cb0ff;
-  --info-bg: rgba(124, 176, 255, 0.14);
+  --field-bg: rgba(118, 118, 128, 0.22);
+  --field-border: transparent;
 
-  --aurora-1: rgba(224, 170, 15, 0.34);
-  --aurora-2: rgba(76, 102, 220, 0.3);
-  --aurora-3: rgba(190, 70, 140, 0.24);
+  --mat-tint: rgba(30, 30, 34, 0.72);
+  --mat-tint-thick: rgba(38, 38, 43, 0.86);
+  --mat-tint-thin: rgba(28, 28, 32, 0.54);
+  --mat-blur: 36px;
+  --mat-saturate: 165%;
+  --specular: rgba(255, 255, 255, 0.34);
+  --glass-edge: rgba(255, 255, 255, 0.1);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 4px 14px -4px rgba(0, 0, 0, 0.6);
+  --shadow-2: 0 1px 3px rgba(0, 0, 0, 0.6), 0 12px 32px -8px rgba(0, 0, 0, 0.75);
+  --shadow-3: 0 2px 6px rgba(0, 0, 0, 0.7), 0 26px 56px -16px rgba(0, 0, 0, 0.9);
+
+  --tint: #f5cf55;
+  --tint-solid: #efc233;
+  --tint-contrast: #1f1602;
+  --tint-glow: rgba(239, 194, 51, 0.24);
+
+  --segment-track: rgba(118, 118, 128, 0.24);
+  --segment-thumb: #636366;
+
+  --ok: #30d158;     --ok-bg: rgba(48, 209, 88, 0.16);
+  --warn: #ffd426;   --warn-bg: rgba(255, 212, 38, 0.15);
+  --danger: #ff5f57; --danger-bg: rgba(255, 95, 87, 0.16);
+  --info: #64a8ff;   --info-bg: rgba(100, 168, 255, 0.16);
+
+  --aurora-1: rgba(224, 170, 15, 0.26);
+  --aurora-2: rgba(76, 102, 220, 0.24);
+  --aurora-3: rgba(190, 70, 140, 0.18);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --page-bg: #07070c;
-    --page-fg: #f4f4f8;
-    --muted-fg: #a2a5bb;
-    --faint-fg: #75788d;
+    --page-bg: #000000;
+    --surface: #1c1c1e;
+    --surface-2: #2c2c2e;
 
-    --glass-tint: rgba(255, 255, 255, 0.07);
-    --glass-tint-strong: rgba(255, 255, 255, 0.12);
-    --glass-tint-faint: rgba(255, 255, 255, 0.04);
-    --glass-border: rgba(255, 255, 255, 0.14);
-    --glass-edge: rgba(255, 255, 255, 0.06);
-    --glass-specular: rgba(255, 255, 255, 0.4);
-    --glass-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 10px 30px -10px rgba(0, 0, 0, 0.7),
-      0 28px 64px -28px rgba(0, 0, 0, 0.85);
-    --glass-shadow-lifted: 0 2px 4px rgba(0, 0, 0, 0.6),
-      0 20px 48px -14px rgba(0, 0, 0, 0.8), 0 56px 100px -36px rgba(0, 0, 0, 0.95);
-    --glass-blur: 30px;
-    --glass-saturate: 170%;
+    --label:   rgba(255, 255, 255, 0.96);
+    --label-2: rgba(235, 235, 245, 0.62);
+    --label-3: rgba(235, 235, 245, 0.42);
+    --label-4: rgba(235, 235, 245, 0.22);
 
-    --hairline: rgba(255, 255, 255, 0.12);
-    --hairline-soft: rgba(255, 255, 255, 0.07);
-    --field-bg: rgba(255, 255, 255, 0.06);
-    --field-border: rgba(255, 255, 255, 0.14);
+    --fill:   rgba(120, 120, 128, 0.36);
+    --fill-2: rgba(120, 120, 128, 0.32);
+    --fill-3: rgba(118, 118, 128, 0.24);
+    --fill-4: rgba(116, 116, 128, 0.18);
 
-    --accent: #efc233;
-    --accent-solid: #efc233;
-    --accent-contrast: #1a1204;
-    --accent-glow: rgba(239, 194, 51, 0.28);
+    --separator: rgba(84, 84, 88, 0.72);
+    --separator-soft: rgba(84, 84, 88, 0.4);
 
-    --ok: #4ade80;
-    --ok-bg: rgba(74, 222, 128, 0.14);
-    --warn: #fbbf24;
-    --warn-bg: rgba(251, 191, 36, 0.14);
-    --danger: #ff6b63;
-    --danger-bg: rgba(255, 107, 99, 0.14);
-    --info: #7cb0ff;
-    --info-bg: rgba(124, 176, 255, 0.14);
+    --field-bg: rgba(118, 118, 128, 0.22);
+    --field-border: transparent;
 
-    --aurora-1: rgba(224, 170, 15, 0.34);
-    --aurora-2: rgba(76, 102, 220, 0.3);
-    --aurora-3: rgba(190, 70, 140, 0.24);
+    --mat-tint: rgba(30, 30, 34, 0.72);
+    --mat-tint-thick: rgba(38, 38, 43, 0.86);
+    --mat-tint-thin: rgba(28, 28, 32, 0.54);
+    --mat-blur: 36px;
+    --mat-saturate: 165%;
+    --specular: rgba(255, 255, 255, 0.34);
+    --glass-edge: rgba(255, 255, 255, 0.1);
+
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 4px 14px -4px rgba(0, 0, 0, 0.6);
+    --shadow-2: 0 1px 3px rgba(0, 0, 0, 0.6), 0 12px 32px -8px rgba(0, 0, 0, 0.75);
+    --shadow-3: 0 2px 6px rgba(0, 0, 0, 0.7), 0 26px 56px -16px rgba(0, 0, 0, 0.9);
+
+    --tint: #f5cf55;
+    --tint-solid: #efc233;
+    --tint-contrast: #1f1602;
+    --tint-glow: rgba(239, 194, 51, 0.24);
+
+    --segment-track: rgba(118, 118, 128, 0.24);
+    --segment-thumb: #636366;
+
+    --ok: #30d158;     --ok-bg: rgba(48, 209, 88, 0.16);
+    --warn: #ffd426;   --warn-bg: rgba(255, 212, 38, 0.15);
+    --danger: #ff5f57; --danger-bg: rgba(255, 95, 87, 0.16);
+    --info: #64a8ff;   --info-bg: rgba(100, 168, 255, 0.16);
+
+    --aurora-1: rgba(224, 170, 15, 0.26);
+    --aurora-2: rgba(76, 102, 220, 0.24);
+    --aurora-3: rgba(190, 70, 140, 0.18);
   }
 }
 
 /* ─── Base ────────────────────────────────────────────────────────────── */
 
-* {
-  border-color: var(--hairline);
-}
+* { border-color: var(--separator); }
 
 html {
   -webkit-text-size-adjust: 100%;
@@ -203,298 +277,272 @@ html {
 
 body {
   background-color: var(--page-bg);
-  color: var(--page-fg);
+  color: var(--label);
   font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.375rem;
+  letter-spacing: -0.024em;
   font-synthesis-weight: none;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100dvh;
   overscroll-behavior-y: none;
 }
 
-::selection {
-  background: var(--accent-glow);
-  color: var(--page-fg);
-}
+::selection { background: var(--tint-glow); color: var(--label); }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 3px solid color-mix(in srgb, var(--info) 75%, transparent);
   outline-offset: 2px;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
 }
 
-/* Thin, unobtrusive scrollbars for the admin tables */
-.scroll-slim {
-  scrollbar-width: thin;
-  scrollbar-color: var(--hairline) transparent;
-}
-.scroll-slim::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-.scroll-slim::-webkit-scrollbar-thumb {
-  background: var(--hairline);
-  border-radius: 999px;
-}
-.scroll-slim::-webkit-scrollbar-track {
-  background: transparent;
-}
+.scroll-slim { scrollbar-width: thin; scrollbar-color: var(--fill) transparent; }
+.scroll-slim::-webkit-scrollbar { width: 8px; height: 8px; }
+.scroll-slim::-webkit-scrollbar-thumb { background: var(--fill); border-radius: 999px; }
+.scroll-slim::-webkit-scrollbar-track { background: transparent; }
 
-/* Everything below lives in Tailwind's `components` layer on purpose.
-   Unlayered CSS outranks every Tailwind utility, so an unlayered
-   `.glass { position: relative }` silently beat `absolute` and `fixed`
-   wherever the two met. Inside the layer, utilities win — which is what a
-   class like `glass absolute` obviously means. The accessibility block that
-   follows stays unlayered so it can override both. */
+/* Continuous corners where the browser supports them — this is the single
+   most recognisable Apple geometry cue. Everywhere else the radius stands
+   on its own and nothing breaks. */
+@supports (corner-shape: squircle) {
+  .squircle,
+  .glass,
+  .ios-group,
+  .ios-card,
+  .btn {
+    corner-shape: squircle;
+  }
+}
 
 @layer components {
-  /* ─── Ambient background ──────────────────────────────────────────────── */
 
-  .aurora {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-    background: var(--page-bg);
-  }
+/* ─── Ambient background ──────────────────────────────────────────────── */
 
-  .aurora::before,
-  .aurora::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    will-change: transform;
-  }
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--page-bg);
+}
 
-  .aurora::before {
-    width: 72vmax;
-    height: 72vmax;
-    top: -28vmax;
-    left: -18vmax;
-    background: radial-gradient(circle at 30% 30%, var(--aurora-1), transparent 62%);
-    animation: drift-a 34s var(--ease-glass) infinite alternate;
-  }
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
 
-  .aurora::after {
-    width: 64vmax;
-    height: 64vmax;
-    bottom: -26vmax;
-    right: -16vmax;
-    background: radial-gradient(circle at 60% 40%, var(--aurora-2), transparent 62%);
-    animation: drift-b 42s var(--ease-glass) infinite alternate;
-  }
+.aurora::before {
+  width: 70vmax; height: 70vmax; top: -28vmax; left: -18vmax;
+  background: radial-gradient(circle at 30% 30%, var(--aurora-1), transparent 62%);
+  animation: drift-a 38s var(--ease-glass) infinite alternate;
+}
 
-  .aurora > span {
-    position: absolute;
-    width: 46vmax;
-    height: 46vmax;
-    top: 32%;
-    left: 38%;
-    border-radius: 50%;
-    filter: blur(90px);
-    background: radial-gradient(circle, var(--aurora-3), transparent 64%);
-    animation: drift-c 38s var(--ease-glass) infinite alternate;
-  }
+.aurora::after {
+  width: 62vmax; height: 62vmax; bottom: -26vmax; right: -16vmax;
+  background: radial-gradient(circle at 60% 40%, var(--aurora-2), transparent 62%);
+  animation: drift-b 46s var(--ease-glass) infinite alternate;
+}
 
-  @keyframes drift-a {
-    to {
-      transform: translate3d(12vw, 8vh, 0) scale(1.15);
-    }
-  }
-  @keyframes drift-b {
-    to {
-      transform: translate3d(-14vw, -10vh, 0) scale(1.1);
-    }
-  }
-  @keyframes drift-c {
-    to {
-      transform: translate3d(-10vw, 12vh, 0) scale(0.88);
-    }
-  }
+.aurora > span {
+  position: absolute;
+  width: 44vmax; height: 44vmax; top: 32%; left: 38%;
+  border-radius: 50%;
+  filter: blur(100px);
+  background: radial-gradient(circle, var(--aurora-3), transparent 64%);
+  animation: drift-c 42s var(--ease-glass) infinite alternate;
+}
 
-  /* Fine grain keeps large blurred areas from banding */
-  .grain::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: 0.032;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
+@keyframes drift-a { to { transform: translate3d(12vw, 8vh, 0) scale(1.14); } }
+@keyframes drift-b { to { transform: translate3d(-14vw, -10vh, 0) scale(1.1); } }
+@keyframes drift-c { to { transform: translate3d(-10vw, 12vh, 0) scale(0.9); } }
 
-  /* ─── Glass primitives ────────────────────────────────────────────────── */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 
-  .glass {
-    position: relative;
-    background-color: var(--glass-tint);
-    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-    border: 1px solid var(--glass-edge);
-    box-shadow: var(--glass-shadow);
-    isolation: isolate;
-  }
+/* ─── Materials ───────────────────────────────────────────────────────────
+   Apple's tiers: thin lets more through, thick obscures more. The
+   specular rim and lens flare are what read as glass rather than as a
+   flat translucent panel. */
 
-  /* The specular rim: bright along the top edge, fading round the sides.
-     This is what sells the material as glass rather than flat translucency. */
-  .glass::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(
-      160deg,
-      var(--glass-specular) 0%,
-      transparent 28%,
-      transparent 72%,
-      color-mix(in srgb, var(--glass-specular) 55%, transparent) 100%
-    );
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    pointer-events: none;
-    z-index: 1;
-  }
+.glass {
+  position: relative;
+  background-color: var(--mat-tint);
+  backdrop-filter: blur(var(--mat-blur)) saturate(var(--mat-saturate));
+  -webkit-backdrop-filter: blur(var(--mat-blur)) saturate(var(--mat-saturate));
+  border: 0.5px solid var(--glass-edge);
+  box-shadow: var(--shadow-2);
+  isolation: isolate;
+}
 
-  /* A soft lens flare across the upper body of the surface */
-  .glass-lens::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    background: radial-gradient(
-      130% 80% at 12% -12%,
-      color-mix(in srgb, var(--glass-specular) 40%, transparent) 0%,
-      transparent 58%
-    );
-    pointer-events: none;
-    z-index: 0;
-  }
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 0.5px;
+  background: linear-gradient(
+    162deg,
+    var(--specular) 0%,
+    transparent 26%,
+    transparent 74%,
+    color-mix(in srgb, var(--specular) 50%, transparent) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
 
-  .glass-strong {
-    background-color: var(--glass-tint-strong);
-    --glass-blur: 40px;
-  }
+.glass-lens::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    128% 78% at 12% -14%,
+    color-mix(in srgb, var(--specular) 36%, transparent) 0%,
+    transparent 56%
+  );
+  pointer-events: none;
+  /* Behind the content, above the material. A generated ::after is the last
+     child, so at z-index 0 it painted over the text and washed it out — the
+     isolation on .glass keeps a negative index from escaping the surface. */
+  z-index: -1;
+}
 
-  .glass-faint {
-    background-color: var(--glass-tint-faint);
-    --glass-blur: 18px;
-  }
+.glass-strong { background-color: var(--mat-tint-thick); --mat-blur: 48px; }
+.glass-faint  { background-color: var(--mat-tint-thin);  --mat-blur: 22px; }
+.glass-lifted { box-shadow: var(--shadow-3); }
 
-  .glass-lifted {
-    box-shadow: var(--glass-shadow-lifted);
-  }
+/* Bars pinned over scrolling content need a denser material or the text
+   underneath reads through as noise. */
+.glass-chrome {
+  background-color: color-mix(in srgb, var(--page-bg) 72%, transparent);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+}
 
-  /* Floating bars that sit *over* live content — action bars, buy bars. The
-     heavier tint stops text scrolling underneath from reading through as noise,
-     which is exactly why Apple's own toolbars use a denser material. */
-  .glass-bar {
-    background-color: color-mix(in srgb, var(--page-bg) 88%, transparent);
-    --glass-blur: 36px;
-  }
+.glass-bar {
+  background-color: color-mix(in srgb, var(--page-bg) 93%, transparent);
+  --mat-blur: 40px;
+}
 
-  :root[data-theme='dark'] .glass-bar {
-    background-color: color-mix(in srgb, var(--page-bg) 82%, transparent);
-  }
+:root[data-theme="dark"] .glass-bar {
+  background-color: color-mix(in srgb, var(--surface) 92%, transparent);
+}
 
-  /* Chrome that sits over scrolling content: navbars, tab bars, toolbars */
-  .glass-chrome {
-    background-color: color-mix(in srgb, var(--page-bg) 68%, transparent);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-  }
-
-  /* Interactive lift — pointer devices only, so touch targets stay calm */
-  @media (hover: hover) and (pointer: fine) {
-    .glass-interactive {
-      transition: transform 0.4s var(--ease-glass), box-shadow 0.4s var(--ease-glass),
-        background-color 0.3s var(--ease-glass);
-    }
-    .glass-interactive:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--glass-shadow-lifted);
-      background-color: var(--glass-tint-strong);
-    }
-  }
-
-  .press {
-    transition: transform 0.16s var(--ease-glass), opacity 0.16s var(--ease-glass);
-  }
-  .press:active {
-    transform: scale(0.97);
-  }
-
-  /* ─── Type ────────────────────────────────────────────────────────────── */
-
-  .display {
-    font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.035em;
-    line-height: 0.95;
-  }
-
-  .eyebrow {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--faint-fg);
-  }
-
-  .tabular {
-    font-variant-numeric: tabular-nums;
-  }
-
-  /* ─── Safe areas (iOS notch / home indicator) ─────────────────────────── */
-
-  .pt-safe {
-    padding-top: env(safe-area-inset-top, 0px);
-  }
-  .pb-safe {
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  .mb-safe {
-    margin-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  .h-safe-bottom {
-    height: env(safe-area-inset-bottom, 0px);
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .glass-bar {
+    background-color: color-mix(in srgb, var(--surface) 92%, transparent);
   }
 }
 
-/* ─── Accessibility fallbacks ─────────────────────────────────────────── */
+@media (hover: hover) and (pointer: fine) {
+  .glass-interactive {
+    transition: transform 0.4s var(--ease-glass), box-shadow 0.4s var(--ease-glass),
+      background-color 0.3s var(--ease-glass);
+  }
+  .glass-interactive:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-3);
+    background-color: var(--mat-tint-thick);
+  }
+}
 
-/* Some users (and some GPUs) do better without live blur. Swap the material
-   for an opaque one rather than leaving unreadable transparency behind. */
+/* ─── Opaque surfaces ─────────────────────────────────────────────────── */
+
+.ios-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+
+/* ─── Inset grouped list ──────────────────────────────────────────────────
+   The Settings pattern: one rounded section, hairline separators inset to
+   clear the leading content, 44pt rows. */
+
+.ios-group {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+}
+
+.ios-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: var(--row-h);
+  padding: 0.6875rem 1rem;
+  position: relative;
+  width: 100%;
+  text-align: left;
+}
+
+/* Separators stop short of the leading edge, as they do in UIKit. */
+.ios-row + .ios-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  right: 0;
+  height: 0.5px;
+  background: var(--separator-soft);
+}
+
+.ios-row-inset + .ios-row-inset::before { left: 3.5rem; }
+
+@media (hover: hover) and (pointer: fine) {
+  a.ios-row:hover, button.ios-row:hover { background: var(--fill-4); }
+}
+a.ios-row:active, button.ios-row:active { background: var(--fill-3); }
+
+/* ─── Press feedback ──────────────────────────────────────────────────── */
+
+.press { transition: transform 0.18s var(--ease-glass), opacity 0.18s var(--ease-glass); }
+.press:active { transform: scale(0.96); opacity: 0.86; }
+
+/* ─── Safe areas ──────────────────────────────────────────────────────── */
+
+.pt-safe { padding-top: env(safe-area-inset-top, 0px); }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.mb-safe { margin-bottom: env(safe-area-inset-bottom, 0px); }
+
+}
+
+/* ─── Accessibility ───────────────────────────────────────────────────────
+   Unlayered on purpose: these must beat both the utilities and the
+   component classes above. */
+
 @media (prefers-reduced-transparency: reduce) {
-  .glass,
-  .glass-chrome {
+  .glass, .glass-chrome, .glass-bar {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
-    background-color: color-mix(in srgb, var(--page-bg) 94%, var(--page-fg));
+    background-color: var(--surface);
   }
-  .aurora::before,
-  .aurora::after,
-  .aurora > span {
-    display: none;
-  }
+  .aurora::before, .aurora::after, .aurora > span { display: none; }
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass,
-  .glass-chrome {
-    background-color: color-mix(in srgb, var(--page-bg) 92%, var(--page-fg));
-  }
+  .glass, .glass-chrome, .glass-bar { background-color: var(--surface); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -504,57 +552,37 @@ body {
 
 @media (prefers-contrast: more) {
   :root {
-    --glass-tint: rgba(255, 255, 255, 0.92);
-    --hairline: rgba(13, 14, 21, 0.3);
-    --muted-fg: #3b3e52;
+    --label-2: rgba(60, 60, 67, 0.86);
+    --label-3: rgba(60, 60, 67, 0.7);
+    --separator: rgba(60, 60, 67, 0.5);
+    --mat-tint: rgba(255, 255, 255, 0.95);
   }
   :root[data-theme="dark"] {
-    --glass-tint: rgba(20, 20, 30, 0.94);
-    --hairline: rgba(255, 255, 255, 0.34);
-    --muted-fg: #d2d4e2;
+    --label-2: rgba(235, 235, 245, 0.9);
+    --label-3: rgba(235, 235, 245, 0.74);
+    --separator: rgba(255, 255, 255, 0.5);
+    --mat-tint: rgba(28, 28, 32, 0.96);
   }
 }
 
-@layer components {
-  /* ─── Utilities ───────────────────────────────────────────────────────── */
+/* ─── Utilities ───────────────────────────────────────────────────────── */
 
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+@layer components {
+  /* An uppercase value should not make its placeholder shout. */
+  .custom-name::placeholder { text-transform: none; letter-spacing: -0.024em; }
+
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
   .shimmer {
-    background: linear-gradient(
-      100deg,
-      transparent 20%,
-      color-mix(in srgb, var(--glass-specular) 50%, transparent) 50%,
-      transparent 80%
-    );
+    background: linear-gradient(100deg, transparent 20%,
+      color-mix(in srgb, var(--specular) 45%, transparent) 50%, transparent 80%);
     background-size: 200% 100%;
     animation: shimmer 1.6s linear infinite;
   }
 
-  @keyframes shimmer {
-    to {
-      background-position: -200% 0;
-    }
-  }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
-  @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-
-  .rise {
-    animation: rise 0.6s var(--ease-glass) both;
-  }
+  .rise { animation: rise 0.6s var(--ease-glass) both; }
 }

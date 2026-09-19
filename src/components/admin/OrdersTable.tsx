@@ -13,6 +13,7 @@ import { api, ApiError } from '@/lib/client/api'
 import { money } from '@/lib/format'
 import { DateTime } from '@/components/ui/Time'
 import { ITEM_STATUSES, ORDER_STATUSES } from '@/lib/constants'
+import { ConsoleHeader } from './ConsoleHeader'
 
 export type AdminOrder = {
   _id: string
@@ -108,12 +109,10 @@ export function OrdersTable({
 
   return (
     <div className="mx-auto max-w-[1600px]">
-      <header className="mb-5">
-        <h1 className="display text-[clamp(1.8rem,4vw,2.5rem)]">Orders</h1>
-        <p className="mt-2 text-[14.5px] text-[var(--muted-fg)]">
-          Everything placed, with per-item status for the fulfilment run.
-        </p>
-      </header>
+      <ConsoleHeader
+        title="Orders"
+        subtitle="Everything placed, with per-item status for the fulfilment run."
+      />
 
       <div className="mb-4 flex flex-wrap items-center gap-2.5">
         <Segmented
@@ -127,17 +126,17 @@ export function OrdersTable({
           onChange={setFilter}
         />
         <div className="glass flex h-10 min-w-[200px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
-          <Icon.Search size={16} className="shrink-0 text-[var(--faint-fg)]" />
+          <Icon.Search size={16} className="shrink-0 text-[var(--label-3)]" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Order ID, name or roll no"
-            className="min-w-0 flex-1 bg-transparent text-[13.5px] outline-none placeholder:text-[var(--faint-fg)]"
+            className="min-w-0 flex-1 bg-transparent t-footnote outline-none placeholder:text-[var(--label-3)]"
           />
         </div>
         <a
           href="/api/admin/export"
-          className="glass press ml-auto inline-flex h-10 items-center gap-2 rounded-full px-4 text-[13.5px] font-semibold"
+          className="glass press ml-auto inline-flex h-10 items-center gap-2 rounded-full px-4 t-footnote font-semibold"
         >
           <Icon.Download size={16} />
           <span className="hidden sm:inline">Export CSV</span>
@@ -152,8 +151,8 @@ export function OrdersTable({
         <Glass className="overflow-hidden">
           {/* Column headings only make sense once there is room for them */}
           <div
-            className="hidden border-b px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--faint-fg)] lg:grid lg:grid-cols-[130px_minmax(0,1fr)_120px_150px_110px_40px] lg:gap-4"
-            style={{ borderColor: 'var(--hairline-soft)' }}
+            className="hidden border-b px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--label-3)] lg:grid lg:grid-cols-[130px_minmax(0,1fr)_120px_150px_110px_40px] lg:gap-4"
+            style={{ borderColor: 'var(--separator-soft)' }}
           >
             <span>Order</span>
             <span>Student</span>
@@ -163,29 +162,29 @@ export function OrdersTable({
             <span />
           </div>
 
-          <ul className="divide-y" style={{ borderColor: 'var(--hairline-soft)' }}>
+          <ul className="divide-y" style={{ borderColor: 'var(--separator-soft)' }}>
             {visible.map((order) => {
               const open = expanded === order._id
               return (
                 <li key={order._id}>
                   <button
                     onClick={() => setExpanded(open ? null : order._id)}
-                    className="w-full px-5 py-3.5 text-left transition-colors hover:bg-[var(--hairline-soft)] lg:grid lg:grid-cols-[130px_minmax(0,1fr)_120px_150px_110px_40px] lg:items-center lg:gap-4"
+                    className="w-full px-5 py-3.5 text-left transition-colors hover:bg-[var(--separator-soft)] lg:grid lg:grid-cols-[130px_minmax(0,1fr)_120px_150px_110px_40px] lg:items-center lg:gap-4"
                     aria-expanded={open}
                   >
                     <div className="flex items-center justify-between lg:block">
-                      <span className="font-mono text-[13px] font-semibold">{order.orderId}</span>
+                      <span className="font-mono t-footnote font-semibold">{order.orderId}</span>
                       <DateTime
                         value={order.createdAt}
-                        className="text-[11.5px] text-[var(--faint-fg)] lg:block"
+                        className="t-caption-1 text-[var(--label-3)] lg:block"
                       />
                     </div>
 
                     <div className="mt-1.5 min-w-0 lg:mt-0">
-                      <p className="truncate text-[13.5px] font-medium">
+                      <p className="truncate t-footnote font-medium">
                         {order.userId?.name ?? 'Unknown'}
                       </p>
-                      <p className="truncate text-[12px] text-[var(--muted-fg)]">
+                      <p className="truncate t-caption-1 text-[var(--label-2)]">
                         {[order.userId?.rollNo, order.userId?.section, order.userId?.hostel]
                           .filter(Boolean)
                           .join(' · ') || order.userId?.email}
@@ -206,7 +205,7 @@ export function OrdersTable({
                         {order.paymentStatus}
                       </Badge>
                       {order.paidTo && (
-                        <span className="text-[11.5px] text-[var(--faint-fg)] lg:mt-1 lg:block">
+                        <span className="t-caption-1 text-[var(--label-3)] lg:mt-1 lg:block">
                           → {order.paidTo}
                         </span>
                       )}
@@ -216,11 +215,11 @@ export function OrdersTable({
                       <StatusBadge status={order.status} />
                     </div>
 
-                    <p className="mt-2 text-[14px] font-semibold tabular lg:mt-0 lg:text-right">
+                    <p className="mt-2 t-subhead font-semibold tabular lg:mt-0 lg:text-right">
                       {money(order.finalAmountPaid)}
                     </p>
 
-                    <span className="hidden justify-self-end text-[var(--faint-fg)] lg:block">
+                    <span className="hidden justify-self-end text-[var(--label-3)] lg:block">
                       <Icon.Chevron
                         size={16}
                         className={open ? 'rotate-90 transition-transform' : 'transition-transform'}
@@ -239,7 +238,7 @@ export function OrdersTable({
                       >
                         <div
                           className="space-y-4 px-5 pb-5 pt-1"
-                          style={{ background: 'var(--hairline-soft)' }}
+                          style={{ background: 'var(--separator-soft)' }}
                         >
                           <div>
                             <p className="eyebrow mb-2">Items</p>
@@ -250,15 +249,15 @@ export function OrdersTable({
                                   className="glass flex flex-wrap items-center gap-3 rounded-xl p-3"
                                 >
                                   <div className="min-w-0 flex-1">
-                                    <p className="truncate text-[13.5px] font-medium">
+                                    <p className="truncate t-footnote font-medium">
                                       {item.productSnapshot?.name ?? 'Item'}
-                                      <span className="ml-2 font-normal text-[var(--muted-fg)]">
+                                      <span className="ml-2 font-normal text-[var(--label-2)]">
                                         {[item.variant?.color, item.variant?.size]
                                           .filter(Boolean)
                                           .join(' · ')}
                                       </span>
                                     </p>
-                                    <p className="mt-0.5 text-[12px] text-[var(--muted-fg)]">
+                                    <p className="mt-0.5 t-caption-1 text-[var(--label-2)]">
                                       ×{item.quantity} · {money(item.unitPrice * item.quantity)}
                                       {item.batchNumber && item.batchNumber !== 'WAITING'
                                         ? ` · batch ${item.batchNumber}`
@@ -270,7 +269,7 @@ export function OrdersTable({
                                     value={item.itemStatus}
                                     disabled={busy === `${order._id}:${item._id}`}
                                     onChange={(e) => setItemStatus(order, item._id, e.target.value)}
-                                    className="h-9 rounded-lg border px-2.5 text-[12.5px] font-medium outline-none"
+                                    className="h-9 rounded-lg border px-2.5 t-caption-1 font-medium outline-none"
                                     style={{
                                       background: 'var(--field-bg)',
                                       borderColor: 'var(--field-border)',
@@ -289,14 +288,14 @@ export function OrdersTable({
                           </div>
 
                           <div className="flex flex-wrap items-center gap-3">
-                            <label className="text-[12.5px] font-medium text-[var(--muted-fg)]">
+                            <label className="t-caption-1 font-medium text-[var(--label-2)]">
                               Whole order
                             </label>
                             <select
                               value={order.status}
                               disabled={busy === order._id}
                               onChange={(e) => setOrderStatus(order, e.target.value)}
-                              className="h-9 rounded-lg border px-2.5 text-[12.5px] font-medium outline-none"
+                              className="h-9 rounded-lg border px-2.5 t-caption-1 font-medium outline-none"
                               style={{
                                 background: 'var(--field-bg)',
                                 borderColor: 'var(--field-border)',
@@ -309,7 +308,7 @@ export function OrdersTable({
                               ))}
                             </select>
                             {order.paymentStatus !== 'Paid' && (
-                              <span className="text-[12px] text-[var(--faint-fg)]">
+                              <span className="t-caption-1 text-[var(--label-3)]">
                                 {canOverride
                                   ? 'Payment is unverified — delivering will use your admin override.'
                                   : 'Payment must be verified before this can be delivered.'}

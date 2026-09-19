@@ -65,8 +65,8 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
             action={
               <Link
                 href="/shop"
-                className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-[14.5px] font-semibold"
-                style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
+                className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 t-subhead font-semibold"
+                style={{ background: 'var(--tint-solid)', color: 'var(--tint-contrast)' }}
               >
                 Back to the drop
               </Link>
@@ -195,12 +195,12 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
                         type="checkbox"
                         checked={confirmed}
                         onChange={(e) => setConfirmed(e.target.checked)}
-                        className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--accent)]"
+                        className="mt-0.5 h-5 w-5 shrink-0 accent-[var(--tint)]"
                       />
-                      <span className="text-[13.5px] leading-relaxed text-[var(--muted-fg)]">
+                      <span className="t-footnote leading-relaxed text-[var(--label-2)]">
                         I confirm I have paid{' '}
-                        <span className="font-semibold text-[var(--page-fg)]">{money(total)}</span> to{' '}
-                        <span className="font-semibold text-[var(--page-fg)]">{recipient.name}</span>,
+                        <span className="font-semibold text-[var(--label)]">{money(total)}</span> to{' '}
+                        <span className="font-semibold text-[var(--label)]">{recipient.name}</span>,
                         and the screenshot above is of that payment.
                       </span>
                     </label>
@@ -235,10 +235,10 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
           )}
 
           <div className="ml-1 min-w-0 flex-1">
-            <p className="text-[11px] font-medium text-[var(--faint-fg)]">
+            <p className="text-[11px] font-medium text-[var(--label-3)]">
               {['Your bag', 'Step 2 of 4', 'Step 3 of 4', 'Last step'][step]}
             </p>
-            <p className="truncate text-[16px] font-semibold tabular">{money(total)}</p>
+            <p className="truncate t-callout font-semibold tabular">{money(total)}</p>
           </div>
 
           {step < 3 ? (
@@ -282,7 +282,7 @@ function StepHeading({ title, body }: { title: string; body: string }) {
   return (
     <header className="mb-5">
       <h1 className="display text-[clamp(1.6rem,5vw,2.25rem)]">{title}</h1>
-      <p className="mt-2 max-w-lg text-[14.5px] leading-relaxed text-[var(--muted-fg)]">{body}</p>
+      <p className="mt-2 max-w-lg t-subhead leading-relaxed text-[var(--label-2)]">{body}</p>
     </header>
   )
 }
@@ -317,27 +317,27 @@ function ReviewStep({
             <Glass className="flex items-center gap-3.5 p-3">
               <span
                 className="relative h-16 w-14 shrink-0 overflow-hidden rounded-lg"
-                style={{ background: 'var(--hairline-soft)' }}
+                style={{ background: 'var(--separator-soft)' }}
               >
                 {line.image ? (
                   <Image src={line.image} alt="" fill sizes="56px" className="object-cover" />
                 ) : (
-                  <span className="grid h-full place-items-center text-[var(--faint-fg)]">
+                  <span className="grid h-full place-items-center text-[var(--label-3)]">
                     <Icon.Box size={18} />
                   </span>
                 )}
               </span>
 
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[14.5px] font-semibold">{line.name}</p>
-                <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 text-[12.5px] text-[var(--muted-fg)]">
+                <p className="truncate t-subhead font-semibold">{line.name}</p>
+                <div className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-0.5 t-caption-1 text-[var(--label-2)]">
                   {line.color && (
                     <span className="inline-flex items-center gap-1.5">
                       <span
                         className="h-2.5 w-2.5 rounded-full"
                         style={{
                           background: swatch(line.color),
-                          boxShadow: 'inset 0 0 0 1px var(--hairline)',
+                          boxShadow: 'inset 0 0 0 1px var(--separator)',
                         }}
                       />
                       {line.color}
@@ -346,14 +346,14 @@ function ReviewStep({
                   {line.size && <span>Size {line.size}</span>}
                   <span>Qty {line.quantity}</span>
                   {line.customName && (
-                    <span className="font-medium" style={{ color: 'var(--accent)' }}>
+                    <span className="font-medium" style={{ color: 'var(--tint)' }}>
                       “{line.customName}”
                     </span>
                   )}
                 </div>
               </div>
 
-              <p className="shrink-0 text-[14.5px] font-semibold tabular">
+              <p className="shrink-0 t-subhead font-semibold tabular">
                 {money(line.unitPrice * line.quantity)}
               </p>
             </Glass>
@@ -363,8 +363,8 @@ function ReviewStep({
 
       <Link
         href="/bag"
-        className="press mt-4 inline-flex items-center gap-1.5 text-[13.5px] font-semibold"
-        style={{ color: 'var(--accent)' }}
+        className="press mt-4 inline-flex items-center gap-1.5 t-footnote font-semibold"
+        style={{ color: 'var(--tint)' }}
       >
         Edit your bag
         <Icon.ArrowRight size={14} />
@@ -426,16 +426,16 @@ function CouponField({
           <Icon.Check size={17} strokeWidth={2.5} />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="font-mono text-[13.5px] font-semibold">{coupon.code}</p>
-          <p className="text-[12.5px] text-[var(--muted-fg)]">
+          <p className="font-mono t-footnote font-semibold">{coupon.code}</p>
+          <p className="t-caption-1 text-[var(--label-2)]">
             {coupon.label} · {money(coupon.discount)} off
           </p>
         </div>
         <button
           type="button"
           onClick={() => onCoupon(null)}
-          className="press shrink-0 rounded-lg px-2.5 py-1.5 text-[12.5px] font-semibold"
-          style={{ background: 'var(--hairline-soft)' }}
+          className="press shrink-0 rounded-lg px-2.5 py-1.5 t-caption-1 font-semibold"
+          style={{ background: 'var(--separator-soft)' }}
         >
           Remove
         </button>
@@ -445,7 +445,7 @@ function CouponField({
 
   return (
     <Glass className="mt-4 flex items-center gap-2 p-2 pl-4">
-      <Icon.Tag size={16} className="shrink-0 text-[var(--faint-fg)]" />
+      <Icon.Tag size={16} className="shrink-0 text-[var(--label-3)]" />
       <input
         value={code}
         onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 32))}
@@ -458,7 +458,7 @@ function CouponField({
         placeholder="Coupon code"
         autoCapitalize="characters"
         autoComplete="off"
-        className="min-w-0 flex-1 bg-transparent font-mono text-[14px] outline-none placeholder:font-sans placeholder:text-[var(--faint-fg)]"
+        className="min-w-0 flex-1 bg-transparent font-mono t-subhead outline-none placeholder:font-sans placeholder:text-[var(--label-3)]"
         aria-label="Coupon code"
       />
       <Button type="button" size="sm" variant="glass" loading={checking} onClick={apply} disabled={!code.trim()}>
@@ -485,9 +485,9 @@ function SummaryCard({
     <Glass tone="strong" className="p-5">
       <p className="eyebrow">Order summary</p>
 
-      <dl className={`mt-4 space-y-2.5 text-[14px] ${collapsedOnMobile ? 'hidden lg:block' : ''}`}>
+      <dl className={`mt-4 space-y-2.5 t-subhead ${collapsedOnMobile ? 'hidden lg:block' : ''}`}>
         <div className="flex justify-between">
-          <dt className="text-[var(--muted-fg)]">
+          <dt className="text-[var(--label-2)]">
             {cart.count} {cart.count === 1 ? 'item' : 'items'}
           </dt>
           <dd className="font-medium tabular">{money(cart.subtotal)}</dd>
@@ -499,23 +499,23 @@ function SummaryCard({
           </div>
         )}
         <div className="flex justify-between">
-          <dt className="text-[var(--muted-fg)]">Collection</dt>
+          <dt className="text-[var(--label-2)]">Collection</dt>
           <dd className="font-medium">On campus</dd>
         </div>
       </dl>
 
       <div
         className="mt-4 flex items-baseline justify-between border-t pt-4"
-        style={{ borderColor: 'var(--hairline-soft)' }}
+        style={{ borderColor: 'var(--separator-soft)' }}
       >
-        <span className="text-[14px] font-medium text-[var(--muted-fg)]">Pay now</span>
-        <span className="text-[22px] font-semibold tabular">{money(total)}</span>
+        <span className="t-subhead font-medium text-[var(--label-2)]">Pay now</span>
+        <span className="t-title-2 font-semibold tabular">{money(total)}</span>
       </div>
 
       {recipientName && (
-        <p className="mt-3 flex items-center gap-2 text-[12.5px] text-[var(--muted-fg)]">
+        <p className="mt-3 flex items-center gap-2 t-caption-1 text-[var(--label-2)]">
           <Icon.Wallet size={14} />
-          Paying <span className="font-semibold text-[var(--page-fg)]">{recipientName}</span>
+          Paying <span className="font-semibold text-[var(--label)]">{recipientName}</span>
         </p>
       )}
     </Glass>

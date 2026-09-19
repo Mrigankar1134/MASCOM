@@ -27,11 +27,11 @@ export function SectionHeading({
       <p className="eyebrow">{eyebrow}</p>
       <h2 className="display mt-3 text-[clamp(2rem,5.5vw,3.25rem)]">{title}</h2>
       {body && (
-        <p className="mt-4 text-[16px] leading-relaxed text-[var(--muted-fg)]">{body}</p>
+        <p className="mt-4 t-callout leading-relaxed text-[var(--label-2)]">{body}</p>
       )}
       <span
         className="mt-6 block h-px w-16"
-        style={{ background: 'linear-gradient(90deg, var(--accent), transparent)' }}
+        style={{ background: 'linear-gradient(90deg, var(--tint), transparent)' }}
       />
     </motion.header>
   )
@@ -67,12 +67,12 @@ export function Services() {
             <Glass interactive className="h-full p-6 lg:p-8">
               <span
                 className="display text-[34px] leading-none"
-                style={{ color: 'var(--accent)', opacity: 0.85 }}
+                style={{ color: 'var(--tint)', opacity: 0.85 }}
               >
                 {service.no}
               </span>
-              <h3 className="mt-5 text-[19px] font-semibold tracking-tight">{service.title}</h3>
-              <p className="mt-2.5 text-[14.5px] leading-relaxed text-[var(--muted-fg)]">
+              <h3 className="mt-5 t-title-3 font-semibold tracking-tight">{service.title}</h3>
+              <p className="mt-2.5 t-subhead leading-relaxed text-[var(--label-2)]">
                 {service.body}
               </p>
             </Glass>

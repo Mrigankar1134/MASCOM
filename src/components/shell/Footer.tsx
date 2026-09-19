@@ -6,13 +6,13 @@ export function Footer() {
   return (
     <footer
       className="mt-10 border-t px-4 pb-[max(2rem,env(safe-area-inset-bottom))] pt-12 sm:px-6"
-      style={{ borderColor: 'var(--hairline-soft)' }}
+      style={{ borderColor: 'var(--separator-soft)' }}
     >
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col gap-10 lg:flex-row lg:justify-between">
           <div className="max-w-sm">
             <Wordmark />
-            <p className="mt-4 text-[14px] leading-relaxed text-[var(--muted-fg)]">
+            <p className="mt-4 t-subhead leading-relaxed text-[var(--label-2)]">
               {site.longName}, {site.institute}. Limited drops, ordered and tracked from your phone.
             </p>
           </div>
@@ -46,8 +46,8 @@ export function Footer() {
         </div>
 
         <div
-          className="mt-12 flex flex-col gap-2 border-t pt-6 text-[12.5px] text-[var(--faint-fg)] sm:flex-row sm:items-center sm:justify-between"
-          style={{ borderColor: 'var(--hairline-soft)' }}
+          className="mt-12 flex flex-col gap-2 border-t pt-6 t-caption-1 text-[var(--label-3)] sm:flex-row sm:items-center sm:justify-between"
+          style={{ borderColor: 'var(--separator-soft)' }}
         >
           <p>
             © {new Date().getFullYear()} {site.name} — {site.institute}
@@ -76,7 +76,7 @@ function FooterColumn({
               href={link.href}
               target={link.external ? '_blank' : undefined}
               rel={link.external ? 'noreferrer noopener' : undefined}
-              className="text-[14px] text-[var(--muted-fg)] transition-colors hover:text-[var(--page-fg)]"
+              className="t-subhead text-[var(--label-2)] transition-colors hover:text-[var(--label)]"
             >
               {link.label}
             </Link>

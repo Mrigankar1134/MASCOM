@@ -1,3 +1,4 @@
+import { Ambient } from '@/components/shell/Ambient'
 import { TopNav } from '@/components/shell/TopNav'
 import { Footer } from '@/components/shell/Footer'
 import { Hero } from '@/components/landing/Hero'
@@ -17,6 +18,7 @@ export default async function LandingPage() {
 
   return (
     <>
+      <Ambient />
       <TopNav transparentUntilScroll />
       <main>
         <Hero ordersOpen={!!openDrop} dropName={openDrop?.name} />

@@ -25,7 +25,7 @@ export function DropShowcase({ products }: { products: ShopProduct[] }) {
         {products.length > 0 && (
           <Link
             href="/shop"
-            className="glass press mb-8 hidden items-center gap-2 rounded-full px-4 py-2.5 text-[13.5px] font-semibold lg:mb-12 lg:inline-flex"
+            className="glass press mb-8 hidden items-center gap-2 rounded-full px-4 py-2.5 t-footnote font-semibold lg:mb-12 lg:inline-flex"
           >
             See everything
             <Icon.ArrowRight size={16} />
@@ -49,21 +49,21 @@ export function DropShowcase({ products }: { products: ShopProduct[] }) {
           <Glass className="flex flex-col items-center gap-4 p-10 text-center sm:p-14">
             <span
               className="grid h-14 w-14 place-items-center rounded-2xl"
-              style={{ background: 'var(--accent-glow)', color: 'var(--accent)' }}
+              style={{ background: 'var(--tint-glow)', color: 'var(--tint)' }}
             >
               <Icon.Box size={24} />
             </span>
             <div>
-              <h3 className="text-[18px] font-semibold tracking-tight">Nothing live at the moment</h3>
-              <p className="mx-auto mt-2 max-w-sm text-[14.5px] leading-relaxed text-[var(--muted-fg)]">
+              <h3 className="t-title-3 font-semibold tracking-tight">Nothing live at the moment</h3>
+              <p className="mx-auto mt-2 max-w-sm t-subhead leading-relaxed text-[var(--label-2)]">
                 Drops open for a short window. Create an account now so checkout takes seconds when
                 the next one lands.
               </p>
             </div>
             <Link
               href="/signup"
-              className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-[14.5px] font-semibold"
-              style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
+              className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 t-subhead font-semibold"
+              style={{ background: 'var(--tint-solid)', color: 'var(--tint-contrast)' }}
             >
               Create your account
               <Icon.ArrowRight size={16} />

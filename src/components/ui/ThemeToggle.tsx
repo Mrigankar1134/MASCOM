@@ -56,9 +56,9 @@ export function ThemeToggle({ className }: { className?: string }) {
             onClick={() => setPreference(opt.value)}
             className={cn(
               'press relative z-10 grid h-8 w-8 place-items-center rounded-full transition-colors',
-              active ? 'text-[var(--accent-contrast)]' : 'text-[var(--muted-fg)] hover:text-[var(--page-fg)]',
+              active ? 'text-[var(--tint-contrast)]' : 'text-[var(--label-2)] hover:text-[var(--label)]',
             )}
-            style={active ? { background: 'var(--accent-solid)' } : undefined}
+            style={active ? { background: 'var(--tint-solid)' } : undefined}
           >
             {opt.icon}
           </button>

@@ -77,7 +77,7 @@ export function GalleryWall() {
                 className="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-[1.05]"
               />
               <span
-                className="pointer-events-none absolute inset-x-0 bottom-0 p-2.5 pt-8 text-[11.5px] font-medium text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                className="pointer-events-none absolute inset-x-0 bottom-0 p-2.5 pt-8 t-caption-1 font-medium text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.75), transparent)' }}
               >
                 {item.title}
@@ -117,7 +117,7 @@ export function GalleryWall() {
                 sizes="90vw"
                 className="max-h-[78dvh] w-full rounded-3xl object-contain"
               />
-              <figcaption className="mt-3 text-center text-[13px] font-medium text-white/80">
+              <figcaption className="mt-3 text-center t-footnote font-medium text-white/80">
                 {items[lightbox].title}
                 <span className="ml-2 text-white/40 tabular">
                   {lightbox + 1} / {items.length}

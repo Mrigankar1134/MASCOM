@@ -16,6 +16,7 @@ import { api, ApiError } from '@/lib/client/api'
 import { money } from '@/lib/format'
 import { DateTime, TimeAgo } from '@/components/ui/Time'
 import { cn } from '@/components/ui/cn'
+import { ConsoleHeader } from './ConsoleHeader'
 
 export type QueueOrder = {
   _id: string
@@ -142,14 +143,14 @@ export function VerifyQueue({
 
   return (
     <div className="mx-auto max-w-[1600px]">
-      <header className="mb-5">
-        <h1 className="display text-[clamp(1.8rem,4vw,2.5rem)]">Verify payments</h1>
-        <p className="mt-2 max-w-2xl text-[14.5px] leading-relaxed text-[var(--muted-fg)]">
-          {viewer.isStaff
+      <ConsoleHeader
+        title="Verify payments"
+        subtitle={
+          viewer.isStaff
             ? 'Every order students said they paid. Only the coordinator the money went to can confirm it — admins can override.'
-            : `Orders students said they paid to you${viewer.recipientName ? ` as ${viewer.recipientName}` : ''}. Check each screenshot against your own UPI history before confirming.`}
-        </p>
-      </header>
+            : `Orders students said they paid to you${viewer.recipientName ? ` as ${viewer.recipientName}` : ''}. Check each screenshot against your own UPI history before confirming.`
+        }
+      />
 
       {/* ── Filters ──────────────────────────────────────────────────────── */}
       <div className="mb-4 flex flex-wrap items-center gap-2.5">
@@ -165,15 +166,15 @@ export function VerifyQueue({
         />
 
         <div className="glass flex h-10 min-w-[200px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
-          <Icon.Search size={16} className="shrink-0 text-[var(--faint-fg)]" />
+          <Icon.Search size={16} className="shrink-0 text-[var(--label-3)]" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Order ID, name, roll no, UTR"
-            className="min-w-0 flex-1 bg-transparent text-[13.5px] outline-none placeholder:text-[var(--faint-fg)]"
+            className="min-w-0 flex-1 bg-transparent t-footnote outline-none placeholder:text-[var(--label-3)]"
           />
           {query && (
-            <button onClick={() => setQuery('')} className="press shrink-0 text-[var(--faint-fg)]">
+            <button onClick={() => setQuery('')} className="press shrink-0 text-[var(--label-3)]">
               <Icon.X size={15} />
             </button>
           )}
@@ -183,7 +184,7 @@ export function VerifyQueue({
           <select
             value={recipientFilter}
             onChange={(e) => setRecipientFilter(e.target.value)}
-            className="glass h-10 rounded-full px-3.5 text-[13.5px] font-medium outline-none"
+            className="glass h-10 rounded-full px-3.5 t-footnote font-medium outline-none"
             aria-label="Filter by recipient"
           >
             <option value="all">All recipients</option>
@@ -197,7 +198,7 @@ export function VerifyQueue({
 
         <a
           href={`/api/admin/export?status=${status}`}
-          className="glass press ml-auto inline-flex h-10 items-center gap-2 rounded-full px-4 text-[13.5px] font-semibold"
+          className="glass press ml-auto inline-flex h-10 items-center gap-2 rounded-full px-4 t-footnote font-semibold"
         >
           <Icon.Download size={16} />
           <span className="hidden sm:inline">Export CSV</span>
@@ -232,7 +233,7 @@ export function VerifyQueue({
                     )}
                     style={
                       active
-                        ? { boxShadow: '0 0 0 2px var(--accent), var(--glass-shadow-lifted)' }
+                        ? { boxShadow: '0 0 0 2px var(--tint), var(--glass-shadow-lifted)' }
                         : undefined
                     }
                   >
@@ -240,15 +241,15 @@ export function VerifyQueue({
                       <Avatar name={order.userId?.name} size={38} />
                       <div className="min-w-0 flex-1">
                         <div className="flex items-baseline gap-2">
-                          <p className="truncate text-[14px] font-semibold">
+                          <p className="truncate t-subhead font-semibold">
                             {order.userId?.name ?? 'Unknown student'}
                           </p>
                           <TimeAgo
                             value={order.createdAt}
-                            className="shrink-0 text-[11px] text-[var(--faint-fg)]"
+                            className="shrink-0 text-[11px] text-[var(--label-3)]"
                           />
                         </div>
-                        <p className="mt-0.5 truncate font-mono text-[11.5px] text-[var(--muted-fg)]">
+                        <p className="mt-0.5 truncate font-mono t-caption-1 text-[var(--label-2)]">
                           {order.orderId}
                           {order.userId?.rollNo ? ` · ${order.userId.rollNo}` : ''}
                         </p>
@@ -273,7 +274,7 @@ export function VerifyQueue({
                           )}
                         </div>
                       </div>
-                      <p className="shrink-0 text-[15px] font-semibold tabular">
+                      <p className="shrink-0 t-subhead font-semibold tabular">
                         {money(order.finalAmountPaid)}
                       </p>
                     </div>
@@ -351,8 +352,8 @@ function VerifyDetail({
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="eyebrow">Order</p>
-              <h2 className="mt-1 font-mono text-[22px] font-semibold">{order.orderId}</h2>
-              <p className="mt-1 text-[12.5px] text-[var(--faint-fg)]">
+              <h2 className="mt-1 font-mono t-title-2 font-semibold">{order.orderId}</h2>
+              <p className="mt-1 t-caption-1 text-[var(--label-3)]">
                 Placed <DateTime value={order.createdAt} />
               </p>
             </div>
@@ -372,7 +373,7 @@ function VerifyDetail({
               <span className="mt-0.5 shrink-0" style={{ color: 'var(--warn)' }}>
                 <Icon.Alert size={16} />
               </span>
-              <p className="text-[12.5px] leading-relaxed" style={{ color: 'var(--warn)' }}>
+              <p className="t-caption-1 leading-relaxed" style={{ color: 'var(--warn)' }}>
                 Worth a closer look: {order.fraudFlags.join(', ').replace(/_/g, ' ')}.
               </p>
             </div>
@@ -383,20 +384,20 @@ function VerifyDetail({
             <div className="glass flex items-center gap-3 rounded-xl p-3">
               <Avatar name={student?.name} size={40} />
               <div className="min-w-0 flex-1">
-                <p className="truncate text-[14px] font-semibold">{student?.name ?? 'Unknown'}</p>
-                <p className="truncate text-[12.5px] text-[var(--muted-fg)]">{student?.email}</p>
+                <p className="truncate t-subhead font-semibold">{student?.name ?? 'Unknown'}</p>
+                <p className="truncate t-caption-1 text-[var(--label-2)]">{student?.email}</p>
               </div>
               {student?.phone && (
                 <a
                   href={`tel:${student.phone}`}
-                  className="press shrink-0 rounded-lg px-3 py-1.5 text-[12.5px] font-semibold"
-                  style={{ background: 'var(--hairline-soft)' }}
+                  className="press shrink-0 rounded-lg px-3 py-1.5 t-caption-1 font-semibold"
+                  style={{ background: 'var(--separator-soft)' }}
                 >
                   Call
                 </a>
               )}
             </div>
-            <dl className="mt-2.5 grid grid-cols-2 gap-x-4 gap-y-1.5 text-[13px] sm:grid-cols-3">
+            <dl className="mt-2.5 grid grid-cols-2 gap-x-4 gap-y-1.5 t-footnote sm:grid-cols-3">
               <Fact label="Roll no" value={student?.rollNo} />
               <Fact label="Section" value={student?.section} />
               <Fact
@@ -408,7 +409,7 @@ function VerifyDetail({
 
           <section className="mt-5">
             <h3 className="eyebrow mb-2.5">Payment</h3>
-            <dl className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[13px]">
+            <dl className="grid grid-cols-2 gap-x-4 gap-y-1.5 t-footnote">
               <Fact label="Paid to" value={order.paidTo} />
               <Fact label="UPI ID" value={order.paymentRecipientId?.upiId} mono />
               <Fact label="Reference / UTR" value={order.paymentReference} mono />
@@ -421,7 +422,7 @@ function VerifyDetail({
               )}
             </dl>
             {order.verificationNotes && (
-              <p className="mt-2.5 text-[12.5px] italic text-[var(--muted-fg)]">
+              <p className="mt-2.5 t-caption-1 italic text-[var(--label-2)]">
                 “{order.verificationNotes}”
               </p>
             )}
@@ -433,21 +434,21 @@ function VerifyDetail({
               {order.items.map((item) => (
                 <li
                   key={item._id}
-                  className="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px]"
-                  style={{ background: 'var(--hairline-soft)' }}
+                  className="flex items-center gap-3 rounded-xl px-3 py-2 t-footnote"
+                  style={{ background: 'var(--separator-soft)' }}
                 >
                   <span className="min-w-0 flex-1 truncate font-medium">
                     {item.productSnapshot?.name ?? 'Item'}
-                    <span className="ml-2 font-normal text-[var(--muted-fg)]">
+                    <span className="ml-2 font-normal text-[var(--label-2)]">
                       {[item.variant?.color, item.variant?.size].filter(Boolean).join(' · ')}
                     </span>
                     {item.customName && (
-                      <span className="ml-2 font-semibold" style={{ color: 'var(--accent)' }}>
+                      <span className="ml-2 font-semibold" style={{ color: 'var(--tint)' }}>
                         “{item.customName}”
                       </span>
                     )}
                   </span>
-                  <span className="shrink-0 tabular text-[var(--muted-fg)]">×{item.quantity}</span>
+                  <span className="shrink-0 tabular text-[var(--label-2)]">×{item.quantity}</span>
                   <span className="shrink-0 font-semibold tabular">
                     {money(item.unitPrice * item.quantity)}
                   </span>
@@ -460,7 +461,7 @@ function VerifyDetail({
         {/* Proof + decision */}
         <div
           className="border-t p-5 lg:border-l lg:border-t-0 lg:p-6"
-          style={{ borderColor: 'var(--hairline-soft)' }}
+          style={{ borderColor: 'var(--separator-soft)' }}
         >
           <h3 className="eyebrow mb-2.5">Proof of payment</h3>
           {order.screenshotUrl ? (
@@ -475,14 +476,14 @@ function VerifyDetail({
                 alt="Payment screenshot"
                 className="max-h-80 w-full rounded-xl bg-black/5 object-contain"
               />
-              <span className="block py-2 text-center text-[12px] font-semibold text-[var(--muted-fg)]">
+              <span className="block py-2 text-center t-caption-1 font-semibold text-[var(--label-2)]">
                 Tap to enlarge
               </span>
             </button>
           ) : (
             <div
-              className="rounded-2xl p-6 text-center text-[13px] text-[var(--faint-fg)]"
-              style={{ background: 'var(--hairline-soft)' }}
+              className="rounded-2xl p-6 text-center t-footnote text-[var(--label-3)]"
+              style={{ background: 'var(--separator-soft)' }}
             >
               No screenshot was attached.
             </div>
@@ -491,7 +492,7 @@ function VerifyDetail({
           <div className="mt-5">
             {!canDecide ? (
               <div
-                className="rounded-xl p-3.5 text-[12.5px] leading-relaxed"
+                className="rounded-xl p-3.5 t-caption-1 leading-relaxed"
                 style={{ background: 'var(--info-bg)', color: 'var(--info)' }}
               >
                 This payment went to {order.paidTo ?? 'another coordinator'}, so only they can
@@ -504,12 +505,12 @@ function VerifyDetail({
                   value={notes}
                   onChange={(e) => setNotes(e.target.value.slice(0, 300))}
                   placeholder="What was wrong? The student sees this."
-                  className="h-24 w-full rounded-xl border p-3 text-[13.5px] outline-none focus:border-[var(--danger)]"
+                  className="h-24 w-full rounded-xl border p-3 t-footnote outline-none focus:border-[var(--danger)]"
                   style={{ background: 'var(--field-bg)', borderColor: 'var(--field-border)' }}
                 />
                 <div className="flex gap-2">
                   <Button
-                    variant="danger"
+                    variant="destructive"
                     block
                     loading={busy}
                     onClick={() => onDecide(order, 'Failed', notes.trim() || undefined)}
@@ -537,14 +538,14 @@ function VerifyDetail({
                     <Button variant="glass" block onClick={() => setRejectOpen(true)}>
                       I cannot find this payment
                     </Button>
-                    <p className="pt-1 text-center text-[11.5px] leading-relaxed text-[var(--faint-fg)]">
+                    <p className="pt-1 text-center t-caption-1 leading-relaxed text-[var(--label-3)]">
                       Confirming moves the order into production and counts the units as sold.
                     </p>
                   </>
                 ) : (
                   <>
                     <div
-                      className="flex items-center gap-2.5 rounded-xl p-3.5 text-[13px] font-medium"
+                      className="flex items-center gap-2.5 rounded-xl p-3.5 t-footnote font-medium"
                       style={{
                         background:
                           order.paymentStatus === 'Paid' ? 'var(--ok-bg)' : 'var(--danger-bg)',
@@ -594,10 +595,10 @@ function Fact({
 }) {
   return (
     <div className="min-w-0">
-      <dt className="text-[11px] font-medium uppercase tracking-wide text-[var(--faint-fg)]">
+      <dt className="text-[11px] font-medium uppercase tracking-wide text-[var(--label-3)]">
         {label}
       </dt>
-      <dd className={cn('mt-0.5 truncate font-medium', mono && 'font-mono text-[12px]')}>
+      <dd className={cn('mt-0.5 truncate font-medium', mono && 'font-mono t-caption-1')}>
         {node ?? value ?? '—'}
       </dd>
     </div>

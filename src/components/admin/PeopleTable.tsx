@@ -96,7 +96,7 @@ export function PeopleTable({
           value={filter}
           onChange={setFilter}
         />
-        <div className="glass flex h-10 min-w-[200px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
+        <div className="glass flex h-10 min-w-[190px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
           <Icon.Search size={16} className="shrink-0 text-[var(--label-3)]" />
           <input
             value={query}
@@ -164,7 +164,7 @@ export function PeopleTable({
                         disabled={busy === `${person._id}:${role.key}`}
                         title={role.hint}
                         aria-pressed={on}
-                        className="press rounded-full px-2.5 py-1 t-caption-1 font-semibold transition-colors disabled:opacity-50"
+                        className="press rounded-full px-3 py-1.5 t-caption-1 font-semibold transition-colors disabled:opacity-50"
                         style={{
                           background: on ? 'var(--tint-glow)' : 'var(--separator-soft)',
                           color: on ? 'var(--tint)' : 'var(--label-3)',

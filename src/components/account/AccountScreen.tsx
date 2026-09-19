@@ -49,9 +49,11 @@ export function AccountScreen({ user }: { user: AccountUser }) {
   const extraRoles = user.roles.filter((r) => r !== 'student')
 
   return (
-    <>
+    <div className="mx-auto max-w-2xl">
       <NavBar title="Account" />
 
+      {/* A grouped list stretched across a tablet reads as a spreadsheet.
+          Apple caps the content width and centres it instead. */}
       <div className="space-y-7 px-4 pb-8">
         {/* ── Identity card ─────────────────────────────────────────── */}
         <div className="ios-group flex items-center gap-4 p-4">
@@ -170,7 +172,7 @@ export function AccountScreen({ user }: { user: AccountUser }) {
           }}
         />
       )}
-    </>
+    </div>
   )
 }
 

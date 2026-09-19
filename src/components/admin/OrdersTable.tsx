@@ -10,7 +10,8 @@ import { EmptyState } from '@/components/ui/Feedback'
 import { Icon } from '@/components/shell/Icons'
 import { useToast } from '@/components/ui/Toast'
 import { api, ApiError } from '@/lib/client/api'
-import { money, formatDateTime } from '@/lib/format'
+import { money } from '@/lib/format'
+import { DateTime } from '@/components/ui/Time'
 import { ITEM_STATUSES, ORDER_STATUSES } from '@/lib/constants'
 
 export type AdminOrder = {
@@ -174,9 +175,10 @@ export function OrdersTable({
                   >
                     <div className="flex items-center justify-between lg:block">
                       <span className="font-mono text-[13px] font-semibold">{order.orderId}</span>
-                      <span className="text-[11.5px] text-[var(--faint-fg)] lg:block">
-                        {formatDateTime(order.createdAt)}
-                      </span>
+                      <DateTime
+                        value={order.createdAt}
+                        className="text-[11.5px] text-[var(--faint-fg)] lg:block"
+                      />
                     </div>
 
                     <div className="mt-1.5 min-w-0 lg:mt-0">

@@ -8,7 +8,8 @@ import { Badge } from '@/components/ui/Badge'
 import { Avatar } from '@/components/ui/Avatar'
 import { EmptyState } from '@/components/ui/Feedback'
 import { Icon } from '@/components/shell/Icons'
-import { money, relativeTime } from '@/lib/format'
+import { money } from '@/lib/format'
+import { TimeAgo } from '@/components/ui/Time'
 
 export type OverviewData = {
   scope: 'all' | 'mine'
@@ -148,7 +149,7 @@ export function Overview({ data }: { data: OverviewData }) {
                         {order.userId?.name ?? 'Unknown'}
                       </p>
                       <p className="truncate font-mono text-[11.5px] text-[var(--faint-fg)]">
-                        {order.orderId} · {relativeTime(order.createdAt)}
+                        {order.orderId} · <TimeAgo value={order.createdAt} />
                       </p>
                     </div>
                     <Badge

@@ -11,7 +11,8 @@ import { EmptyState } from '@/components/ui/Feedback'
 import { Icon } from '@/components/shell/Icons'
 import { useToast } from '@/components/ui/Toast'
 import { api, ApiError } from '@/lib/client/api'
-import { formatDate, money } from '@/lib/format'
+import { money } from '@/lib/format'
+import { DateTime } from '@/components/ui/Time'
 
 export type BatchRow = {
   _id: string
@@ -187,7 +188,8 @@ function BatchCard({ batch }: { batch: BatchRow }) {
         </div>
         <p className="mt-0.5 truncate text-[12.5px] text-[var(--muted-fg)]">
           {typeof batch.productId === 'object' ? batch.productId?.name : 'Product'} ·{' '}
-          {formatDate(batch.orderStartDate)} → {formatDate(batch.orderEndDate)}
+          <DateTime value={batch.orderStartDate} mode="date" /> →{' '}
+          <DateTime value={batch.orderEndDate} mode="date" />
         </p>
         <p className="mt-0.5 text-[12px] text-[var(--faint-fg)]">
           {batch.counts.units} unit{batch.counts.units === 1 ? '' : 's'} across{' '}
@@ -261,7 +263,7 @@ function CouponCard({ coupon }: { coupon: CouponRow }) {
         <p className="mt-0.5 text-[12px] text-[var(--faint-fg)]">
           Used {coupon.usedCount}
           {coupon.usageLimit ? ` of ${coupon.usageLimit}` : ''} · until{' '}
-          {formatDate(coupon.validUntil)}
+          <DateTime value={coupon.validUntil} mode="date" />
         </p>
       </div>
 

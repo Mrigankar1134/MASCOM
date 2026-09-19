@@ -4,7 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { money, formatDateTime } from '@/lib/format'
+import { money } from '@/lib/format'
+import { DateTime } from '@/components/ui/Time'
 import { Glass } from '@/components/ui/Glass'
 import { Badge, StatusBadge } from '@/components/ui/Badge'
 import { Sheet } from '@/components/ui/Sheet'
@@ -117,7 +118,7 @@ export function OrderDetail({
             {order.orderId}
           </h1>
           <p className="mt-1.5 text-[13px] text-[var(--faint-fg)]">
-            Placed {formatDateTime(order.createdAt)}
+            Placed <DateTime value={order.createdAt} />
           </p>
         </div>
         <div className="flex flex-col items-end gap-2">
@@ -292,7 +293,7 @@ export function OrderDetail({
               <Row label="Reference" value={order.paymentReference} mono />
             )}
             {order.verificationDate && (
-              <Row label="Verified" value={formatDateTime(order.verificationDate)} />
+              <Row label="Verified" node={<DateTime value={order.verificationDate} />} />
             )}
           </div>
         )}
@@ -328,12 +329,22 @@ export function OrderDetail({
   )
 }
 
-function Row({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+function Row({
+  label,
+  value,
+  node,
+  mono,
+}: {
+  label: string
+  value?: string
+  node?: React.ReactNode
+  mono?: boolean
+}) {
   return (
     <div className="flex items-baseline justify-between gap-4">
       <dt className="shrink-0 text-[var(--muted-fg)]">{label}</dt>
       <dd className={`min-w-0 truncate text-right font-medium ${mono ? 'font-mono text-[13px]' : 'tabular'}`}>
-        {value}
+        {node ?? value}
       </dd>
     </div>
   )

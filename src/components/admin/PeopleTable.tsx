@@ -10,7 +10,7 @@ import { EmptyState } from '@/components/ui/Feedback'
 import { Icon } from '@/components/shell/Icons'
 import { useToast } from '@/components/ui/Toast'
 import { api, ApiError } from '@/lib/client/api'
-import { formatDate, relativeTime } from '@/lib/format'
+import { DateTime, TimeAgo } from '@/components/ui/Time'
 
 export type PersonRow = {
   _id: string
@@ -131,8 +131,17 @@ export function PeopleTable({
                   <p className="truncate text-[12.5px] text-[var(--muted-fg)]">{person.email}</p>
                   <p className="mt-0.5 text-[11.5px] text-[var(--faint-fg)]">
                     {[person.rollNo, person.section, person.hostel].filter(Boolean).join(' · ')}
-                    {person.lastLogin ? ` · seen ${relativeTime(person.lastLogin)}` : ''}
-                    {!person.lastLogin ? ` · joined ${formatDate(person.createdAt)}` : ''}
+                    {person.lastLogin ? (
+                      <>
+                        {' · seen '}
+                        <TimeAgo value={person.lastLogin} />
+                      </>
+                    ) : (
+                      <>
+                        {' · joined '}
+                        <DateTime value={person.createdAt} mode="date" />
+                      </>
+                    )}
                   </p>
                 </div>
 

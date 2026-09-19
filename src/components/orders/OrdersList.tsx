@@ -4,7 +4,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
-import { money, relativeTime } from '@/lib/format'
+import { money } from '@/lib/format'
+import { TimeAgo } from '@/components/ui/Time'
 import { Glass } from '@/components/ui/Glass'
 import { StatusBadge } from '@/components/ui/Badge'
 import { EmptyState } from '@/components/ui/Feedback'
@@ -126,9 +127,10 @@ export function OrdersList({ orders }: { orders: OrderSummary[] }) {
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <p className="font-mono text-[13px] font-semibold">{order.orderId}</p>
-                        <span className="text-[12px] text-[var(--faint-fg)]">
-                          {relativeTime(order.createdAt)}
-                        </span>
+                        <TimeAgo
+                          value={order.createdAt}
+                          className="text-[12px] text-[var(--faint-fg)]"
+                        />
                       </div>
                       <p className="mt-1 truncate text-[13.5px] text-[var(--muted-fg)]">
                         {units} {units === 1 ? 'item' : 'items'}

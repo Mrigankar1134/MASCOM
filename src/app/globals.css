@@ -241,220 +241,229 @@ body {
   background: transparent;
 }
 
-/* ─── Ambient background ──────────────────────────────────────────────── */
+/* Everything below lives in Tailwind's `components` layer on purpose.
+   Unlayered CSS outranks every Tailwind utility, so an unlayered
+   `.glass { position: relative }` silently beat `absolute` and `fixed`
+   wherever the two met. Inside the layer, utilities win — which is what a
+   class like `glass absolute` obviously means. The accessibility block that
+   follows stays unlayered so it can override both. */
 
-.aurora {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-  background: var(--page-bg);
-}
+@layer components {
+  /* ─── Ambient background ──────────────────────────────────────────────── */
 
-.aurora::before,
-.aurora::after {
-  content: "";
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  will-change: transform;
-}
-
-.aurora::before {
-  width: 72vmax;
-  height: 72vmax;
-  top: -28vmax;
-  left: -18vmax;
-  background: radial-gradient(circle at 30% 30%, var(--aurora-1), transparent 62%);
-  animation: drift-a 34s var(--ease-glass) infinite alternate;
-}
-
-.aurora::after {
-  width: 64vmax;
-  height: 64vmax;
-  bottom: -26vmax;
-  right: -16vmax;
-  background: radial-gradient(circle at 60% 40%, var(--aurora-2), transparent 62%);
-  animation: drift-b 42s var(--ease-glass) infinite alternate;
-}
-
-.aurora > span {
-  position: absolute;
-  width: 46vmax;
-  height: 46vmax;
-  top: 32%;
-  left: 38%;
-  border-radius: 50%;
-  filter: blur(90px);
-  background: radial-gradient(circle, var(--aurora-3), transparent 64%);
-  animation: drift-c 38s var(--ease-glass) infinite alternate;
-}
-
-@keyframes drift-a {
-  to {
-    transform: translate3d(12vw, 8vh, 0) scale(1.15);
+  .aurora {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--page-bg);
   }
-}
-@keyframes drift-b {
-  to {
-    transform: translate3d(-14vw, -10vh, 0) scale(1.1);
+
+  .aurora::before,
+  .aurora::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    will-change: transform;
   }
-}
-@keyframes drift-c {
-  to {
-    transform: translate3d(-10vw, 12vh, 0) scale(0.88);
+
+  .aurora::before {
+    width: 72vmax;
+    height: 72vmax;
+    top: -28vmax;
+    left: -18vmax;
+    background: radial-gradient(circle at 30% 30%, var(--aurora-1), transparent 62%);
+    animation: drift-a 34s var(--ease-glass) infinite alternate;
   }
-}
 
-/* Fine grain keeps large blurred areas from banding */
-.grain::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.032;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ─── Glass primitives ────────────────────────────────────────────────── */
-
-.glass {
-  position: relative;
-  background-color: var(--glass-tint);
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  border: 1px solid var(--glass-edge);
-  box-shadow: var(--glass-shadow);
-  isolation: isolate;
-}
-
-/* The specular rim: bright along the top edge, fading round the sides.
-   This is what sells the material as glass rather than flat translucency. */
-.glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    160deg,
-    var(--glass-specular) 0%,
-    transparent 28%,
-    transparent 72%,
-    color-mix(in srgb, var(--glass-specular) 55%, transparent) 100%
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* A soft lens flare across the upper body of the surface */
-.glass-lens::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(
-    130% 80% at 12% -12%,
-    color-mix(in srgb, var(--glass-specular) 40%, transparent) 0%,
-    transparent 58%
-  );
-  pointer-events: none;
-  z-index: 0;
-}
-
-.glass-strong {
-  background-color: var(--glass-tint-strong);
-  --glass-blur: 40px;
-}
-
-.glass-faint {
-  background-color: var(--glass-tint-faint);
-  --glass-blur: 18px;
-}
-
-.glass-lifted {
-  box-shadow: var(--glass-shadow-lifted);
-}
-
-/* Floating bars that sit *over* live content — action bars, buy bars. The
-   heavier tint stops text scrolling underneath from reading through as noise,
-   which is exactly why Apple's own toolbars use a denser material. */
-.glass-bar {
-  background-color: color-mix(in srgb, var(--page-bg) 88%, transparent);
-  --glass-blur: 36px;
-}
-
-:root[data-theme='dark'] .glass-bar {
-  background-color: color-mix(in srgb, var(--page-bg) 82%, transparent);
-}
-
-/* Chrome that sits over scrolling content: navbars, tab bars, toolbars */
-.glass-chrome {
-  background-color: color-mix(in srgb, var(--page-bg) 68%, transparent);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-}
-
-/* Interactive lift — pointer devices only, so touch targets stay calm */
-@media (hover: hover) and (pointer: fine) {
-  .glass-interactive {
-    transition: transform 0.4s var(--ease-glass), box-shadow 0.4s var(--ease-glass),
-      background-color 0.3s var(--ease-glass);
+  .aurora::after {
+    width: 64vmax;
+    height: 64vmax;
+    bottom: -26vmax;
+    right: -16vmax;
+    background: radial-gradient(circle at 60% 40%, var(--aurora-2), transparent 62%);
+    animation: drift-b 42s var(--ease-glass) infinite alternate;
   }
-  .glass-interactive:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--glass-shadow-lifted);
+
+  .aurora > span {
+    position: absolute;
+    width: 46vmax;
+    height: 46vmax;
+    top: 32%;
+    left: 38%;
+    border-radius: 50%;
+    filter: blur(90px);
+    background: radial-gradient(circle, var(--aurora-3), transparent 64%);
+    animation: drift-c 38s var(--ease-glass) infinite alternate;
+  }
+
+  @keyframes drift-a {
+    to {
+      transform: translate3d(12vw, 8vh, 0) scale(1.15);
+    }
+  }
+  @keyframes drift-b {
+    to {
+      transform: translate3d(-14vw, -10vh, 0) scale(1.1);
+    }
+  }
+  @keyframes drift-c {
+    to {
+      transform: translate3d(-10vw, 12vh, 0) scale(0.88);
+    }
+  }
+
+  /* Fine grain keeps large blurred areas from banding */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ─── Glass primitives ────────────────────────────────────────────────── */
+
+  .glass {
+    position: relative;
+    background-color: var(--glass-tint);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-shadow);
+    isolation: isolate;
+  }
+
+  /* The specular rim: bright along the top edge, fading round the sides.
+     This is what sells the material as glass rather than flat translucency. */
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      160deg,
+      var(--glass-specular) 0%,
+      transparent 28%,
+      transparent 72%,
+      color-mix(in srgb, var(--glass-specular) 55%, transparent) 100%
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* A soft lens flare across the upper body of the surface */
+  .glass-lens::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      130% 80% at 12% -12%,
+      color-mix(in srgb, var(--glass-specular) 40%, transparent) 0%,
+      transparent 58%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .glass-strong {
     background-color: var(--glass-tint-strong);
+    --glass-blur: 40px;
   }
-}
 
-.press {
-  transition: transform 0.16s var(--ease-glass), opacity 0.16s var(--ease-glass);
-}
-.press:active {
-  transform: scale(0.97);
-}
+  .glass-faint {
+    background-color: var(--glass-tint-faint);
+    --glass-blur: 18px;
+  }
 
-/* ─── Type ────────────────────────────────────────────────────────────── */
+  .glass-lifted {
+    box-shadow: var(--glass-shadow-lifted);
+  }
 
-.display {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 0.95;
-}
+  /* Floating bars that sit *over* live content — action bars, buy bars. The
+     heavier tint stops text scrolling underneath from reading through as noise,
+     which is exactly why Apple's own toolbars use a denser material. */
+  .glass-bar {
+    background-color: color-mix(in srgb, var(--page-bg) 88%, transparent);
+    --glass-blur: 36px;
+  }
 
-.eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--faint-fg);
-}
+  :root[data-theme='dark'] .glass-bar {
+    background-color: color-mix(in srgb, var(--page-bg) 82%, transparent);
+  }
 
-.tabular {
-  font-variant-numeric: tabular-nums;
-}
+  /* Chrome that sits over scrolling content: navbars, tab bars, toolbars */
+  .glass-chrome {
+    background-color: color-mix(in srgb, var(--page-bg) 68%, transparent);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+  }
 
-/* ─── Safe areas (iOS notch / home indicator) ─────────────────────────── */
+  /* Interactive lift — pointer devices only, so touch targets stay calm */
+  @media (hover: hover) and (pointer: fine) {
+    .glass-interactive {
+      transition: transform 0.4s var(--ease-glass), box-shadow 0.4s var(--ease-glass),
+        background-color 0.3s var(--ease-glass);
+    }
+    .glass-interactive:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glass-shadow-lifted);
+      background-color: var(--glass-tint-strong);
+    }
+  }
 
-.pt-safe {
-  padding-top: env(safe-area-inset-top, 0px);
-}
-.pb-safe {
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-}
-.mb-safe {
-  margin-bottom: env(safe-area-inset-bottom, 0px);
-}
-.h-safe-bottom {
-  height: env(safe-area-inset-bottom, 0px);
+  .press {
+    transition: transform 0.16s var(--ease-glass), opacity 0.16s var(--ease-glass);
+  }
+  .press:active {
+    transform: scale(0.97);
+  }
+
+  /* ─── Type ────────────────────────────────────────────────────────────── */
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+  }
+
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint-fg);
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ─── Safe areas (iOS notch / home indicator) ─────────────────────────── */
+
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .mb-safe {
+    margin-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .h-safe-bottom {
+    height: env(safe-area-inset-bottom, 0px);
+  }
 }
 
 /* ─── Accessibility fallbacks ─────────────────────────────────────────── */
@@ -506,44 +515,46 @@ body {
   }
 }
 
-/* ─── Utilities ───────────────────────────────────────────────────────── */
+@layer components {
+  /* ─── Utilities ───────────────────────────────────────────────────────── */
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.shimmer {
-  background: linear-gradient(
-    100deg,
-    transparent 20%,
-    color-mix(in srgb, var(--glass-specular) 50%, transparent) 50%,
-    transparent 80%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.6s linear infinite;
-}
-
-@keyframes shimmer {
-  to {
-    background-position: -200% 0;
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
 
-.rise {
-  animation: rise 0.6s var(--ease-glass) both;
+  .shimmer {
+    background: linear-gradient(
+      100deg,
+      transparent 20%,
+      color-mix(in srgb, var(--glass-specular) 50%, transparent) 50%,
+      transparent 80%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s linear infinite;
+  }
+
+  @keyframes shimmer {
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .rise {
+    animation: rise 0.6s var(--ease-glass) both;
+  }
 }

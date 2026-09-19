@@ -13,7 +13,8 @@ import { Avatar } from '@/components/ui/Avatar'
 import { Icon } from '@/components/shell/Icons'
 import { useToast } from '@/components/ui/Toast'
 import { api, ApiError } from '@/lib/client/api'
-import { money, formatDateTime, relativeTime } from '@/lib/format'
+import { money } from '@/lib/format'
+import { DateTime, TimeAgo } from '@/components/ui/Time'
 import { cn } from '@/components/ui/cn'
 
 export type QueueOrder = {
@@ -242,9 +243,10 @@ export function VerifyQueue({
                           <p className="truncate text-[14px] font-semibold">
                             {order.userId?.name ?? 'Unknown student'}
                           </p>
-                          <span className="shrink-0 text-[11px] text-[var(--faint-fg)]">
-                            {relativeTime(order.createdAt)}
-                          </span>
+                          <TimeAgo
+                            value={order.createdAt}
+                            className="shrink-0 text-[11px] text-[var(--faint-fg)]"
+                          />
                         </div>
                         <p className="mt-0.5 truncate font-mono text-[11.5px] text-[var(--muted-fg)]">
                           {order.orderId}
@@ -351,7 +353,7 @@ function VerifyDetail({
               <p className="eyebrow">Order</p>
               <h2 className="mt-1 font-mono text-[22px] font-semibold">{order.orderId}</h2>
               <p className="mt-1 text-[12.5px] text-[var(--faint-fg)]">
-                Placed {formatDateTime(order.createdAt)}
+                Placed <DateTime value={order.createdAt} />
               </p>
             </div>
             <div className="text-right">
@@ -415,7 +417,7 @@ function VerifyDetail({
                 <Fact label="Discount" value={`− ${money(order.discountAmount)}`} />
               )}
               {order.verificationDate && (
-                <Fact label="Decided" value={formatDateTime(order.verificationDate)} />
+                <Fact label="Decided" node={<DateTime value={order.verificationDate} />} />
               )}
             </dl>
             {order.verificationNotes && (
@@ -579,14 +581,24 @@ function VerifyDetail({
   )
 }
 
-function Fact({ label, value, mono }: { label: string; value?: string; mono?: boolean }) {
+function Fact({
+  label,
+  value,
+  node,
+  mono,
+}: {
+  label: string
+  value?: string
+  node?: React.ReactNode
+  mono?: boolean
+}) {
   return (
     <div className="min-w-0">
       <dt className="text-[11px] font-medium uppercase tracking-wide text-[var(--faint-fg)]">
         {label}
       </dt>
       <dd className={cn('mt-0.5 truncate font-medium', mono && 'font-mono text-[12px]')}>
-        {value || '—'}
+        {node ?? value ?? '—'}
       </dd>
     </div>
   )

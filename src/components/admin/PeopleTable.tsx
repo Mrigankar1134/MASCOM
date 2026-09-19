@@ -31,7 +31,7 @@ export type PersonRow = {
 const ROLES = [
   { key: 'isAdmin' as const, label: 'Admin', hint: 'Full access, can override anything.' },
   { key: 'isModerator' as const, label: 'Moderator', hint: 'Manage orders and drops.' },
-  { key: 'isRecipient' as const, label: 'Recipient', hint: 'Verifies payments sent to them.' },
+  { key: 'isRecipient' as const, label: 'Recipient', hint: 'Checks off payments sent to them.' },
 ]
 
 export function PeopleTable({
@@ -83,7 +83,7 @@ export function PeopleTable({
     <div className="mx-auto max-w-[1600px]">
       <ConsoleHeader
         title="People"
-        subtitle="Everyone with an account. Recipients see their own verification queue; moderators manage orders and drops; admins can do everything, including overriding a verification."
+        subtitle="Everyone with an account. Recipients see their own queue, moderators run orders and drops, and admins can do the lot, including overriding a check."
       />
 
       <div className="mb-4 flex flex-wrap items-center gap-2.5">
@@ -109,7 +109,7 @@ export function PeopleTable({
 
       {visible.length === 0 ? (
         <Glass>
-          <EmptyState icon={<Icon.Users size={24} />} title="Nobody matches that" />
+          <EmptyState icon={<Icon.Users size={24} />} title="Nobody matches" />
         </Glass>
       ) : (
         <Glass className="overflow-hidden">

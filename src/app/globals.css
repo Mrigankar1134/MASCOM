@@ -2,13 +2,13 @@
 @import "@fontsource-variable/inter/index.css";
 
 /* ════════════════════════════════════════════════════════════════════════
-   MASCOM — built on Apple's Human Interface foundations.
+   MASCOM, built on Apple's Human Interface foundations.
 
    The pieces that actually make an interface read as Apple, in order of
    how much they matter: the type ramp, the label/fill hierarchy, control
    metrics on a 4pt grid, continuous (squircle) corners, the material
    tiers, and spring motion. Brand gold is layered on top as the tint
-   colour — everything else is system.
+   colour, everything else is system.
    ════════════════════════════════════════════════════════════════════════ */
 
 @theme {
@@ -30,14 +30,14 @@
   --color-gold-600: #b8850a;
   --color-gold-700: #8d6408;
 
-  /* Corner radii — iOS continuous curvature steps */
-  --radius-xs: 0.5rem;     /*  8pt — small chips           */
-  --radius-sm: 0.625rem;   /* 10pt — inline controls       */
-  --radius-md: 0.875rem;   /* 14pt — buttons, fields       */
-  --radius-lg: 1.125rem;   /* 18pt — cards                 */
-  --radius-xl: 1.375rem;   /* 22pt — grouped list sections */
-  --radius-2xl: 1.625rem;  /* 26pt — large cards           */
-  --radius-sheet: 2.5rem;  /* 40pt — sheets                */
+  /* Corner radii, iOS continuous curvature steps */
+  --radius-xs: 0.5rem;     /* 8pt: small chips           */
+  --radius-sm: 0.625rem;   /* 10pt: inline controls       */
+  --radius-md: 0.875rem;   /* 14pt: buttons, fields       */
+  --radius-lg: 1.125rem;   /* 18pt: cards                 */
+  --radius-xl: 1.375rem;   /* 22pt: grouped list sections */
+  --radius-2xl: 1.625rem;  /* 26pt: large cards           */
+  --radius-sheet: 2.5rem;  /* 40pt: sheets                */
   --radius-glass: 1.375rem;
 
   --ease-glass: cubic-bezier(0.32, 0.72, 0, 1);
@@ -48,7 +48,7 @@
 
 /* ─── Type ramp ───────────────────────────────────────────────────────────
    Apple's scale, in rem so it still responds to the reader's font size.
-   Larger sizes tighten tracking, smaller sizes loosen it — that contrast
+   Larger sizes tighten tracking, smaller sizes loosen it, that contrast
    is most of what makes type read as native. */
 
 @layer components {
@@ -152,8 +152,8 @@
 
   --nav-h: 2.75rem;      /* 44pt */
   --tabbar-h: 3.0625rem; /* 49pt */
-  --toolbar-h: 3.25rem;  /* 52pt — macOS unified toolbar */
-  --row-h: 2.75rem;      /* 44pt — minimum touch target  */
+  --toolbar-h: 3.25rem;  /* 52pt: macOS unified toolbar */
+  --row-h: 2.75rem;      /* 44pt: minimum touch target  */
 }
 
 /* Dark palette, applied by explicit choice or by system preference. */
@@ -302,7 +302,7 @@ body {
 .scroll-slim::-webkit-scrollbar-thumb { background: var(--fill); border-radius: 999px; }
 .scroll-slim::-webkit-scrollbar-track { background: transparent; }
 
-/* Continuous corners where the browser supports them — this is the single
+/* Continuous corners where the browser supports them, this is the single
    most recognisable Apple geometry cue. Everywhere else the radius stands
    on its own and nothing breaks. */
 @supports (corner-shape: squircle) {
@@ -412,16 +412,42 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
+  /* The highlight sits at the top-left by default and follows the pointer
+     once --mx/--my are set, so the surface catches the light as you move
+     across it. Touch devices never set them and keep the static flare. */
   background: radial-gradient(
-    128% 78% at 12% -14%,
-    color-mix(in srgb, var(--specular) 36%, transparent) 0%,
-    transparent 56%
+    var(--spot-size, 128%) var(--spot-size, 78%) at var(--mx, 12%) var(--my, -14%),
+    color-mix(in srgb, var(--specular) 38%, transparent) 0%,
+    transparent 58%
   );
+  transition: opacity 0.45s var(--ease-glass);
+  opacity: var(--spot-opacity, 1);
   pointer-events: none;
   /* Behind the content, above the material. A generated ::after is the last
-     child, so at z-index 0 it painted over the text and washed it out — the
+     child, so at z-index 0 it painted over the text and washed it out, the
      isolation on .glass keeps a negative index from escaping the surface. */
   z-index: -1;
+}
+
+/* Tracked surfaces keep the resting flare and bloom as the pointer enters.
+   The resting opacity matters: a finger never fires pointermove, so a
+   touch-only device would otherwise be left with a dead surface. */
+.spotlight {
+  --spot-size: 54%;
+  --spot-opacity: 0.6;
+}
+
+.spotlight.glass-lens::after {
+  background: radial-gradient(
+    var(--spot-size) var(--spot-size) at var(--mx, 12%) var(--my, -14%),
+    color-mix(in srgb, var(--specular) 92%, transparent) 0%,
+    color-mix(in srgb, var(--tint-glow) 70%, transparent) 36%,
+    transparent 68%
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .spotlight:hover { --spot-opacity: 1; }
 }
 
 .glass-strong { background-color: var(--mat-tint-thick); --mat-blur: 48px; }
@@ -582,6 +608,23 @@ a.ios-row:active, button.ios-row:active { background: var(--fill-3); }
   }
 
   @keyframes shimmer { to { background-position: -200% 0; } }
+
+  /* A slow sheen travelling across the accent word in the hero. */
+  .sheen {
+    background-size: 220% 100%;
+    animation: sheen 7s var(--ease-glass) infinite;
+  }
+
+  @keyframes sheen {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Confetti shard used on the order-placed screen. */
+  @keyframes shard {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translate3d(var(--dx), var(--dy), 0) rotate(var(--dr)) scale(0.6); opacity: 0; }
+  }
   @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
   .rise { animation: rise 0.6s var(--ease-glass) both; }

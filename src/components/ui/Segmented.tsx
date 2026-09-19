@@ -9,7 +9,7 @@ type Option<T extends string> = { value: T; label: string; count?: number }
 /**
  * UISegmentedControl, as it actually looks: a 32pt track on a neutral fill
  * with a white (or elevated grey) thumb that slides. The thumb is not
- * tinted — in UIKit the selection reads through elevation and weight, and
+ * tinted, in UIKit the selection reads through elevation and weight, and
  * tinting it is the giveaway that a control was drawn rather than used.
  */
 export function Segmented<T extends string>({

@@ -11,7 +11,7 @@ import { verifyPaymentSchema } from '@/lib/validators'
  * Confirms (or rejects) a payment.
  *
  * Authority rule, unchanged from the current system: the person the money was
- * sent to is the one who says it arrived. Admins can override — moderators
+ * sent to is the one who says it arrived. Admins can override, moderators
  * cannot, since they did not receive the money either.
  */
 export const PATCH = route(async (req, ctx: { params: Promise<{ id: string }> }) => {

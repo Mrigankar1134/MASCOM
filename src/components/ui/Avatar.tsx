@@ -2,7 +2,7 @@ import { initials } from '@/lib/format'
 import { cn } from './cn'
 
 /**
- * Falls back to a monogram when someone has no photo — used heavily in the
+ * Falls back to a monogram when someone has no photo, used heavily in the
  * recipient picker, where a face makes it obvious who you are paying.
  */
 export function Avatar({

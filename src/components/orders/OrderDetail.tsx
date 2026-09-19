@@ -10,6 +10,7 @@ import { Glass } from '@/components/ui/Glass'
 import { Badge, StatusBadge } from '@/components/ui/Badge'
 import { Sheet } from '@/components/ui/Sheet'
 import { Icon } from '@/components/shell/Icons'
+import { Celebrate } from '@/components/ui/Celebrate'
 import { swatch } from '@/components/shop/ProductCard'
 
 export type OrderRecord = {
@@ -42,10 +43,10 @@ export type OrderRecord = {
 
 /** The four stages a student actually cares about, in order. */
 const JOURNEY = [
-  { key: 'placed', label: 'Order placed', note: 'We have your order and your proof of payment.' },
-  { key: 'verified', label: 'Payment verified', note: 'The coordinator confirmed your UPI payment.' },
-  { key: 'production', label: 'In production', note: 'Your size and colour are with the vendor.' },
-  { key: 'collected', label: 'Ready to collect', note: 'Pick it up at the collection counter.' },
+  { key: 'placed', label: 'Order placed', note: 'We have got your order and your screenshot.' },
+  { key: 'verified', label: 'Payment checked', note: 'The coordinator found your payment. Nice.' },
+  { key: 'production', label: 'Being made', note: 'Your size and colour are with the vendor now.' },
+  { key: 'collected', label: 'Ready to collect', note: 'Come pick it up at the collection counter.' },
 ]
 
 function stageIndex(order: OrderRecord): number {
@@ -93,18 +94,19 @@ export function OrderDetail({
           transition={{ type: 'spring', damping: 24, stiffness: 300 }}
           className="mb-4"
         >
-          <Glass tone="strong" className="flex items-center gap-3.5 p-4">
+          <Glass tone="strong" className="relative flex items-center gap-3.5 p-4">
+            <Celebrate />
             <span
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl"
+              className="relative z-10 grid h-11 w-11 shrink-0 place-items-center rounded-2xl"
               style={{ background: 'var(--ok-bg)', color: 'var(--ok)' }}
             >
               <Icon.CheckCircle size={22} />
             </span>
             <div>
-              <p className="t-subhead font-semibold">Order placed</p>
+              <p className="t-subhead font-semibold">You are in</p>
               <p className="mt-0.5 t-footnote text-[var(--label-2)]">
-                {order.paidTo ?? 'The coordinator'} will verify your payment shortly. You will see
-                it update right here.
+                {order.paidTo ?? 'The coordinator'} will check your payment soon. It updates right
+                here, so no need to chase anyone.
               </p>
             </div>
           </Glass>
@@ -140,10 +142,10 @@ export function OrderDetail({
               <Icon.Alert size={20} />
             </span>
             <div>
-              <p className="t-subhead font-semibold">Payment could not be verified</p>
+              <p className="t-subhead font-semibold">We could not find that payment</p>
               <p className="mt-1 t-footnote leading-relaxed text-[var(--label-2)]">
                 {order.verificationNotes ??
-                  `${order.paidTo ?? 'The coordinator'} could not match this payment in their UPI history. Reach out to them directly with your reference number.`}
+                  `${order.paidTo ?? 'The coordinator'} could not match this in their UPI history. Message them directly with your reference number and they will sort it out.`}
               </p>
             </div>
           </div>
@@ -287,7 +289,7 @@ export function OrderDetail({
             className="mt-4 space-y-2.5 border-t pt-4 t-footnote"
             style={{ borderColor: 'var(--separator-soft)' }}
           >
-            <Row label="Paid to" value={recipient?.name ?? order.paidTo ?? '—'} />
+            <Row label="Paid to" value={recipient?.name ?? order.paidTo ?? 'Not set'} />
             {recipient?.upiId && <Row label="UPI ID" value={recipient.upiId} mono />}
             {order.paymentReference && (
               <Row label="Reference" value={order.paymentReference} mono />
@@ -309,7 +311,7 @@ export function OrderDetail({
             >
               <Icon.Camera size={17} />
             </span>
-            <span className="flex-1 t-footnote font-medium">View your payment screenshot</span>
+            <span className="flex-1 t-footnote font-medium">See your screenshot</span>
             <Icon.Chevron size={16} className="text-[var(--label-3)]" />
           </button>
         )}

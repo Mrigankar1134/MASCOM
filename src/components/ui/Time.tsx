@@ -33,7 +33,7 @@ export function TimeAgo({
     return () => clearInterval(id)
   }, [value])
 
-  if (!value) return <span className={className}>—</span>
+  if (!value) return <span className={className}>-</span>
 
   return (
     <span className={className} suppressHydrationWarning>
@@ -51,7 +51,7 @@ export function DateTime({
   mode?: 'date' | 'datetime'
   className?: string
 }) {
-  if (!value) return <span className={className}>—</span>
+  if (!value) return <span className={className}>-</span>
 
   // Same format on both sides; suppressHydrationWarning covers the server
   // rendering this in UTC while the viewer reads it in their own timezone.

@@ -5,7 +5,7 @@ import { fail, requireUser, route } from '@/lib/api-helpers'
 /**
  * Renders an amount-locked UPI QR for a recipient.
  *
- * A coordinator's saved QR is a plain payee code — the student has to type the
+ * A coordinator's saved QR is a plain payee code, the student has to type the
  * amount themselves, which is where most mismatches come from. Encoding the
  * exact total here removes that step, and the recipient's own QR stays
  * available as a fallback.
@@ -35,7 +35,7 @@ export const GET = route(async (req) => {
   return new Response(new Uint8Array(png), {
     headers: {
       'Content-Type': 'image/png',
-      // Personal payment details — never cache these in a shared cache.
+      // Personal payment details, never cache these in a shared cache.
       'Cache-Control': 'private, max-age=300',
     },
   })

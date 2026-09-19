@@ -13,7 +13,7 @@ export function Footer() {
           <div className="max-w-sm">
             <Wordmark />
             <p className="mt-4 t-subhead leading-relaxed text-[var(--label-2)]">
-              {site.longName}, {site.institute}. Limited drops, ordered and tracked from your phone.
+              {site.longName}, {site.institute}. Small drops, ordered and tracked from your phone.
             </p>
           </div>
 
@@ -50,9 +50,9 @@ export function Footer() {
           style={{ borderColor: 'var(--separator-soft)' }}
         >
           <p>
-            © {new Date().getFullYear()} {site.name} — {site.institute}
+            © {new Date().getFullYear()} {site.name}, {site.institute}
           </p>
-          <p>Payments are collected by committee members over UPI.</p>
+          <p>Payments are collected by committee members on UPI.</p>
         </div>
       </div>
     </footer>

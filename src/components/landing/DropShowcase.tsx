@@ -15,11 +15,11 @@ export function DropShowcase({ products }: { products: ShopProduct[] }) {
         <SectionHeading
           id="merch"
           eyebrow="Latest drop"
-          title={products.length > 0 ? 'Available now' : 'No live drop right now'}
+          title={products.length > 0 ? 'Out now' : 'Nothing live right now'}
           body={
             products.length > 0
-              ? 'Pick your size and colour, pay by UPI, and track it all the way to the collection counter.'
-              : 'The next drop is being prepped. Sign in and you will see it here the moment it opens.'
+              ? 'Pick a size and colour, pay on UPI, then watch it all the way to the collection counter.'
+              : "We're prepping the next one. Sign in and it will show up here the second it opens."
           }
         />
         {products.length > 0 && (
@@ -54,10 +54,10 @@ export function DropShowcase({ products }: { products: ShopProduct[] }) {
               <Icon.Box size={24} />
             </span>
             <div>
-              <h3 className="t-title-3 font-semibold tracking-tight">Nothing live at the moment</h3>
+              <h3 className="t-title-3 font-semibold tracking-tight">Nothing live right now</h3>
               <p className="mx-auto mt-2 max-w-sm t-subhead leading-relaxed text-[var(--label-2)]">
-                Drops open for a short window. Create an account now so checkout takes seconds when
-                the next one lands.
+                Drops stay open for a few days at most. Make an account now so checkout takes
+                seconds when the next one lands.
               </p>
             </div>
             <Link
@@ -65,7 +65,7 @@ export function DropShowcase({ products }: { products: ShopProduct[] }) {
               className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 t-subhead font-semibold"
               style={{ background: 'var(--tint-solid)', color: 'var(--tint-contrast)' }}
             >
-              Create your account
+              Make an account
               <Icon.ArrowRight size={16} />
             </Link>
           </Glass>

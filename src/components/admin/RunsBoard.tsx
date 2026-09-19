@@ -56,7 +56,7 @@ export function RunsBoard({
     <div className="mx-auto max-w-[1600px]">
       <ConsoleHeader
         title="Runs & coupons"
-        subtitle="A run groups every order placed inside a window so the vendor gets one consolidated list. Orders placed outside any run sit in the waiting pool until you open one."
+        subtitle="A run groups every order placed inside a window so the vendor gets one list. Anything ordered outside a run waits in the pool until you open one."
       />
 
       <div className="grid gap-4 xl:grid-cols-2">
@@ -92,7 +92,7 @@ export function RunsBoard({
               <EmptyState
                 icon={<Icon.Truck size={22} />}
                 title="No runs yet"
-                description="Open one for the current order window so orders stop piling up as WAITING."
+                description="Open one for the current window so orders stop piling up as WAITING."
                 className="py-10"
               />
             </Glass>
@@ -121,7 +121,7 @@ export function RunsBoard({
               <EmptyState
                 icon={<Icon.Tag size={22} />}
                 title="No coupons"
-                description="Create one for an early-bird window or a committee discount."
+                description="Make one for an early-bird window or a committee discount."
                 className="py-10"
               />
             </Glass>
@@ -308,7 +308,7 @@ function BatchEditor({
       })
       toast.success(
         result.adopted > 0
-          ? `Run opened — ${result.adopted} waiting order${result.adopted === 1 ? '' : 's'} picked up.`
+          ? `Run opened. ${result.adopted} waiting order${result.adopted === 1 ? '' : 's'} picked up.`
           : 'Run opened.',
       )
       router.refresh()
@@ -328,7 +328,7 @@ function BatchEditor({
       open
       onClose={onClose}
       title="Open a production run"
-      description="Orders placed inside this window are grouped under one batch number, including ones already waiting."
+      description="Everything ordered inside this window gets grouped under one batch number, including anything already waiting."
     >
       <form onSubmit={save} className="space-y-4">
         <Select name="productId" label="Product" required error={errors.productId}>
@@ -346,7 +346,7 @@ function BatchEditor({
           placeholder="B-02"
           required
           error={errors.batchNumber}
-          hint="Printed on the vendor's list and shown to students."
+          hint="Goes on the vendor list and shows up for students."
         />
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -426,7 +426,7 @@ function CouponEditor({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Sheet open onClose={onClose} title="New coupon" description="Applied at checkout against the order subtotal.">
+    <Sheet open onClose={onClose} title="New coupon" description="Comes off the order subtotal at checkout.">
       <form onSubmit={save} className="space-y-4">
         <Input
           name="code"

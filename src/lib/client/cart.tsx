@@ -38,13 +38,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false)
 
   // The bag lives in localStorage so a student can close the tab mid-drop and
-  // come back to it — no server round trip, and it works offline.
+  // come back to it, no server round trip, and it works offline.
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
       if (raw) setLines(JSON.parse(raw) as CartLine[])
     } catch {
-      /* corrupted or unavailable storage — start with an empty bag */
+      /* corrupted or unavailable storage, start with an empty bag */
     }
     setReady(true)
   }, [])
@@ -54,7 +54,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(lines))
     } catch {
-      /* quota or private mode — the bag just won't survive a reload */
+      /* quota or private mode, the bag just won't survive a reload */
     }
   }, [lines, ready])
 

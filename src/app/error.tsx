@@ -32,10 +32,10 @@ export default function ErrorBoundary({
           <Icon.Alert size={24} />
         </span>
 
-        <h1 className="mt-5 t-title-3 font-semibold tracking-tight">Something broke</h1>
+        <h1 className="mt-5 t-title-3 font-semibold tracking-tight">Well, that broke</h1>
         <p className="mt-2 t-subhead leading-relaxed text-[var(--label-2)]">
-          This is on us, not you. Try again — if it keeps happening, send a coordinator the code
-          below.
+          That one is on us, not you. Give it another go, and if it keeps happening send a
+          coordinator the code below.
         </p>
 
         {error.digest && (

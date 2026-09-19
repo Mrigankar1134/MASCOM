@@ -25,7 +25,7 @@ export const DELETE = route(async (_req, ctx: { params: Promise<{ id: string }> 
   const coupon = await Coupon.findById(id)
   if (!coupon) return fail('Coupon not found.', 404)
 
-  // A used coupon is part of order history — retire it instead of deleting.
+  // A used coupon is part of order history, retire it instead of deleting.
   if (coupon.usedCount > 0) {
     coupon.active = false
     await coupon.save()

@@ -35,7 +35,7 @@ export function BagScreen() {
           <EmptyState
             icon={<Icon.Bag size={24} />}
             title="Nothing in here yet"
-            description="Once a drop is open, everything you pick lands here and stays put until you check out."
+            description="Anything you pick lands here and stays put, even if you close the tab."
             action={
               <Link href="/shop">
                 <Button icon={<Icon.ArrowRight size={16} />}>Browse the drop</Button>
@@ -168,7 +168,7 @@ export function BagScreen() {
           </div>
           <div className="flex justify-between">
             <dt className="text-[var(--label-2)]">Collection</dt>
-            <dd className="font-medium">On campus — free</dd>
+            <dd className="font-medium">Free, on campus</dd>
           </div>
           <div
             className="flex items-baseline justify-between border-t pt-3 t-title-3 font-semibold"
@@ -187,7 +187,7 @@ export function BagScreen() {
         </Link>
 
         <p className="t-caption-1 mt-3 text-center text-[var(--label-3)]">
-          You will pay a coordinator by UPI and upload the screenshot.
+          Next up: pay a coordinator on UPI and send the screenshot.
         </p>
       </Glass>
       </div>

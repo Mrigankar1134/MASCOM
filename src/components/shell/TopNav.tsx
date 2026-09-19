@@ -19,7 +19,7 @@ const LINKS = [
 ]
 
 /**
- * Desktop navigation. On phones it collapses to a slim glass header — the
+ * Desktop navigation. On phones it collapses to a slim glass header, the
  * TabBar carries navigation there instead.
  */
 export function TopNav({ transparentUntilScroll = false }: { transparentUntilScroll?: boolean }) {

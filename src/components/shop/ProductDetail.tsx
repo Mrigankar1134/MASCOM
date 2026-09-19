@@ -38,7 +38,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
   const needsSize = product.availableSizes.length > 0
 
   // Only a closed drop disables the buttons. A missing size leaves them
-  // active and says what is needed on tap — a greyed-out control with no
+  // active and says what is needed on tap, a greyed-out control with no
   // explanation reads as broken, and it is the first thing you see here.
   const canAdd = product.available
 
@@ -258,13 +258,13 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                 id="custom-name"
                 value={customName}
                 onChange={(e) => setCustomName(e.target.value.slice(0, 16))}
-                placeholder="Optional — up to 16 characters"
+                placeholder="Optional, up to 16 characters"
                 maxLength={16}
                 className="custom-name mt-3 h-[44px] w-full rounded-[12px] border-0 px-4 t-body uppercase tracking-wide outline-none transition-shadow focus:shadow-[0_0_0_3.5px_var(--tint-glow)]"
                 style={{ background: 'var(--field-bg)' }}
               />
               <p className="mt-1.5 px-1 t-caption-1 text-[var(--label-3)]">
-                Printed exactly as typed. {16 - customName.length} characters left.
+                Goes on exactly as you type it. {16 - customName.length} left.
               </p>
             </section>
           )}
@@ -299,7 +299,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
             </div>
           </section>
 
-          {/* Desktop actions — phones get the sticky bar below instead. */}
+          {/* Desktop actions, phones get the sticky bar below instead. */}
           <div className="mt-9 hidden gap-3 lg:flex">
             <Button size="lg" onClick={() => addToBag(true)} disabled={!canAdd}>
               {product.available ? 'Buy now' : 'Orders closed'}
@@ -314,10 +314,10 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
               <Icon.Wallet size={18} />
             </span>
             <p className="t-footnote leading-relaxed text-[var(--label-2)]">
-              <span className="font-semibold text-[var(--label)]">How payment works.</span> MASCOM
-              has no payment gateway, so you pay a coordinator directly over UPI. At checkout you
-              pick who you are paying, scan their QR, and upload the screenshot. That coordinator
-              confirms it and your order is locked in.
+              <span className="font-semibold text-[var(--label)]">How paying works.</span> We do not
+              have a payment gateway, so you pay a coordinator directly on UPI. At checkout you pick
+              who you are paying, scan their QR, and send the screenshot. They confirm it and your
+              order is locked in.
             </p>
           </Glass>
         </div>

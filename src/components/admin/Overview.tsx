@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Glass } from '@/components/ui/Glass'
+import { Counter } from '@/components/ui/Counter'
 import { Badge } from '@/components/ui/Badge'
 import { Avatar } from '@/components/ui/Avatar'
 import { EmptyState } from '@/components/ui/Feedback'
@@ -55,10 +56,10 @@ export function Overview({ data }: { data: OverviewData }) {
               <span className="font-semibold text-[var(--label)]">
                 {totals.pending} {totals.pending === 1 ? 'payment' : 'payments'}
               </span>{' '}
-              waiting on you — {money(totals.awaiting)} unverified.
+              waiting on you, {money(totals.awaiting)} still unverified.
             </>
           ) : (
-            'Nothing is waiting on you. Everything sent your way has been checked.'
+            'Nothing waiting on you. Everything sent your way is checked off.'
           )}
         </p>
       </header>
@@ -75,7 +76,7 @@ export function Overview({ data }: { data: OverviewData }) {
             <div className="min-w-0 flex-1">
               <p className="t-subhead font-semibold">Verify {totals.pending} pending</p>
               <p className="t-footnote text-[var(--label-2)]">
-                Students are waiting on confirmation before their orders move.
+                Students are waiting on you before their orders can move.
               </p>
             </div>
             <Icon.Chevron size={18} className="shrink-0 text-[var(--label-3)]" />
@@ -127,7 +128,7 @@ export function Overview({ data }: { data: OverviewData }) {
       <div className="mt-4 grid gap-4 xl:grid-cols-2">
         <Glass className="p-5">
           <div className="mb-4 flex items-baseline justify-between">
-            <h2 className="t-subhead font-semibold tracking-tight">Latest orders</h2>
+            <h2 className="t-subhead font-semibold tracking-tight">Just in</h2>
             <Link href="/admin/verify" className="t-caption-1 font-semibold" style={{ color: 'var(--tint)' }}>
               See all
             </Link>
@@ -177,7 +178,7 @@ export function Overview({ data }: { data: OverviewData }) {
         {data.topProducts.length > 0 && (
           <Glass className="p-5">
             <div className="mb-4 flex items-baseline justify-between">
-              <h2 className="t-subhead font-semibold tracking-tight">Best sellers</h2>
+              <h2 className="t-subhead font-semibold tracking-tight">Selling best</h2>
               <Link href="/admin/products" className="t-caption-1 font-semibold" style={{ color: 'var(--tint)' }}>
                 Manage drops
               </Link>
@@ -235,12 +236,12 @@ function Stat({
     tone === 'ok' ? 'var(--ok)' : tone === 'warn' ? 'var(--warn)' : tone === 'danger' ? 'var(--danger)' : undefined
 
   return (
-    <Glass className="p-4">
+    <Glass spotlight className="p-4">
       <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
         {label}
       </p>
       <p className="mt-2 text-[clamp(1.35rem,3.2vw,1.75rem)] font-semibold tabular" style={{ color }}>
-        {value}
+        <Counter value={value} />
       </p>
       {hint && <p className="mt-1 t-caption-1 text-[var(--label-2)]">{hint}</p>}
     </Glass>
@@ -293,7 +294,7 @@ function StatusRow({
 }
 
 /**
- * Daily collections. One measure, one hue — orders and rupees are different
+ * Daily collections. One measure, one hue, orders and rupees are different
  * scales, so orders ride in the tooltip rather than a second axis.
  */
 function CollectionsChart({ series }: { series: OverviewData['series'] }) {

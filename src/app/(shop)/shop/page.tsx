@@ -4,7 +4,7 @@ import { ShopGrid } from '@/components/shop/ShopGrid'
 
 export const metadata: Metadata = {
   title: 'Shop',
-  description: 'The current MASCOM drop — pick your size, pay by UPI, track delivery.',
+  description: 'The current MASCOM drop. Pick your size, pay on UPI, track it to collection day.',
 }
 export const dynamic = 'force-dynamic'
 

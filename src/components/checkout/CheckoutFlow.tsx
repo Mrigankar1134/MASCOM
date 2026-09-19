@@ -47,7 +47,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
   const [coupon, setCoupon] = useState<AppliedCoupon | null>(null)
 
   // The QR encodes this number, and the server recomputes the same discount
-  // when the order is created — the two must never drift apart.
+  // when the order is created, the two must never drift apart.
   const total = coupon ? coupon.total : cart.subtotal
   const note = useMemo(
     () => `MASCOM ${user?.rollNo ?? user?.name ?? ''}`.trim().slice(0, 48),
@@ -61,7 +61,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
           <EmptyState
             icon={<Icon.Bag size={24} />}
             title="Your bag is empty"
-            description="Add something from the drop and come back — your payment details stay saved."
+            description="Add something from the drop and come back. Nothing you picked gets lost."
             action={
               <Link
                 href="/shop"
@@ -83,8 +83,8 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
         <Glass className="mt-10">
           <EmptyState
             icon={<Icon.Wallet size={24} />}
-            title="No one is collecting payments yet"
-            description="A coordinator has to be set up as a payment recipient before orders can be placed. Ping the MASCOM team and try again shortly."
+            title="Nobody is collecting payments yet"
+            description="A coordinator needs to be set up to take payments before anyone can order. Ping the MASCOM team and try again in a bit."
           />
         </Glass>
       </CheckoutShell>
@@ -114,11 +114,11 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
       })
 
       cart.clear()
-      toast.success('Order placed. Waiting on verification.')
+      toast.success('Order placed. Sit tight while it gets checked.')
       router.push(`/orders/${result.order.orderId}?placed=1`)
     } catch (err) {
       toast.error(
-        err instanceof ApiError ? err.message : 'Could not place the order. Try again.',
+        err instanceof ApiError ? err.message : 'Could not place that order. Give it another go.',
       )
       setPlacing(false)
     }
@@ -153,7 +153,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
                 <section>
                   <StepHeading
                     title="Who are you paying?"
-                    body="MASCOM has no payment gateway, so you pay a coordinator directly. Whoever you pick here receives the money and is the one who verifies your order."
+                    body="We do not have a payment gateway, so you pay a coordinator directly. Whoever you pick gets the money and is the one who checks your order off."
                   />
                   <RecipientPicker
                     recipients={recipients}
@@ -170,7 +170,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
                 <section>
                   <StepHeading
                     title={`Pay ${money(total)}`}
-                    body={`Scan the code or open your UPI app, then come back and upload the screenshot.`}
+                    body={`Scan the code or open your UPI app, then pop back and send us the screenshot.`}
                   />
                   <PaymentPanel recipient={recipient} amount={total} note={note} />
                 </section>
@@ -179,8 +179,8 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
               {step === 3 && recipient && (
                 <section>
                   <StepHeading
-                    title="Show us the proof"
-                    body={`${recipient.name} will check this against their own UPI history before confirming your order.`}
+                    title="Send us the proof"
+                    body={`${recipient.name} will match this against their own UPI history, then confirm your order.`}
                   />
                   <ProofUpload
                     screenshotUrl={screenshotUrl}
@@ -211,7 +211,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
           </AnimatePresence>
         </div>
 
-        {/* Summary rail — a sticky sidebar on desktop, a card up top on mobile */}
+        {/* Summary rail, a sticky sidebar on desktop, a card up top on mobile */}
         <aside className={`order-first lg:order-last ${step >= 2 ? 'hidden lg:block' : ''}`}>
           <div className="lg:sticky lg:top-6">
             <SummaryCard
@@ -307,8 +307,8 @@ function ReviewStep({
   return (
     <section>
       <StepHeading
-        title="Check your order"
-        body="Sizes and names are printed exactly as shown here — they cannot be changed once production starts."
+        title="Quick check"
+        body="Sizes and names get printed exactly as they show here, and they are locked once production starts."
       />
 
       <ul className="space-y-2.5">
@@ -408,7 +408,7 @@ function CouponField({
       })
       onCoupon(result)
       setCode('')
-      toast.success(`${result.code} applied — ${money(result.discount)} off.`)
+      toast.success(`${result.code} applied. ${money(result.discount)} off.`)
     } catch (err) {
       toast.error(err instanceof ApiError ? err.message : 'Could not check that code.')
     } finally {

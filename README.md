@@ -1,6 +1,6 @@
 # MASCOM
 
-The Merchandising & Sponsorship Committee store for IIM Amritsar — a single
+The Merchandising & Sponsorship Committee store for IIM Amritsar, a single
 Next.js app covering both the student ordering flow and the committee console.
 
 Mobile-first for students, desktop-first for the console, with an adaptive
@@ -17,7 +17,7 @@ UPI. The whole product is built around making that trustworthy:
    checkout. That single choice decides two things: whose QR they scan, and
    whose verification queue the order lands in.
 2. They scan an **amount-locked QR** generated from that coordinator's UPI ID
-   with the exact total already encoded — nothing to mistype. Their own saved QR
+   with the exact total already encoded, nothing to mistype. Their own saved QR
    stays one tap away as a fallback, and on a phone a `upi://` link hands off
    straight to GPay / PhonePe / Paytm.
 3. They upload the payment screenshot (downscaled in the browser first) and,
@@ -31,7 +31,7 @@ UPI. The whole product is built around making that trustworthy:
    back.
 
 Prices, discounts and coupon maths are always recomputed on the server at order
-creation — the client's numbers are never trusted. The coupon endpoint exists so
+creation, the client's numbers are never trusted. The coupon endpoint exists so
 the QR shows the same total the server will later expect.
 
 ---
@@ -50,11 +50,11 @@ Open http://localhost:3000.
 
 | Variable | What it does |
 | --- | --- |
-| `MONGODB_URI` | The database. Point it at the existing MASCOM cluster — this app reads and writes the same collections, so nothing has to be migrated. |
+| `MONGODB_URI` | The database. Point it at the existing MASCOM cluster, this app reads and writes the same collections, so nothing has to be migrated. |
 | `JWT_SECRET` | Signs session cookies. 32+ random chars (`openssl rand -base64 48`). |
 | `SESSION_TTL_DAYS` | How long a session lasts. Defaults to 30. |
 | `ALLOWED_EMAIL_DOMAINS` | Comma-separated domains allowed to register. Empty allows any. |
-| `BOOTSTRAP_ADMIN_EMAILS` | Emails granted admin on first sign-up — use this to create the first admin. |
+| `BOOTSTRAP_ADMIN_EMAILS` | Emails granted admin on first sign-up, use this to create the first admin. |
 | `UPLOAD_DIR` | Where screenshots, product photos and QR images are written. Use a mounted persistent disk in production. |
 | `UPLOAD_PUBLIC_PATH` | Public path those files are served from. |
 | `NEXT_PUBLIC_SITE_URL` | Canonical site URL, used for metadata. |
@@ -76,7 +76,7 @@ Open http://localhost:3000.
 ```
 src/
   app/
-    page.tsx              Landing — hero, live drop, about, team, gallery
+    page.tsx              Landing, hero, live drop, about, team, gallery
     (focus)/              Screens that deserve full attention: sign in, checkout
     (shop)/               Student shell: shop, bag, orders, account
     admin/                Console: overview, verify, orders, drops, collections,
@@ -112,8 +112,8 @@ Roles fold together, so one person can be both a recipient and an admin.
 tint, a specular rim, a lens flare and a cast shadow, over a slow ambient
 gradient. Two accent tokens matter:
 
-- `--accent` — the readable ink/mark colour on the page background.
-- `--accent-solid` — the fill that sits *behind* `--accent-contrast` text.
+- `--accent`, the readable ink/mark colour on the page background.
+- `--accent-solid`, the fill that sits *behind* `--accent-contrast` text.
 
 In light mode they differ deliberately: a gold dark enough to read as text is
 too dark to put dark text on top of.
@@ -127,8 +127,8 @@ drift, `prefers-contrast: more` thickens hairlines, and browsers without
 
 ## Data
 
-The Mongoose models mirror the existing collections field for field — `users`,
-`products`, `orders`, `paymentrecipients`, `batches`, `coupons` — so this app
+The Mongoose models mirror the existing collections field for field, `users`,
+`products`, `orders`, `paymentrecipients`, `batches`, `coupons`, so this app
 can be pointed at the live database directly.
 
 A few behaviours worth knowing:
@@ -146,6 +146,6 @@ A few behaviours worth knowing:
 ## Uploads
 
 Files are written to `UPLOAD_DIR` and served from `UPLOAD_PUBLIC_PATH`, the same
-shape the previous Express server used — an existing mounted disk carries over.
+shape the previous Express server used, an existing mounted disk carries over.
 On a platform with an ephemeral filesystem, point `UPLOAD_DIR` at a mounted
 volume, or payment screenshots will not survive a redeploy.

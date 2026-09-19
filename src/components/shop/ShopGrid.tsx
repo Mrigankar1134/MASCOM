@@ -35,8 +35,8 @@ export function ShopGrid({ products }: { products: ShopProduct[] }) {
         title="The drop"
         subtitle={
           openCount > 0
-            ? 'Pick your colour and size, pay a coordinator by UPI, and upload the screenshot.'
-            : 'Nothing is open for orders right now. Everything here is from past drops.'
+            ? 'Grab your size, pay a coordinator on UPI, send the screenshot. That is the whole thing.'
+            : 'Nothing is open right now. Everything here is from past drops.'
         }
       >
         {categories.length > 1 && (
@@ -60,8 +60,8 @@ export function ShopGrid({ products }: { products: ShopProduct[] }) {
           <div className="ios-group">
             <EmptyState
               icon={<Icon.Box size={24} />}
-              title="No drop is live right now"
-              description="Drops open for a short window and sell out fast. Check back, or follow the Instagram for the announcement."
+              title="Nothing live right now"
+              description="Drops go up for a few days and sell out fast. Check back soon, or keep an eye on our Instagram."
               action={
                 <Link href="/">
                   <Button>Back to home</Button>

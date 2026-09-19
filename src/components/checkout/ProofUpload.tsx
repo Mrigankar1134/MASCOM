@@ -31,17 +31,17 @@ export function ProofUpload({
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Upload a screenshot image.')
+      toast.error('That needs to be a screenshot image.')
       return
     }
     if (file.size > MAX_SCREENSHOT_BYTES * 3) {
-      toast.error('That image is far too large.')
+      toast.error('That image is way too big.')
       return
     }
 
     setUploading(true)
     try {
-      // Shrink on-device first: phone screenshots are routinely 4–8MB.
+      // Shrink on-device first: phone screenshots are routinely 4-8MB.
       const compressed = await compressImage(file)
       const form = new FormData()
       form.append('file', compressed)
@@ -51,7 +51,7 @@ export function ProofUpload({
       onScreenshot(result.url)
       toast.success('Screenshot attached.')
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : 'Upload failed. Try again.')
+      toast.error(err instanceof ApiError ? err.message : 'That upload did not go through. Try again.')
     } finally {
       setUploading(false)
     }
@@ -60,10 +60,10 @@ export function ProofUpload({
   return (
     <div className="space-y-4">
       <Glass tone="strong" className="p-5">
-        <h3 className="t-callout font-semibold tracking-tight">Upload your payment screenshot</h3>
+        <h3 className="t-callout font-semibold tracking-tight">Send your payment screenshot</h3>
         <p className="mt-1.5 t-footnote leading-relaxed text-[var(--label-2)]">
-          The success screen from your UPI app. This is what the coordinator checks against their
-          own statement, so make sure the amount and time are visible.
+          The success screen from your UPI app. The coordinator matches this against their own
+          statement, so make sure the amount and time are readable.
         </p>
 
         <input
@@ -151,7 +151,7 @@ export function ProofUpload({
                 {uploading ? 'Uploading…' : 'Tap to add screenshot'}
               </span>
               <span className="mt-0.5 block t-caption-1 text-[var(--label-3)]">
-                PNG or JPG, up to 5MB. Large images are shrunk automatically.
+                PNG or JPG, up to 5MB. Big ones get shrunk for you.
               </span>
             </span>
           </button>
@@ -161,7 +161,7 @@ export function ProofUpload({
       <Glass className="p-5">
         <Input
           label="UPI reference / UTR number"
-          hint="Optional, but it makes verification almost instant."
+          hint="Optional, but it gets your order checked off way faster."
           placeholder="e.g. 412345678901"
           inputMode="numeric"
           autoComplete="off"

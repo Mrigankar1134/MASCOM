@@ -16,7 +16,7 @@ export function compactMoney(value: number | null | undefined): string {
 }
 
 export function formatDate(value: string | Date | null | undefined): string {
-  if (!value) return '—'
+  if (!value) return '-'
   return new Date(value).toLocaleDateString('en-IN', {
     day: 'numeric',
     month: 'short',
@@ -25,7 +25,7 @@ export function formatDate(value: string | Date | null | undefined): string {
 }
 
 export function formatDateTime(value: string | Date | null | undefined): string {
-  if (!value) return '—'
+  if (!value) return '-'
   return new Date(value).toLocaleString('en-IN', {
     day: 'numeric',
     month: 'short',
@@ -35,7 +35,7 @@ export function formatDateTime(value: string | Date | null | undefined): string 
 }
 
 export function relativeTime(value: string | Date | null | undefined): string {
-  if (!value) return '—'
+  if (!value) return '-'
   const then = new Date(value).getTime()
   const diff = Date.now() - then
   const mins = Math.round(diff / 60000)

@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import { Glass } from '@/components/ui/Glass'
+import { Counter } from '@/components/ui/Counter'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
 import { Input, Select } from '@/components/ui/Field'
@@ -55,7 +56,7 @@ export function RecipientsBoard({
     <div className="mx-auto max-w-[1600px]">
       <ConsoleHeader
         title="Collections"
-        subtitle="The coordinators students can pay. Each one verifies the payments sent to them, so whoever is on this list needs a linked account."
+        subtitle="The coordinators students can pay. Each one checks off the payments sent to them, so everyone on this list needs a linked account."
         actions={
           canEdit ? (
             <Button size="sm" onClick={() => setEditing('new')} icon={<Icon.Plus size={15} />}>
@@ -80,8 +81,8 @@ export function RecipientsBoard({
         <Glass>
           <EmptyState
             icon={<Icon.Wallet size={24} />}
-            title="No one is collecting payments yet"
-            description="Add a coordinator with their UPI ID and QR so students have someone to pay at checkout."
+            title="Nobody is collecting yet"
+            description="Add a coordinator with their UPI ID and QR so students have someone to pay."
             action={
               canEdit ? <Button onClick={() => setEditing('new')}>Add the first one</Button> : undefined
             }
@@ -90,7 +91,7 @@ export function RecipientsBoard({
       ) : (
         <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
           {recipients.map((recipient) => (
-            <Glass key={recipient._id} className="flex flex-col p-4">
+            <Glass key={recipient._id} spotlight className="flex flex-col p-4">
               <div className="flex items-start gap-3">
                 <Avatar name={recipient.name} size={44} />
                 <div className="min-w-0 flex-1">
@@ -180,7 +181,7 @@ export function RecipientsBoard({
 
 function Tile({ label, value, tone }: { label: string; value: string; tone?: 'warn' }) {
   return (
-    <Glass className="p-4">
+    <Glass spotlight className="p-4">
       <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[var(--label-3)]">
         {label}
       </p>
@@ -188,7 +189,7 @@ function Tile({ label, value, tone }: { label: string; value: string; tone?: 'wa
         className="mt-2 text-[clamp(1.2rem,3vw,1.6rem)] font-semibold tabular"
         style={tone === 'warn' ? { color: 'var(--warn)' } : undefined}
       >
-        {value}
+        <Counter value={value} />
       </p>
     </Glass>
   )
@@ -296,7 +297,7 @@ function RecipientEditor({
       open
       onClose={onClose}
       title={recipient ? `Edit ${recipient.name}` : 'Add a payment recipient'}
-      description="Students see this person at checkout, scan their QR, and their orders land in this person's verification queue."
+      description="Students see this person at checkout, scan their QR, and their orders land in that person's queue."
       size="lg"
     >
       <form onSubmit={save} className="space-y-4" id="recipient-form">
@@ -319,7 +320,7 @@ function RecipientEditor({
             spellCheck={false}
             required
             error={errors.upiId}
-            hint="Used to generate the amount-locked QR."
+            hint="Used to build the amount-locked QR."
           />
           <Input
             name="phoneNumber"
@@ -339,12 +340,12 @@ function RecipientEditor({
           }
           required
           error={errors.userId}
-          hint="This account gets the verification queue for payments sent here."
+          hint="This account gets the queue for payments sent here."
         >
           <option value="">Choose an account…</option>
           {candidates.map((c) => (
             <option key={c._id} value={c._id}>
-              {c.name} — {c.email}
+              {c.name}, {c.email}
             </option>
           ))}
         </Select>
@@ -387,8 +388,8 @@ function RecipientEditor({
                 {qrCodeUrl ? 'Replace QR image' : 'Upload their UPI QR'}
               </span>
               <span className="mt-0.5 block t-caption-1 leading-relaxed text-[var(--label-2)]">
-                A screenshot of their GPay / PhonePe QR. Students can fall back to this if the
-                generated one does not scan.
+                A screenshot of their GPay or PhonePe QR. Students can fall back to this if the
+                generated one will not scan.
               </span>
             </span>
           </button>
@@ -404,7 +405,7 @@ function RecipientEditor({
           <span className="t-footnote">
             <span className="font-semibold">Available at checkout</span>
             <span className="mt-0.5 block t-caption-1 text-[var(--label-2)]">
-              Turn off to stop new payments without touching past orders.
+              Switch this off to stop new payments without touching past orders.
             </span>
           </span>
         </label>

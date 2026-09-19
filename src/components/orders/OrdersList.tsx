@@ -50,7 +50,7 @@ export function OrdersList({ orders }: { orders: OrderSummary[] }) {
     <div className="mx-auto max-w-3xl">
       <NavBar
         title="Your orders"
-        subtitle="Every drop you have ordered, and exactly where it has got to."
+        subtitle="Everything you have ordered, and exactly where it has got to."
       >
         {orders.length > 0 && (
           <Segmented options={FILTERS} value={filter} onChange={setFilter} className="max-w-md" />
@@ -62,11 +62,11 @@ export function OrdersList({ orders }: { orders: OrderSummary[] }) {
         <Glass>
           <EmptyState
             icon={<Icon.Receipt size={24} />}
-            title={orders.length === 0 ? 'No orders yet' : 'Nothing in this view'}
+            title={orders.length === 0 ? 'No orders yet' : 'Nothing here'}
             description={
               orders.length === 0
-                ? 'When you order from a drop it shows up here, with live status right through to collection.'
-                : 'Try another filter to see the rest of your orders.'
+                ? 'Order from a drop and it shows up here, updating all the way to collection day.'
+                : 'Try another filter to see the rest.'
             }
             action={
               orders.length === 0 ? (

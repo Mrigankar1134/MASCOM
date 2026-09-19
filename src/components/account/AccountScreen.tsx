@@ -75,7 +75,7 @@ export function AccountScreen({ user }: { user: AccountUser }) {
           <ListSection
             footer={
               session?.isRecipient && !session.isAdmin && !session.isModerator
-                ? 'Payments students send you land here for verification.'
+                ? 'Payments students send you land here to be checked.'
                 : undefined
             }
           >
@@ -94,7 +94,7 @@ export function AccountScreen({ user }: { user: AccountUser }) {
         {/* ── Details ───────────────────────────────────────────────── */}
         <ListSection
           header="Your details"
-          footer="Used on the packing list, so keep your hostel and room current."
+          footer="This goes on the packing list, so keep your hostel and room up to date."
         >
           <ListRow label="Name" value={user.name} onClick={() => setEditing('profile')} />
           <ListRow label="Phone" value={user.phone || 'Not set'} onClick={() => setEditing('profile')} />
@@ -104,7 +104,7 @@ export function AccountScreen({ user }: { user: AccountUser }) {
         </ListSection>
 
         {/* ── Appearance ────────────────────────────────────────────── */}
-        <ListSection header="Appearance" footer="Auto follows your device setting.">
+        <ListSection header="Appearance" footer="Auto just follows your device.">
           {(
             [
               ['light', 'Light'],
@@ -165,7 +165,7 @@ export function AccountScreen({ user }: { user: AccountUser }) {
           scope={editing}
           onClose={() => setEditing(null)}
           onSaved={() => {
-            toast.success('Profile saved.')
+            toast.success('Saved.')
             router.refresh()
           }}
         />
@@ -206,7 +206,7 @@ function ProfileSheet({
       if (err instanceof ApiError && err.issues?.length) {
         setErrors(Object.fromEntries(err.issues.map((i) => [i.path, i.message])))
       }
-      toast.error(err instanceof ApiError ? err.message : 'Could not save your profile.')
+      toast.error(err instanceof ApiError ? err.message : 'Could not save that.')
     } finally {
       setSaving(false)
     }
@@ -219,7 +219,7 @@ function ProfileSheet({
       title={scope === 'room' ? 'Where you collect' : 'Your details'}
       description={
         scope === 'room'
-          ? 'Where the kit gets delivered if we cannot reach you at the counter.'
+          ? 'Where your kit goes if we cannot catch you at the counter.'
           : undefined
       }
     >

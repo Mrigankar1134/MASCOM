@@ -8,7 +8,7 @@ import { plain } from '@/lib/json'
 /**
  * The verification queue.
  *
- * A plain recipient sees only the payments students said they made to *them* —
+ * A plain recipient sees only the payments students said they made to *them* , 
  * that is the whole point of the person-to-person flow. Admins and moderators
  * see everything, and can filter down to one recipient.
  */
@@ -29,7 +29,7 @@ export const GET = route(async (req) => {
   if (isStaff(user)) {
     if (recipientFilter && recipientFilter !== 'all') filter.paymentRecipientId = recipientFilter
   } else {
-    // Not staff — they can only be here because they are a recipient.
+    // Not staff, they can only be here because they are a recipient.
     if (!myRecipient) return ok({ orders: [], recipient: null, scope: 'none' })
     filter.paymentRecipientId = myRecipient._id
   }

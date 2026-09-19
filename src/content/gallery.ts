@@ -1,4 +1,4 @@
-// Generated from public/gallery — re-run scripts/gallery.py after adding photos.
+// Generated from public/gallery, re-run scripts/gallery.py after adding photos.
 
 export type GalleryItem = { src: string; title: string }
 export type GallerySection = { title: string; blurb: string; items: GalleryItem[] }

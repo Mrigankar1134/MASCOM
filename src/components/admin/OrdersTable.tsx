@@ -85,7 +85,7 @@ export function OrdersTable({
       toast.success(`${order.orderId} → ${status}`)
       router.refresh()
     } catch (err) {
-      toast.error(err instanceof ApiError ? err.message : 'Could not update that order.')
+      toast.error(err instanceof ApiError ? err.message : 'Could not update that one.')
     } finally {
       setBusy(null)
     }
@@ -111,7 +111,7 @@ export function OrdersTable({
     <div className="mx-auto max-w-[1600px]">
       <ConsoleHeader
         title="Orders"
-        subtitle="Everything placed, with per-item status for the fulfilment run."
+        subtitle="Everything that has been placed, with per-item status for the fulfilment run."
       />
 
       <div className="mb-4 flex flex-wrap items-center gap-2.5">
@@ -145,7 +145,7 @@ export function OrdersTable({
 
       {visible.length === 0 ? (
         <Glass>
-          <EmptyState icon={<Icon.Receipt size={24} />} title="No orders match" />
+          <EmptyState icon={<Icon.Receipt size={24} />} title="Nothing matches" />
         </Glass>
       ) : (
         <Glass className="overflow-hidden">
@@ -310,8 +310,8 @@ export function OrdersTable({
                             {order.paymentStatus !== 'Paid' && (
                               <span className="t-caption-1 text-[var(--label-3)]">
                                 {canOverride
-                                  ? 'Payment is unverified — delivering will use your admin override.'
-                                  : 'Payment must be verified before this can be delivered.'}
+                                  ? 'Payment is unverified, so delivering uses your admin override.'
+                                  : 'Payment has to be verified before this can be delivered.'}
                               </span>
                             )}
                           </div>

@@ -51,8 +51,8 @@ export function Services() {
       <SectionHeading
         id="what-we-do"
         eyebrow="What we do"
-        title="The work behind every drop"
-        body="MASCOM is not just a merch desk. We build sponsor relationships, bring brands to campus events, design and source customised merchandise, and coordinate vendors so institute experiences feel sharper, better funded, and more memorable."
+        title="What we actually do"
+        body={`We're not just a merch desk. We bring brands to campus, line up sponsors, design and source the merch, and wrangle the vendors so events turn out the way they should.`}
       />
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -64,7 +64,7 @@ export function Services() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.6, delay: i * 0.07, ease: [0.32, 0.72, 0, 1] }}
           >
-            <Glass interactive className="h-full p-6 lg:p-8">
+            <Glass interactive spotlight className="h-full p-6 lg:p-8">
               <span
                 className="display text-[34px] leading-none"
                 style={{ color: 'var(--tint)', opacity: 0.85 }}

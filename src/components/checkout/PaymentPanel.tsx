@@ -48,7 +48,7 @@ export function PaymentPanel({
       await navigator.clipboard.writeText(text)
       toast.success(`${what} copied.`)
     } catch {
-      toast.error('Could not copy — select and copy it manually.')
+      toast.error('Could not copy that. Select it and copy manually.')
     }
   }
 
@@ -60,7 +60,7 @@ export function PaymentPanel({
           <p className="display mt-2 text-[40px] tabular">{money(amount)}</p>
         </div>
 
-        {/* QR plate — white in both themes so any scanner reads it reliably */}
+        {/* QR plate, white in both themes so any scanner reads it reliably */}
         <div className="mt-5 flex justify-center">
           <div
             className="relative rounded-[1.6rem] p-4"
@@ -81,7 +81,7 @@ export function PaymentPanel({
                 />
               ) : (
                 <div className="grid h-[220px] w-[220px] place-items-center text-center t-footnote text-[var(--label-3)]">
-                  No saved QR — use the generated one.
+                  No saved QR, use the generated one.
                 </div>
               )
             ) : (
@@ -100,12 +100,12 @@ export function PaymentPanel({
         <p className="mt-4 text-center t-footnote leading-relaxed text-[var(--label-2)]">
           {useOwnQr ? (
             <>
-              This is {recipient.name}&apos;s own QR — you will need to type{' '}
+              This is {recipient.name}&apos;s own QR, so you will need to type{' '}
               <span className="font-semibold text-[var(--label)]">{money(amount)}</span> yourself.
             </>
           ) : (
             <>
-              Scan with any UPI app. The amount is already filled in — just confirm.
+              Scan with any UPI app. The amount is already filled in, so just confirm.
             </>
           )}
         </p>
@@ -156,8 +156,9 @@ export function PaymentPanel({
           <Icon.Alert size={17} />
         </span>
         <p className="t-footnote leading-relaxed text-[var(--label-2)]">
-          Pay the exact amount to <span className="font-semibold text-[var(--label)]">{recipient.name}</span>.
-          Your order goes to them to verify, so paying someone else leaves it stuck.
+          Send the exact amount to{' '}
+          <span className="font-semibold text-[var(--label)]">{recipient.name}</span>. Your order
+          goes to them to check, so paying anyone else leaves it stuck.
         </p>
       </Glass>
     </div>

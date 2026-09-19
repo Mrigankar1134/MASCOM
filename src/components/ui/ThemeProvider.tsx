@@ -52,7 +52,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       if (next === 'system') localStorage.removeItem(STORAGE_KEY)
       else localStorage.setItem(STORAGE_KEY, next)
     } catch {
-      /* private mode — the choice simply won't persist */
+      /* private mode, the choice simply won't persist */
     }
   }, [])
 

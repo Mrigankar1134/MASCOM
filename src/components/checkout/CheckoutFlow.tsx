@@ -44,8 +44,11 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
   const [reference, setReference] = useState('')
   const [confirmed, setConfirmed] = useState(false)
   const [placing, setPlacing] = useState(false)
+  const [coupon, setCoupon] = useState<AppliedCoupon | null>(null)
 
-  const total = cart.subtotal
+  // The QR encodes this number, and the server recomputes the same discount
+  // when the order is created — the two must never drift apart.
+  const total = coupon ? coupon.total : cart.subtotal
   const note = useMemo(
     () => `MASCOM ${user?.rollNo ?? user?.name ?? ''}`.trim().slice(0, 48),
     [user],
@@ -106,6 +109,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
           paymentRecipientId: recipient._id,
           screenshotUrl,
           paymentReference: reference.trim() || undefined,
+          couponCode: coupon?.code,
         }),
       })
 
@@ -143,7 +147,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
               exit={{ opacity: 0, x: -16 }}
               transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
             >
-              {step === 0 && <ReviewStep />}
+              {step === 0 && <ReviewStep coupon={coupon} onCoupon={setCoupon} />}
 
               {step === 1 && (
                 <section>
@@ -212,6 +216,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
           <div className="lg:sticky lg:top-6">
             <SummaryCard
               total={total}
+              coupon={coupon}
               recipientName={recipient?.name}
               collapsedOnMobile={step > 0}
             />
@@ -282,7 +287,21 @@ function StepHeading({ title, body }: { title: string; body: string }) {
   )
 }
 
-function ReviewStep() {
+export type AppliedCoupon = {
+  code: string
+  label: string
+  subtotal: number
+  discount: number
+  total: number
+}
+
+function ReviewStep({
+  coupon,
+  onCoupon,
+}: {
+  coupon: AppliedCoupon | null
+  onCoupon: (next: AppliedCoupon | null) => void
+}) {
   const cart = useCart()
 
   return (
@@ -350,16 +369,113 @@ function ReviewStep() {
         Edit your bag
         <Icon.ArrowRight size={14} />
       </Link>
+
+      <CouponField coupon={coupon} onCoupon={onCoupon} />
     </section>
+  )
+}
+
+function CouponField({
+  coupon,
+  onCoupon,
+}: {
+  coupon: AppliedCoupon | null
+  onCoupon: (next: AppliedCoupon | null) => void
+}) {
+  const cart = useCart()
+  const toast = useToast()
+  const [code, setCode] = useState('')
+  const [checking, setChecking] = useState(false)
+
+  async function apply() {
+    const trimmed = code.trim()
+    if (!trimmed) return
+
+    setChecking(true)
+    try {
+      const result = await api<AppliedCoupon>('/api/coupons/validate', {
+        method: 'POST',
+        body: JSON.stringify({
+          code: trimmed,
+          items: cart.lines.map((l) => ({
+            productId: l.productId,
+            quantity: l.quantity,
+            color: l.color,
+            size: l.size,
+            customName: l.customName,
+          })),
+        }),
+      })
+      onCoupon(result)
+      setCode('')
+      toast.success(`${result.code} applied — ${money(result.discount)} off.`)
+    } catch (err) {
+      toast.error(err instanceof ApiError ? err.message : 'Could not check that code.')
+    } finally {
+      setChecking(false)
+    }
+  }
+
+  if (coupon) {
+    return (
+      <Glass className="mt-4 flex items-center gap-3 p-3.5">
+        <span
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl"
+          style={{ background: 'var(--ok-bg)', color: 'var(--ok)' }}
+        >
+          <Icon.Check size={17} strokeWidth={2.5} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="font-mono text-[13.5px] font-semibold">{coupon.code}</p>
+          <p className="text-[12.5px] text-[var(--muted-fg)]">
+            {coupon.label} · {money(coupon.discount)} off
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => onCoupon(null)}
+          className="press shrink-0 rounded-lg px-2.5 py-1.5 text-[12.5px] font-semibold"
+          style={{ background: 'var(--hairline-soft)' }}
+        >
+          Remove
+        </button>
+      </Glass>
+    )
+  }
+
+  return (
+    <Glass className="mt-4 flex items-center gap-2 p-2 pl-4">
+      <Icon.Tag size={16} className="shrink-0 text-[var(--faint-fg)]" />
+      <input
+        value={code}
+        onChange={(e) => setCode(e.target.value.toUpperCase().slice(0, 32))}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault()
+            apply()
+          }
+        }}
+        placeholder="Coupon code"
+        autoCapitalize="characters"
+        autoComplete="off"
+        className="min-w-0 flex-1 bg-transparent font-mono text-[14px] outline-none placeholder:font-sans placeholder:text-[var(--faint-fg)]"
+        aria-label="Coupon code"
+      />
+      <Button type="button" size="sm" variant="glass" loading={checking} onClick={apply} disabled={!code.trim()}>
+        Apply
+      </Button>
+    </Glass>
   )
 }
 
 function SummaryCard({
   total,
+  coupon,
   recipientName,
   collapsedOnMobile,
 }: {
   total: number
+  coupon: AppliedCoupon | null
   recipientName?: string
   collapsedOnMobile: boolean
 }) {
@@ -376,6 +492,12 @@ function SummaryCard({
           </dt>
           <dd className="font-medium tabular">{money(cart.subtotal)}</dd>
         </div>
+        {coupon && (
+          <div className="flex justify-between" style={{ color: 'var(--ok)' }}>
+            <dt className="font-medium">{coupon.code}</dt>
+            <dd className="font-medium tabular">− {money(coupon.discount)}</dd>
+          </div>
+        )}
         <div className="flex justify-between">
           <dt className="text-[var(--muted-fg)]">Collection</dt>
           <dd className="font-medium">On campus</dd>

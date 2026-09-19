@@ -14,3 +14,7 @@ next-env.d.ts
 tsconfig.tsbuildinfo
 /public/uploads/*
 !/public/uploads/.gitkeep
+
+# Local verification scratch (in-memory Mongo)
+.mongo-dev.mjs
+.seed-dev.mjs

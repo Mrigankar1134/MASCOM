@@ -96,7 +96,7 @@ export function AuthScreen({ mode, next }: { mode: Mode; next?: string }) {
                 <li key={point} className="flex items-center gap-3 text-[15px] text-white/80">
                   <span
                     className="grid h-6 w-6 shrink-0 place-items-center rounded-full"
-                    style={{ background: 'var(--accent)', color: 'var(--accent-contrast)' }}
+                    style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
                   >
                     <Icon.Check size={13} strokeWidth={2.75} />
                   </span>

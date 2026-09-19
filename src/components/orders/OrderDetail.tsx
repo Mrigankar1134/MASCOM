@@ -163,7 +163,7 @@ export function OrderDetail({
                   <span
                     className="relative z-10 grid h-7 w-7 shrink-0 place-items-center rounded-full"
                     style={{
-                      background: done ? 'var(--accent)' : 'var(--hairline-soft)',
+                      background: done ? 'var(--accent-solid)' : 'var(--hairline-soft)',
                       color: done ? 'var(--accent-contrast)' : 'var(--faint-fg)',
                     }}
                   >

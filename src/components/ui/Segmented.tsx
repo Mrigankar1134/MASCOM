@@ -49,7 +49,7 @@ export function Segmented<T extends string>({
               <motion.span
                 layoutId={layoutId}
                 className="absolute inset-0 rounded-full"
-                style={{ background: 'var(--accent)' }}
+                style={{ background: 'var(--accent-solid)' }}
                 transition={{ type: 'spring', damping: 30, stiffness: 400 }}
               />
             )}

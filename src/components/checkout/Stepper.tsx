@@ -39,7 +39,7 @@ export function Stepper({
               <span
                 className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold"
                 style={{
-                  background: done || active ? 'var(--accent)' : 'var(--hairline-soft)',
+                  background: done || active ? 'var(--accent-solid)' : 'var(--hairline-soft)',
                   color: done || active ? 'var(--accent-contrast)' : 'var(--faint-fg)',
                 }}
               >

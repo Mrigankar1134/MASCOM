@@ -63,7 +63,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
               <Link
                 href="/shop"
                 className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-[14.5px] font-semibold"
-                style={{ background: 'var(--accent)', color: 'var(--accent-contrast)' }}
+                style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
               >
                 Back to the drop
               </Link>
@@ -133,7 +133,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
         <Stepper steps={STEPS} current={step} onJump={(i) => setStep(i)} />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10">
+      <div className="mt-6 grid gap-6 pb-4 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10">
         <div className="min-w-0">
           <AnimatePresence mode="wait">
             <motion.div
@@ -208,7 +208,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
         </div>
 
         {/* Summary rail — a sticky sidebar on desktop, a card up top on mobile */}
-        <aside className="order-first lg:order-last">
+        <aside className={`order-first lg:order-last ${step >= 2 ? 'hidden lg:block' : ''}`}>
           <div className="lg:sticky lg:top-6">
             <SummaryCard
               total={total}
@@ -221,7 +221,7 @@ export function CheckoutFlow({ recipients }: { recipients: ShopRecipient[] }) {
 
       {/* Action bar */}
       <div className="sticky bottom-0 z-30 mt-8 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
-        <Glass lifted className="flex items-center gap-3 rounded-[1.3rem] p-2.5">
+        <Glass lifted className="glass-bar flex items-center gap-3 rounded-[1.3rem] p-2.5">
           {step > 0 && (
             <Button variant="glass" onClick={() => setStep((s) => s - 1)} aria-label="Go back">
               <Icon.ChevronLeft size={18} />

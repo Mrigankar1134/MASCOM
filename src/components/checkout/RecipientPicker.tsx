@@ -63,7 +63,7 @@ export function RecipientPicker({
               <span
                 className="grid h-6 w-6 shrink-0 place-items-center rounded-full transition-colors"
                 style={{
-                  background: selected ? 'var(--accent)' : 'transparent',
+                  background: selected ? 'var(--accent-solid)' : 'transparent',
                   color: selected ? 'var(--accent-contrast)' : 'transparent',
                   boxShadow: selected ? 'none' : 'inset 0 0 0 1.5px var(--hairline)',
                 }}

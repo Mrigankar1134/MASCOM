@@ -207,7 +207,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                       'press min-w-14 rounded-xl px-4 py-2.5 text-[14px] font-semibold transition-colors',
                       size === s ? 'text-[var(--accent-contrast)]' : 'glass text-[var(--page-fg)]',
                     )}
-                    style={size === s ? { background: 'var(--accent)' } : undefined}
+                    style={size === s ? { background: 'var(--accent-solid)' } : undefined}
                   >
                     {s}
                   </button>
@@ -290,7 +290,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
 
       {/* ── Sticky mobile buy bar ──────────────────────────────────────── */}
       <div className="fixed inset-x-0 bottom-0 z-30 px-3 pb-[calc(5.2rem+env(safe-area-inset-bottom))] lg:hidden">
-        <Glass lifted className="flex items-center gap-3 rounded-[1.4rem] p-2.5">
+        <Glass lifted className="glass-bar flex items-center gap-3 rounded-[1.4rem] p-2.5">
           <div className="min-w-0 pl-1.5">
             <p className="text-[11px] font-medium text-[var(--faint-fg)]">Total</p>
             <p className="text-[17px] font-semibold tabular">{money(product.price * quantity)}</p>

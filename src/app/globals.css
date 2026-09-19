@@ -74,9 +74,13 @@
   --field-bg: rgba(255, 255, 255, 0.7);
   --field-border: rgba(13, 14, 21, 0.12);
 
-  --accent: #b8850a;
-  --accent-contrast: #1a1204;
-  --accent-glow: rgba(224, 170, 15, 0.32);
+  /* --accent is the readable ink/mark colour on the page background.
+     --accent-solid is the fill behind --accent-contrast text. In light mode
+     they differ: a dark gold reads well as text but fails behind dark text. */
+  --accent: #96690a;
+  --accent-solid: #f0c53a;
+  --accent-contrast: #211703;
+  --accent-glow: rgba(224, 170, 15, 0.3);
 
   --ok: #0f7a46;
   --ok-bg: rgba(16, 150, 87, 0.12);
@@ -88,9 +92,9 @@
   --info-bg: rgba(14, 108, 222, 0.12);
 
   /* Ambient colour wash behind the glass */
-  --aurora-1: rgba(239, 194, 51, 0.5);
-  --aurora-2: rgba(120, 150, 255, 0.42);
-  --aurora-3: rgba(255, 140, 190, 0.34);
+  --aurora-1: rgba(239, 194, 51, 0.26);
+  --aurora-2: rgba(120, 150, 255, 0.22);
+  --aurora-3: rgba(255, 140, 190, 0.16);
 }
 
 :root[data-theme="dark"] {
@@ -120,6 +124,7 @@
   --field-border: rgba(255, 255, 255, 0.14);
 
   --accent: #efc233;
+  --accent-solid: #efc233;
   --accent-contrast: #1a1204;
   --accent-glow: rgba(239, 194, 51, 0.28);
 
@@ -165,6 +170,7 @@
     --field-border: rgba(255, 255, 255, 0.14);
 
     --accent: #efc233;
+    --accent-solid: #efc233;
     --accent-contrast: #1a1204;
     --accent-glow: rgba(239, 194, 51, 0.28);
 
@@ -374,6 +380,18 @@ body {
 
 .glass-lifted {
   box-shadow: var(--glass-shadow-lifted);
+}
+
+/* Floating bars that sit *over* live content — action bars, buy bars. The
+   heavier tint stops text scrolling underneath from reading through as noise,
+   which is exactly why Apple's own toolbars use a denser material. */
+.glass-bar {
+  background-color: color-mix(in srgb, var(--page-bg) 88%, transparent);
+  --glass-blur: 36px;
+}
+
+:root[data-theme='dark'] .glass-bar {
+  background-color: color-mix(in srgb, var(--page-bg) 82%, transparent);
 }
 
 /* Chrome that sits over scrolling content: navbars, tab bars, toolbars */

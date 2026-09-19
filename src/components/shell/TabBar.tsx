@@ -62,7 +62,7 @@ export function TabBar() {
                 <motion.span
                   layoutId="tabbar-thumb"
                   className="absolute inset-0 rounded-[1.05rem]"
-                  style={{ background: 'var(--accent)' }}
+                  style={{ background: 'var(--accent-solid)' }}
                   transition={{ type: 'spring', damping: 30, stiffness: 400 }}
                 />
               )}
@@ -72,8 +72,8 @@ export function TabBar() {
                   <span
                     className="absolute -right-2 -top-1 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[10px] font-bold tabular"
                     style={{
-                      background: active ? 'var(--accent-contrast)' : 'var(--accent)',
-                      color: active ? 'var(--accent)' : 'var(--accent-contrast)',
+                      background: active ? 'var(--accent-contrast)' : 'var(--accent-solid)',
+                      color: active ? 'var(--accent-solid)' : 'var(--accent-contrast)',
                     }}
                   >
                     {tab.badge > 9 ? '9+' : tab.badge}

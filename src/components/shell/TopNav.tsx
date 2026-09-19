@@ -85,7 +85,7 @@ export function TopNav({ transparentUntilScroll = false }: { transparentUntilScr
             {count > 0 && (
               <span
                 className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full px-1 text-[10px] font-bold tabular"
-                style={{ background: 'var(--accent)', color: 'var(--accent-contrast)' }}
+                style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
               >
                 {count > 9 ? '9+' : count}
               </span>
@@ -119,7 +119,7 @@ export function TopNav({ transparentUntilScroll = false }: { transparentUntilScr
             <Link
               href="/signin"
               className="press inline-flex h-10 items-center rounded-full px-4 text-[13.5px] font-semibold"
-              style={{ background: 'var(--accent)', color: 'var(--accent-contrast)' }}
+              style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
             >
               Sign in
             </Link>

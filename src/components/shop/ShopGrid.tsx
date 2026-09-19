@@ -63,7 +63,7 @@ export function ShopGrid({ products }: { products: ShopProduct[] }) {
             <Link
               href="/"
               className="press inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-[14.5px] font-semibold"
-              style={{ background: 'var(--accent)', color: 'var(--accent-contrast)' }}
+              style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
             >
               Back to home
             </Link>

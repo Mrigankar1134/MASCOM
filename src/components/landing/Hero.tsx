@@ -71,7 +71,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
             <Link
               href="/shop"
               className="press inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-[15px] font-semibold shadow-[0_10px_30px_-10px_var(--accent-glow)]"
-              style={{ background: 'var(--accent)', color: 'var(--accent-contrast)' }}
+              style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
             >
               {ordersOpen ? 'Shop the drop' : 'Browse merch'}
               <Icon.ArrowRight size={18} />

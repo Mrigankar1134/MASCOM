@@ -1,0 +1,549 @@
+@import "tailwindcss";
+
+/* ════════════════════════════════════════════════════════════════════════
+   MASCOM · Liquid Glass Design System
+   Adaptive light/dark. Mobile-first surfaces, desktop-dense admin.
+   ════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  /* Brand — MASCOM gold carried over from the current site */
+  --color-gold-50: #fdf8e7;
+  --color-gold-100: #faeebd;
+  --color-gold-200: #f6e08c;
+  --color-gold-300: #f2d05a;
+  --color-gold-400: #efc233;
+  --color-gold-500: #e0aa0f;
+  --color-gold-600: #b8850a;
+  --color-gold-700: #8d6408;
+  --color-gold-800: #64460a;
+  --color-gold-900: #3d2b07;
+
+  --color-ink-50: #f6f6f8;
+  --color-ink-100: #ebebf0;
+  --color-ink-200: #d6d7e0;
+  --color-ink-300: #b0b2c3;
+  --color-ink-400: #7e8198;
+  --color-ink-500: #5a5d72;
+  --color-ink-600: #434659;
+  --color-ink-700: #303243;
+  --color-ink-800: #1e1f2c;
+  --color-ink-900: #121320;
+  --color-ink-950: #08080f;
+
+  --radius-glass: 1.5rem;
+  --radius-sheet: 2rem;
+
+  --ease-glass: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --breakpoint-xs: 26rem;
+}
+
+/* ─── Adaptive tokens ─────────────────────────────────────────────────── */
+
+:root {
+  color-scheme: light;
+
+  --page-bg: #f2f3f7;
+  --page-fg: #0d0e15;
+  --muted-fg: #5a5d72;
+  --faint-fg: #85889c;
+
+  /* Glass recipe: tint + border + specular highlight + cast shadow */
+  --glass-tint: rgba(255, 255, 255, 0.62);
+  --glass-tint-strong: rgba(255, 255, 255, 0.82);
+  --glass-tint-faint: rgba(255, 255, 255, 0.38);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-edge: rgba(14, 15, 26, 0.08);
+  --glass-specular: rgba(255, 255, 255, 0.95);
+  --glass-shadow: 0 1px 1px rgba(13, 14, 21, 0.03), 0 8px 24px -8px rgba(13, 14, 21, 0.14),
+    0 24px 56px -24px rgba(13, 14, 21, 0.18);
+  --glass-shadow-lifted: 0 2px 2px rgba(13, 14, 21, 0.04),
+    0 18px 40px -12px rgba(13, 14, 21, 0.2), 0 48px 88px -32px rgba(13, 14, 21, 0.26);
+  --glass-blur: 28px;
+  --glass-saturate: 180%;
+
+  --hairline: rgba(13, 14, 21, 0.1);
+  --hairline-soft: rgba(13, 14, 21, 0.06);
+  --field-bg: rgba(255, 255, 255, 0.7);
+  --field-border: rgba(13, 14, 21, 0.12);
+
+  /* --accent is the readable ink/mark colour on the page background.
+     --accent-solid is the fill behind --accent-contrast text. In light mode
+     they differ: a dark gold reads well as text but fails behind dark text. */
+  --accent: #96690a;
+  --accent-solid: #f0c53a;
+  --accent-contrast: #211703;
+  --accent-glow: rgba(224, 170, 15, 0.3);
+
+  --ok: #0f7a46;
+  --ok-bg: rgba(16, 150, 87, 0.12);
+  --warn: #a35a00;
+  --warn-bg: rgba(214, 138, 10, 0.14);
+  --danger: #b3261e;
+  --danger-bg: rgba(200, 45, 36, 0.12);
+  --info: #0a5ec9;
+  --info-bg: rgba(14, 108, 222, 0.12);
+
+  /* Ambient colour wash behind the glass */
+  --aurora-1: rgba(239, 194, 51, 0.26);
+  --aurora-2: rgba(120, 150, 255, 0.22);
+  --aurora-3: rgba(255, 140, 190, 0.16);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --page-bg: #07070c;
+  --page-fg: #f4f4f8;
+  --muted-fg: #a2a5bb;
+  --faint-fg: #75788d;
+
+  --glass-tint: rgba(255, 255, 255, 0.07);
+  --glass-tint-strong: rgba(255, 255, 255, 0.12);
+  --glass-tint-faint: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-edge: rgba(255, 255, 255, 0.06);
+  --glass-specular: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 10px 30px -10px rgba(0, 0, 0, 0.7),
+    0 28px 64px -28px rgba(0, 0, 0, 0.85);
+  --glass-shadow-lifted: 0 2px 4px rgba(0, 0, 0, 0.6),
+    0 20px 48px -14px rgba(0, 0, 0, 0.8), 0 56px 100px -36px rgba(0, 0, 0, 0.95);
+  --glass-blur: 30px;
+  --glass-saturate: 170%;
+
+  --hairline: rgba(255, 255, 255, 0.12);
+  --hairline-soft: rgba(255, 255, 255, 0.07);
+  --field-bg: rgba(255, 255, 255, 0.06);
+  --field-border: rgba(255, 255, 255, 0.14);
+
+  --accent: #efc233;
+  --accent-solid: #efc233;
+  --accent-contrast: #1a1204;
+  --accent-glow: rgba(239, 194, 51, 0.28);
+
+  --ok: #4ade80;
+  --ok-bg: rgba(74, 222, 128, 0.14);
+  --warn: #fbbf24;
+  --warn-bg: rgba(251, 191, 36, 0.14);
+  --danger: #ff6b63;
+  --danger-bg: rgba(255, 107, 99, 0.14);
+  --info: #7cb0ff;
+  --info-bg: rgba(124, 176, 255, 0.14);
+
+  --aurora-1: rgba(224, 170, 15, 0.34);
+  --aurora-2: rgba(76, 102, 220, 0.3);
+  --aurora-3: rgba(190, 70, 140, 0.24);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --page-bg: #07070c;
+    --page-fg: #f4f4f8;
+    --muted-fg: #a2a5bb;
+    --faint-fg: #75788d;
+
+    --glass-tint: rgba(255, 255, 255, 0.07);
+    --glass-tint-strong: rgba(255, 255, 255, 0.12);
+    --glass-tint-faint: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.14);
+    --glass-edge: rgba(255, 255, 255, 0.06);
+    --glass-specular: rgba(255, 255, 255, 0.4);
+    --glass-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), 0 10px 30px -10px rgba(0, 0, 0, 0.7),
+      0 28px 64px -28px rgba(0, 0, 0, 0.85);
+    --glass-shadow-lifted: 0 2px 4px rgba(0, 0, 0, 0.6),
+      0 20px 48px -14px rgba(0, 0, 0, 0.8), 0 56px 100px -36px rgba(0, 0, 0, 0.95);
+    --glass-blur: 30px;
+    --glass-saturate: 170%;
+
+    --hairline: rgba(255, 255, 255, 0.12);
+    --hairline-soft: rgba(255, 255, 255, 0.07);
+    --field-bg: rgba(255, 255, 255, 0.06);
+    --field-border: rgba(255, 255, 255, 0.14);
+
+    --accent: #efc233;
+    --accent-solid: #efc233;
+    --accent-contrast: #1a1204;
+    --accent-glow: rgba(239, 194, 51, 0.28);
+
+    --ok: #4ade80;
+    --ok-bg: rgba(74, 222, 128, 0.14);
+    --warn: #fbbf24;
+    --warn-bg: rgba(251, 191, 36, 0.14);
+    --danger: #ff6b63;
+    --danger-bg: rgba(255, 107, 99, 0.14);
+    --info: #7cb0ff;
+    --info-bg: rgba(124, 176, 255, 0.14);
+
+    --aurora-1: rgba(224, 170, 15, 0.34);
+    --aurora-2: rgba(76, 102, 220, 0.3);
+    --aurora-3: rgba(190, 70, 140, 0.24);
+  }
+}
+
+/* ─── Base ────────────────────────────────────────────────────────────── */
+
+* {
+  border-color: var(--hairline);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--page-bg);
+  color: var(--page-fg);
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+}
+
+::selection {
+  background: var(--accent-glow);
+  color: var(--page-fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Thin, unobtrusive scrollbars for the admin tables */
+.scroll-slim {
+  scrollbar-width: thin;
+  scrollbar-color: var(--hairline) transparent;
+}
+.scroll-slim::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-slim::-webkit-scrollbar-thumb {
+  background: var(--hairline);
+  border-radius: 999px;
+}
+.scroll-slim::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ─── Ambient background ──────────────────────────────────────────────── */
+
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--page-bg);
+}
+
+.aurora::before,
+.aurora::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+
+.aurora::before {
+  width: 72vmax;
+  height: 72vmax;
+  top: -28vmax;
+  left: -18vmax;
+  background: radial-gradient(circle at 30% 30%, var(--aurora-1), transparent 62%);
+  animation: drift-a 34s var(--ease-glass) infinite alternate;
+}
+
+.aurora::after {
+  width: 64vmax;
+  height: 64vmax;
+  bottom: -26vmax;
+  right: -16vmax;
+  background: radial-gradient(circle at 60% 40%, var(--aurora-2), transparent 62%);
+  animation: drift-b 42s var(--ease-glass) infinite alternate;
+}
+
+.aurora > span {
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  top: 32%;
+  left: 38%;
+  border-radius: 50%;
+  filter: blur(90px);
+  background: radial-gradient(circle, var(--aurora-3), transparent 64%);
+  animation: drift-c 38s var(--ease-glass) infinite alternate;
+}
+
+@keyframes drift-a {
+  to {
+    transform: translate3d(12vw, 8vh, 0) scale(1.15);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate3d(-14vw, -10vh, 0) scale(1.1);
+  }
+}
+@keyframes drift-c {
+  to {
+    transform: translate3d(-10vw, 12vh, 0) scale(0.88);
+  }
+}
+
+/* Fine grain keeps large blurred areas from banding */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ─── Glass primitives ────────────────────────────────────────────────── */
+
+.glass {
+  position: relative;
+  background-color: var(--glass-tint);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--glass-shadow);
+  isolation: isolate;
+}
+
+/* The specular rim: bright along the top edge, fading round the sides.
+   This is what sells the material as glass rather than flat translucency. */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    160deg,
+    var(--glass-specular) 0%,
+    transparent 28%,
+    transparent 72%,
+    color-mix(in srgb, var(--glass-specular) 55%, transparent) 100%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* A soft lens flare across the upper body of the surface */
+.glass-lens::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    130% 80% at 12% -12%,
+    color-mix(in srgb, var(--glass-specular) 40%, transparent) 0%,
+    transparent 58%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glass-strong {
+  background-color: var(--glass-tint-strong);
+  --glass-blur: 40px;
+}
+
+.glass-faint {
+  background-color: var(--glass-tint-faint);
+  --glass-blur: 18px;
+}
+
+.glass-lifted {
+  box-shadow: var(--glass-shadow-lifted);
+}
+
+/* Floating bars that sit *over* live content — action bars, buy bars. The
+   heavier tint stops text scrolling underneath from reading through as noise,
+   which is exactly why Apple's own toolbars use a denser material. */
+.glass-bar {
+  background-color: color-mix(in srgb, var(--page-bg) 88%, transparent);
+  --glass-blur: 36px;
+}
+
+:root[data-theme='dark'] .glass-bar {
+  background-color: color-mix(in srgb, var(--page-bg) 82%, transparent);
+}
+
+/* Chrome that sits over scrolling content: navbars, tab bars, toolbars */
+.glass-chrome {
+  background-color: color-mix(in srgb, var(--page-bg) 68%, transparent);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+/* Interactive lift — pointer devices only, so touch targets stay calm */
+@media (hover: hover) and (pointer: fine) {
+  .glass-interactive {
+    transition: transform 0.4s var(--ease-glass), box-shadow 0.4s var(--ease-glass),
+      background-color 0.3s var(--ease-glass);
+  }
+  .glass-interactive:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glass-shadow-lifted);
+    background-color: var(--glass-tint-strong);
+  }
+}
+
+.press {
+  transition: transform 0.16s var(--ease-glass), opacity 0.16s var(--ease-glass);
+}
+.press:active {
+  transform: scale(0.97);
+}
+
+/* ─── Type ────────────────────────────────────────────────────────────── */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint-fg);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Safe areas (iOS notch / home indicator) ─────────────────────────── */
+
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.mb-safe {
+  margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+.h-safe-bottom {
+  height: env(safe-area-inset-bottom, 0px);
+}
+
+/* ─── Accessibility fallbacks ─────────────────────────────────────────── */
+
+/* Some users (and some GPUs) do better without live blur. Swap the material
+   for an opaque one rather than leaving unreadable transparency behind. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-chrome {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: color-mix(in srgb, var(--page-bg) 94%, var(--page-fg));
+  }
+  .aurora::before,
+  .aurora::after,
+  .aurora > span {
+    display: none;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-chrome {
+    background-color: color-mix(in srgb, var(--page-bg) 92%, var(--page-fg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --glass-tint: rgba(255, 255, 255, 0.92);
+    --hairline: rgba(13, 14, 21, 0.3);
+    --muted-fg: #3b3e52;
+  }
+  :root[data-theme="dark"] {
+    --glass-tint: rgba(20, 20, 30, 0.94);
+    --hairline: rgba(255, 255, 255, 0.34);
+    --muted-fg: #d2d4e2;
+  }
+}
+
+/* ─── Utilities ───────────────────────────────────────────────────────── */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.shimmer {
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in srgb, var(--glass-specular) 50%, transparent) 50%,
+    transparent 80%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 0.6s var(--ease-glass) both;
+}

@@ -45,7 +45,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       )}
       style={
         variant === 'primary'
-          ? { background: 'linear-gradient(180deg, color-mix(in srgb, var(--accent) 88%, white), var(--accent))' }
+          ? { background: 'linear-gradient(180deg, color-mix(in srgb, var(--accent-solid) 88%, white), var(--accent-solid))' }
           : variant === 'danger'
             ? { background: 'linear-gradient(180deg, color-mix(in srgb, var(--danger) 88%, white), var(--danger))' }
             : undefined

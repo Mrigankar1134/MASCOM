@@ -125,7 +125,7 @@ export function PaymentPanel({
         <a
           href={upiUri}
           className="press mt-5 flex h-13 w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-[15px] font-semibold sm:hidden"
-          style={{ background: 'var(--accent)', color: 'var(--accent-contrast)' }}
+          style={{ background: 'var(--accent-solid)', color: 'var(--accent-contrast)' }}
         >
           <Icon.Wallet size={18} />
           Open your UPI app

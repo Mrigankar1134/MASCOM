@@ -6,7 +6,6 @@ import mongoose from 'mongoose'
  * Express process did, so without this we would open a connection per request.
  */
 declare global {
-  // eslint-disable-next-line no-var
   var __mascomMongoose:
     | { conn: typeof mongoose | null; promise: Promise<typeof mongoose> | null }
     | undefined

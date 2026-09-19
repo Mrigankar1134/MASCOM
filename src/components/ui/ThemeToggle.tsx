@@ -58,7 +58,7 @@ export function ThemeToggle({ className }: { className?: string }) {
               'press relative z-10 grid h-8 w-8 place-items-center rounded-full transition-colors',
               active ? 'text-[var(--accent-contrast)]' : 'text-[var(--muted-fg)] hover:text-[var(--page-fg)]',
             )}
-            style={active ? { background: 'var(--accent)' } : undefined}
+            style={active ? { background: 'var(--accent-solid)' } : undefined}
           >
             {opt.icon}
           </button>

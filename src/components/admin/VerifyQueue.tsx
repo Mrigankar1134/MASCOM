@@ -165,12 +165,12 @@ export function VerifyQueue({
           onChange={setStatus}
         />
 
-        <div className="glass flex h-10 min-w-[200px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
+        <div className="glass flex h-10 min-w-[190px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
           <Icon.Search size={16} className="shrink-0 text-[var(--label-3)]" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Order ID, name, roll no, UTR"
+            placeholder="Order, name or UTR"
             className="min-w-0 flex-1 bg-transparent t-footnote outline-none placeholder:text-[var(--label-3)]"
           />
           {query && (
@@ -198,7 +198,9 @@ export function VerifyQueue({
 
         <a
           href={`/api/admin/export?status=${status}`}
-          className="glass press ml-auto inline-flex h-10 items-center gap-2 rounded-full px-4 t-footnote font-semibold"
+          // Right-aligned only where the whole toolbar fits on one line;
+          // below that it would wrap alone and leave a hole beside it.
+          className="glass press inline-flex h-10 shrink-0 items-center gap-2 rounded-full px-4 t-footnote font-semibold lg:ml-auto"
         >
           <Icon.Download size={16} />
           <span className="hidden sm:inline">Export CSV</span>
@@ -220,7 +222,10 @@ export function VerifyQueue({
       ) : (
         <div className="grid gap-4 xl:grid-cols-[minmax(340px,420px)_minmax(0,1fr)]">
           {/* ── Queue list ─────────────────────────────────────────────── */}
-          <ul className="scroll-slim space-y-2 xl:max-h-[calc(100dvh-14rem)] xl:overflow-y-auto xl:pr-1">
+          {/* Below the split layout the detail sits under the list, so the
+              list is capped and scrolls internally rather than pushing the
+              decision buttons several screens down. */}
+          <ul className="scroll-slim max-h-[46vh] space-y-2 overflow-y-auto pr-1 xl:max-h-[calc(100dvh-14rem)]">
             {filtered.map((order) => {
               const active = order._id === selected?._id
               return (
@@ -434,19 +439,32 @@ function VerifyDetail({
               {order.items.map((item) => (
                 <li
                   key={item._id}
-                  className="flex items-center gap-3 rounded-xl px-3 py-2 t-footnote"
+                  className="flex items-start gap-3 rounded-xl px-3 py-2.5 t-footnote"
                   style={{ background: 'var(--separator-soft)' }}
                 >
-                  <span className="min-w-0 flex-1 truncate font-medium">
-                    {item.productSnapshot?.name ?? 'Item'}
-                    <span className="ml-2 font-normal text-[var(--label-2)]">
-                      {[item.variant?.color, item.variant?.size].filter(Boolean).join(' · ')}
+                  {/* Size, colour and the printed name get their own line.
+                      Sharing one line with the product title meant a long
+                      title truncated away the very details being verified. */}
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-medium">
+                      {item.productSnapshot?.name ?? 'Item'}
                     </span>
-                    {item.customName && (
-                      <span className="ml-2 font-semibold" style={{ color: 'var(--tint)' }}>
-                        “{item.customName}”
+                    <span className="mt-0.5 block text-[var(--label-2)]">
+                      {/* Kept together so a wrap never leaves the separator
+                          dangling at the end of a line. */}
+                      <span className="whitespace-nowrap">
+                        {[item.variant?.color, item.variant?.size].filter(Boolean).join(' · ') ||
+                          'One size'}
                       </span>
-                    )}
+                      {item.customName && (
+                        <span
+                          className="ml-1.5 whitespace-nowrap font-semibold"
+                          style={{ color: 'var(--tint)' }}
+                        >
+                          “{item.customName}”
+                        </span>
+                      )}
+                    </span>
                   </span>
                   <span className="shrink-0 tabular text-[var(--label-2)]">×{item.quantity}</span>
                   <span className="shrink-0 font-semibold tabular">
@@ -598,7 +616,9 @@ function Fact({
       <dt className="text-[11px] font-medium uppercase tracking-wide text-[var(--label-3)]">
         {label}
       </dt>
-      <dd className={cn('mt-0.5 truncate font-medium', mono && 'font-mono t-caption-1')}>
+      {/* Wrap rather than truncate: a roll number or hostel clipped to an
+          ellipsis is useless to whoever is packing the order. */}
+      <dd className={cn('mt-0.5 break-words font-medium', mono && 'font-mono t-caption-1')}>
         {node ?? value ?? '-'}
       </dd>
     </div>

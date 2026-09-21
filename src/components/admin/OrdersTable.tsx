@@ -125,18 +125,18 @@ export function OrdersTable({
           value={filter}
           onChange={setFilter}
         />
-        <div className="glass flex h-10 min-w-[200px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
+        <div className="glass flex h-10 min-w-[190px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
           <Icon.Search size={16} className="shrink-0 text-[var(--label-3)]" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Order ID, name or roll no"
+            placeholder="Order, name or roll no"
             className="min-w-0 flex-1 bg-transparent t-footnote outline-none placeholder:text-[var(--label-3)]"
           />
         </div>
         <a
           href="/api/admin/export"
-          className="glass press ml-auto inline-flex h-10 items-center gap-2 rounded-full px-4 t-footnote font-semibold"
+          className="glass press inline-flex h-10 shrink-0 items-center gap-2 rounded-full px-4 t-footnote font-semibold lg:ml-auto"
         >
           <Icon.Download size={16} />
           <span className="hidden sm:inline">Export CSV</span>
@@ -251,11 +251,11 @@ export function OrdersTable({
                                   <div className="min-w-0 flex-1">
                                     <p className="truncate t-footnote font-medium">
                                       {item.productSnapshot?.name ?? 'Item'}
-                                      <span className="ml-2 font-normal text-[var(--label-2)]">
-                                        {[item.variant?.color, item.variant?.size]
-                                          .filter(Boolean)
-                                          .join(' · ')}
-                                      </span>
+                                    </p>
+                                    <p className="t-footnote text-[var(--label-2)]">
+                                      {[item.variant?.color, item.variant?.size]
+                                        .filter(Boolean)
+                                        .join(' · ') || 'One size'}
                                     </p>
                                     <p className="mt-0.5 t-caption-1 text-[var(--label-2)]">
                                       ×{item.quantity} · {money(item.unitPrice * item.quantity)}

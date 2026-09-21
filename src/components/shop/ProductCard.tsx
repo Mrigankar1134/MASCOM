@@ -101,26 +101,33 @@ export function ProductCard({ product, index = 0 }: { product: ShopProduct; inde
         </Link>
         <p className="t-subhead mt-0.5 text-[var(--label-2)] tabular">{money(product.price)}</p>
 
+        {/* The dot stays small; the button around it carries the touch
+            target, so a thumb does not have to hit an 18px circle. */}
         {product.variants.length > 1 && (
-          <div className="mt-2 flex items-center gap-1.5">
+          <div className="-mx-1.5 mt-1 flex items-center">
             {product.variants.slice(0, 6).map((v, i) => (
               <button
                 key={v.color}
                 onClick={() => setVariantIndex(i)}
                 aria-label={v.color}
+                aria-pressed={i === variantIndex}
                 title={v.color}
-                className={cn(
-                  'press h-[18px] w-[18px] rounded-full transition-transform',
-                  i === variantIndex && 'scale-110',
-                )}
-                style={{
-                  background: swatch(v.color),
-                  boxShadow:
-                    i === variantIndex
-                      ? '0 0 0 2px var(--page-bg), 0 0 0 3.5px var(--tint)'
-                      : 'inset 0 0 0 1px var(--separator)',
-                }}
-              />
+                className="press grid h-8 w-8 shrink-0 place-items-center rounded-full"
+              >
+                <span
+                  className={cn(
+                    'block h-[18px] w-[18px] rounded-full transition-transform',
+                    i === variantIndex && 'scale-110',
+                  )}
+                  style={{
+                    background: swatch(v.color),
+                    boxShadow:
+                      i === variantIndex
+                        ? '0 0 0 2px var(--surface), 0 0 0 3.5px var(--tint)'
+                        : 'inset 0 0 0 1px var(--separator)',
+                  }}
+                />
+              </button>
             ))}
             {product.variants.length > 6 && (
               <span className="t-caption-2 text-[var(--label-3)]">

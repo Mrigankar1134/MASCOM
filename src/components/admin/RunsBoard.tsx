@@ -61,8 +61,8 @@ export function RunsBoard({
 
       <div className="grid gap-4 xl:grid-cols-2">
         {/* ── Production runs ──────────────────────────────────────────── */}
-        <section>
-          <div className="mb-3 flex items-center justify-between">
+        <section className="min-w-0">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <h2 className="t-subhead font-semibold tracking-tight">Production runs</h2>
             <Button size="sm" onClick={() => setSheet('batch')} icon={<Icon.Plus size={15} />}>
               New run
@@ -108,8 +108,8 @@ export function RunsBoard({
         </section>
 
         {/* ── Coupons ──────────────────────────────────────────────────── */}
-        <section>
-          <div className="mb-3 flex items-center justify-between">
+        <section className="min-w-0">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <h2 className="t-subhead font-semibold tracking-tight">Coupons</h2>
             <Button size="sm" onClick={() => setSheet('coupon')} icon={<Icon.Plus size={15} />}>
               New coupon
@@ -167,7 +167,7 @@ function BatchCard({ batch }: { batch: BatchRow }) {
   }
 
   return (
-    <Glass className="flex items-center gap-3.5 p-4">
+    <Glass className="flex min-w-0 items-center gap-3 p-4">
       <span
         className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
         style={{
@@ -184,8 +184,10 @@ function BatchCard({ batch }: { batch: BatchRow }) {
           {open ? <Badge tone="ok" dot>Collecting</Badge> : <Badge tone="neutral">Closed</Badge>}
         </div>
         <p className="mt-0.5 truncate t-caption-1 text-[var(--label-2)]">
-          {typeof batch.productId === 'object' ? batch.productId?.name : 'Product'} ·{' '}
-          <DateTime value={batch.orderStartDate} mode="date" /> →{' '}
+          {typeof batch.productId === 'object' ? batch.productId?.name : 'Product'}
+        </p>
+        <p className="mt-0.5 truncate t-caption-1 text-[var(--label-3)]">
+          <DateTime value={batch.orderStartDate} mode="date" /> to{' '}
           <DateTime value={batch.orderEndDate} mode="date" />
         </p>
         <p className="mt-0.5 t-caption-1 text-[var(--label-3)]">
@@ -230,7 +232,7 @@ function CouponCard({ coupon }: { coupon: CouponRow }) {
   }
 
   return (
-    <Glass className="flex items-center gap-3.5 p-4">
+    <Glass className="flex min-w-0 items-center gap-3 p-4">
       <span
         className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
         style={{

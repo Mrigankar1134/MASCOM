@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useId } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { cn } from './cn'
 
 type Option<T extends string> = { value: T; label: string; count?: number }
@@ -26,16 +26,45 @@ export function Segmented<T extends string>({
   size?: 'sm' | 'md'
 }) {
   const layoutId = useId()
+  const trackRef = useRef<HTMLDivElement>(null)
+  const [overflowing, setOverflowing] = useState(false)
+
+  // With more segments than fit, the track scrolls. Fade its trailing edge so
+  // there is some sign the row continues rather than simply ending.
+  const measure = useCallback(() => {
+    const el = trackRef.current
+    if (!el) return
+    setOverflowing(el.scrollWidth > el.clientWidth + 1)
+  }, [])
+
+  useEffect(() => {
+    measure()
+    const el = trackRef.current
+    if (!el || typeof ResizeObserver === 'undefined') return
+    const ro = new ResizeObserver(measure)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [measure, options.length])
 
   return (
     <div
+      ref={trackRef}
       role="tablist"
+      onScroll={measure}
       className={cn(
         'no-scrollbar relative flex overflow-x-auto rounded-[9px] p-[2px]',
         size === 'sm' ? 'h-[28px]' : 'h-[32px]',
         className,
       )}
-      style={{ background: 'var(--segment-track)' }}
+      style={{
+        background: 'var(--segment-track)',
+        maskImage: overflowing
+          ? 'linear-gradient(90deg, #000 0, #000 calc(100% - 28px), transparent 100%)'
+          : undefined,
+        WebkitMaskImage: overflowing
+          ? 'linear-gradient(90deg, #000 0, #000 calc(100% - 28px), transparent 100%)'
+          : undefined,
+      }}
     >
       {options.map((opt) => {
         const active = opt.value === value

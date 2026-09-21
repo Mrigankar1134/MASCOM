@@ -100,7 +100,7 @@ export function Overview({ data }: { data: OverviewData }) {
       <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
         <CollectionsChart series={data.series} />
 
-        <Glass className="p-5">
+        <Glass className="min-w-0 p-5">
           <h2 className="t-subhead font-semibold tracking-tight">Payment status</h2>
           <p className="mt-1 t-caption-1 text-[var(--label-2)]">
             Across {totals.orders} {totals.orders === 1 ? 'order' : 'orders'}.
@@ -126,7 +126,7 @@ export function Overview({ data }: { data: OverviewData }) {
       </div>
 
       <div className="mt-4 grid gap-4 xl:grid-cols-2">
-        <Glass className="p-5">
+        <Glass className="min-w-0 p-5">
           <div className="mb-4 flex items-baseline justify-between">
             <h2 className="t-subhead font-semibold tracking-tight">Just in</h2>
             <Link href="/admin/verify" className="t-caption-1 font-semibold" style={{ color: 'var(--tint)' }}>
@@ -176,7 +176,7 @@ export function Overview({ data }: { data: OverviewData }) {
         </Glass>
 
         {data.topProducts.length > 0 && (
-          <Glass className="p-5">
+          <Glass className="min-w-0 p-5">
             <div className="mb-4 flex items-baseline justify-between">
               <h2 className="t-subhead font-semibold tracking-tight">Selling best</h2>
               <Link href="/admin/products" className="t-caption-1 font-semibold" style={{ color: 'var(--tint)' }}>
@@ -190,7 +190,7 @@ export function Overview({ data }: { data: OverviewData }) {
                 return (
                   <li key={product._id}>
                     <div className="flex items-baseline justify-between gap-3 t-footnote">
-                      <span className="min-w-0 truncate font-medium">
+                      <span className="min-w-0 flex-1 truncate font-medium">
                         <span className="mr-2 text-[var(--label-3)] tabular">{i + 1}</span>
                         {product.name}
                       </span>

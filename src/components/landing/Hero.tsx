@@ -24,8 +24,11 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
 
   return (
     <section ref={ref} className="relative overflow-hidden px-4 pb-16 pt-10 sm:px-6 lg:pb-28 lg:pt-16">
+      {/* A grid child defaults to min-width:auto, so its widest line sets the
+          column width and anything narrower than that gets clipped by the
+          section's overflow-hidden. min-w-0 lets the column shrink instead. */}
       <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-        <motion.div style={{ y: copyY, opacity: fade }} className="relative z-10">
+        <motion.div style={{ y: copyY, opacity: fade }} className="relative z-10 min-w-0">
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -114,7 +117,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
             </div>
           </motion.div>
 
-          <dl className="mt-10 flex gap-8 lg:gap-12">
+          <dl className="mt-10 flex flex-wrap gap-x-7 gap-y-5 sm:gap-8 lg:gap-12">
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}
@@ -125,7 +128,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
                 <dt className="display text-[28px] sm:text-[34px]">
                   <Counter value={s.value} />
                 </dt>
-                <dd className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--label-3)]">
+                <dd className="mt-1 max-w-[9rem] text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--label-3)]">
                   {s.label}
                 </dd>
               </motion.div>
@@ -134,7 +137,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
         </motion.div>
 
         {/* Photo stack */}
-        <motion.div style={{ y: photoY }} className="relative">
+        <motion.div style={{ y: photoY }} className="relative min-w-0">
           <div className="relative mx-auto aspect-[4/5] w-full max-w-lg lg:max-w-none">
             {heroShots.slice(0, 3).map((src, i) => {
               const layout = [

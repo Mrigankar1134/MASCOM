@@ -26,3 +26,18 @@ import kotlinx.serialization.Serializable
 @Serializable data object EditProfileRoute
 @Serializable data object AboutRoute
 @Serializable data object GalleryRoute
+
+// ---- Games -------------------------------------------------------------------------------------
+
+/** The Games tab: the shelf the individual games hang off. */
+@Serializable data object GamesRoute
+@Serializable data object TrophyTroubleRoute
+
+// ---- Campus Heist ------------------------------------------------------------------------------
+
+@Serializable data object HeistRoute
+/** [practice] runs the same screen against a local, unscored vault. */
+@Serializable data class RaidRoute(val id: String, val practice: Boolean = false)
+@Serializable data object HeistFriendsRoute
+@Serializable data object HeistRankingsRoute
+@Serializable data object HeistCrewRoute

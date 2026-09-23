@@ -9,6 +9,7 @@ import com.mascom.app.core.network.SessionCookieJar
 import com.mascom.app.data.local.BagDao
 import com.mascom.app.data.local.MascomDatabase
 import com.mascom.app.data.local.ProductDao
+import com.mascom.app.data.remote.GameApi
 import com.mascom.app.data.remote.MascomApi
 import com.mascom.app.data.repository.AuthRepositoryImpl
 import com.mascom.app.data.repository.BagRepositoryImpl
@@ -81,12 +82,19 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun api(client: OkHttpClient, json: Json): MascomApi = Retrofit.Builder()
+    fun retrofit(client: OkHttpClient, json: Json): Retrofit = Retrofit.Builder()
         .baseUrl(ServerConfig.PLACEHOLDER_URL)
         .client(client)
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
-        .create(MascomApi::class.java)
+
+    @Provides
+    @Singleton
+    fun api(retrofit: Retrofit): MascomApi = retrofit.create(MascomApi::class.java)
+
+    @Provides
+    @Singleton
+    fun gameApi(retrofit: Retrofit): GameApi = retrofit.create(GameApi::class.java)
 
     @Provides
     @Singleton

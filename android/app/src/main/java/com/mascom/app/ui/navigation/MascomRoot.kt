@@ -47,10 +47,12 @@ import androidx.compose.material.icons.automirrored.rounded.ReceiptLong
 import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingBag
+import androidx.compose.material.icons.outlined.SportsEsports
 import androidx.compose.material.icons.outlined.Storefront
 import androidx.compose.material.icons.rounded.Dashboard
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.ShoppingBag
+import androidx.compose.material.icons.rounded.SportsEsports
 import androidx.compose.material.icons.rounded.Storefront
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -100,6 +102,13 @@ import com.mascom.app.ui.screens.auth.AuthScreen
 import com.mascom.app.ui.screens.bag.BagScreen
 import com.mascom.app.ui.screens.checkout.CheckoutScreen
 import com.mascom.app.ui.screens.console.ConsoleScreen
+import com.mascom.app.ui.screens.game.GamesHubScreen
+import com.mascom.app.ui.screens.game.HeistCrewScreen
+import com.mascom.app.ui.screens.game.HeistFriendsScreen
+import com.mascom.app.ui.screens.game.HeistHomeScreen
+import com.mascom.app.ui.screens.game.HeistRankingsScreen
+import com.mascom.app.ui.screens.game.RaidScreen
+import com.mascom.app.ui.screens.game.TrophyTroubleScreen
 import com.mascom.app.ui.screens.orders.OrderDetailScreen
 import com.mascom.app.ui.screens.orders.OrdersScreen
 import com.mascom.app.ui.screens.product.ProductScreen
@@ -126,6 +135,7 @@ private data class Tab(
 private fun tabsFor(user: User?) = buildList {
     add(Tab(ShopRoute, ShopRoute::class, "Shop", Icons.Outlined.Storefront, Icons.Rounded.Storefront))
     add(Tab(BagRoute, BagRoute::class, "Bag", Icons.Outlined.ShoppingBag, Icons.Rounded.ShoppingBag))
+    add(Tab(GamesRoute, GamesRoute::class, "Games", Icons.Outlined.SportsEsports, Icons.Rounded.SportsEsports))
     add(Tab(OrdersRoute, OrdersRoute::class, "Orders", Icons.AutoMirrored.Outlined.ReceiptLong, Icons.AutoMirrored.Rounded.ReceiptLong))
     if (user?.canUseConsole == true) {
         add(Tab(ConsoleRoute, ConsoleRoute::class, "Console", Icons.Outlined.Dashboard, Icons.Rounded.Dashboard))
@@ -133,7 +143,8 @@ private fun tabsFor(user: User?) = buildList {
     add(Tab(AccountRoute, AccountRoute::class, "You", Icons.Outlined.Person, Icons.Rounded.Person))
 }
 
-private val TabTypes = listOf(ShopRoute::class, BagRoute::class, OrdersRoute::class, ConsoleRoute::class, AccountRoute::class)
+private val TabTypes =
+    listOf(ShopRoute::class, BagRoute::class, GamesRoute::class, OrdersRoute::class, ConsoleRoute::class, AccountRoute::class)
 private fun NavDestination.isTab() = TabTypes.any { hasRoute(it) }
 private fun NavDestination.isProduct() = hasRoute(ProductRoute::class)
 private fun NavDestination.isWelcome() = hasRoute(WelcomeRoute::class)
@@ -293,6 +304,36 @@ private fun NavGraphBuilder.graph(nav: NavHostController, onWelcomeDone: () -> U
         )
     }
     screen<ConsoleRoute> { ConsoleScreen() }
+
+    // Games. The tab is a shelf; each game, and every raid, is pushed on top of it.
+    val openRaid = { id: String -> nav.navigate(RaidRoute(id)) }
+    screen<GamesRoute> {
+        GamesHubScreen(
+            onCampusHeist = { nav.navigate(HeistRoute) },
+            onTrophyTrouble = { nav.navigate(TrophyTroubleRoute) },
+        )
+    }
+    screen<TrophyTroubleRoute> { TrophyTroubleScreen(onBack = back) }
+    screen<HeistRoute> {
+        HeistHomeScreen(
+            onBack = back,
+            onRaid = openRaid,
+            onPractice = { nav.navigate(RaidRoute(id = "practice", practice = true)) },
+            onFriends = { nav.navigate(HeistFriendsRoute) },
+            onRankings = { nav.navigate(HeistRankingsRoute) },
+            onCrew = { nav.navigate(HeistCrewRoute) },
+            onSignIn = { openAuth(false) },
+        )
+    }
+    screen<RaidRoute>(
+        enterTransition = { fadeIn(tween(320)) + scaleIn(tween(420), initialScale = 0.92f) },
+        popExitTransition = { fadeOut(tween(220)) + scaleOut(tween(300), targetScale = 0.94f) },
+    ) { entry ->
+        RaidScreen(practice = entry.toRoute<RaidRoute>().practice, onExit = back)
+    }
+    screen<HeistFriendsRoute> { HeistFriendsScreen(onBack = back, onRaid = openRaid) }
+    screen<HeistRankingsRoute> { HeistRankingsScreen(onBack = back) }
+    screen<HeistCrewRoute> { HeistCrewScreen(onBack = back, onRaid = openRaid) }
     screen<ProductRoute> { entry ->
         ProductScreen(
             route = entry.toRoute<ProductRoute>(),

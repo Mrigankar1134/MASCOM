@@ -76,6 +76,8 @@ fun GlassScaffold(
     horizontalPadding: Boolean = true,
     actions: @Composable RowScope.() -> Unit = {},
     bottomBar: (@Composable BoxScope.() -> Unit)? = null,
+    /** The colour the glass frosts. Campus Heist swaps in its own vault backdrop. */
+    backdrop: @Composable (Modifier) -> Unit = { AmbientBackdrop(it) },
     content: LazyListScope.() -> Unit,
 ) {
     val haze = rememberHazeState()
@@ -92,7 +94,7 @@ fun GlassScaffold(
     Box(modifier.fillMaxSize().background(Mascom.colors.page)) {
         // The coloured backdrop the glass frosts. Cards blur only this; the top bar blurs this
         // with the scrolling list layered on top (zIndex).
-        AmbientBackdrop(Modifier.fillMaxSize().hazeSource(ambient).hazeSource(haze, zIndex = 0f))
+        backdrop(Modifier.fillMaxSize().hazeSource(ambient).hazeSource(haze, zIndex = 0f))
         val list = @Composable {
             LazyColumn(
                 state = listState,

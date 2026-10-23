@@ -138,7 +138,7 @@ export const FieldRow = forwardRef<
 >(function FieldRow({ label, error, className, ...rest }, ref) {
   const id = useId()
   return (
-    <div className="ios-row">
+    <div className="ios-row focus-ring">
       <label htmlFor={id} className="t-body w-[7.5rem] shrink-0 text-[var(--label)]">
         {label}
       </label>

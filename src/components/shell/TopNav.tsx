@@ -14,8 +14,8 @@ import { cn } from '@/components/ui/cn'
 const LINKS = [
   { href: '/shop', label: 'Shop' },
   { href: '/orders', label: 'Orders' },
-  { href: '/#about', label: 'About' },
-  { href: '/#team', label: 'Team' },
+  { href: '/about', label: 'About' },
+  { href: '/team', label: 'Team' },
 ]
 
 /**

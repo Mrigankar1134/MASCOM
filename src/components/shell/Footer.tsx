@@ -29,10 +29,10 @@ export function Footer() {
             <FooterColumn
               title="Committee"
               links={[
-                { href: '/#about', label: 'About' },
-                { href: '/#what-we-do', label: 'What we do' },
-                { href: '/#team', label: 'Team' },
-                { href: '/#gallery', label: 'Gallery' },
+                { href: '/about', label: 'About' },
+                { href: '/about#what-we-do', label: 'What we do' },
+                { href: '/team', label: 'Team' },
+                { href: '/gallery', label: 'Gallery' },
               ]}
             />
             <FooterColumn

@@ -444,7 +444,7 @@ function CouponField({
   }
 
   return (
-    <Glass className="mt-4 flex items-center gap-2 p-2 pl-4">
+    <Glass className="focus-ring mt-4 flex items-center gap-2 p-2 pl-4">
       <Icon.Tag size={16} className="shrink-0 text-[var(--label-3)]" />
       <input
         value={code}

@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { initials } from '@/lib/format'
 import { cn } from './cn'
 
@@ -33,8 +34,8 @@ export function Avatar({
       }}
     >
       {src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={name ?? ''} className="h-full w-full object-cover" loading="lazy" />
+        // The span above is explicitly sized, so fill cannot shift layout.
+        <Image src={src} alt={name ?? ''} fill sizes={`${size}px`} className="object-cover" />
       ) : (
         <span aria-hidden>{label}</span>
       )}

@@ -42,6 +42,31 @@ The app then subscribes to the `drops` topic, so you can announce a drop from th
 
 Without the file, push is switched off and everything else works.
 
+## The 3D polo on the welcome screen
+
+The spinning shirt is a turntable rendered in Blender, not a live 3D engine. It's 120 frames, one every 3°, at 720px, stored in `app/src/main/assets/polo/`. `PoloTurntable` plays the frames, blends neighbouring ones for smooth motion, and lets you drag to spin it.
+
+Because it's plain images, the frosted-glass sheet can blur it like anything else.
+
+**Source model and licence:** the model is "Polo Shirt" by Giovani França from BlenderKit (asset `712334fb-5efe-41e6-bd62-94266e9ec445`). It's free, under BlenderKit's royalty-free licence. That licence covers using renders of it in the app but not redistributing the model file. So only the rendered frames are committed, and the `.blend` is downloaded into `art/.cache/`, which is gitignored.
+
+**What `art/render_polo.py` does:**
+- recolours the fabric to MASCOM gold, keeping the model's knit texture
+- makes the buttons pearl white
+- stitches a small "M" on the chest
+- prints **IIM** over **AMRITSAR** across the upper back
+- renders the turntable with soft studio lighting
+
+To change any of that, edit the script and re-render with Blender 4.2 or later:
+
+```sh
+python art/fetch_polo.py art/.cache                                                         # once, ~100 MB
+blender -b art/.cache/polo_src.blend -P art/render_polo.py -- app/src/main/assets/polo full  # all 120 frames
+blender -b art/.cache/polo_src.blend -P art/render_polo.py -- /tmp/polo preview             # 4 test frames
+```
+
+It uses the GPU (OptiX or CUDA) when one is available.
+
 ## Release signing
 
 `assembleRelease` signs with the key named in `keystore.properties`: `storeFile`, `storePassword`, `keyAlias` and `keyPassword`. Both that file and the `*.jks` it points to are gitignored.

@@ -165,7 +165,7 @@ export function VerifyQueue({
           onChange={setStatus}
         />
 
-        <div className="glass flex h-10 min-w-[190px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
+        <div className="glass focus-ring flex h-10 min-w-[190px] flex-1 items-center gap-2 rounded-full px-3.5 sm:max-w-xs">
           <Icon.Search size={16} className="shrink-0 text-[var(--label-3)]" />
           <input
             value={query}
@@ -184,7 +184,7 @@ export function VerifyQueue({
           <select
             value={recipientFilter}
             onChange={(e) => setRecipientFilter(e.target.value)}
-            className="glass h-10 rounded-full px-3.5 t-footnote font-medium outline-none"
+            className="glass focus-ring h-10 rounded-full px-3.5 t-footnote font-medium outline-none"
             aria-label="Filter by recipient"
           >
             <option value="all">All recipients</option>
@@ -386,7 +386,7 @@ function VerifyDetail({
 
           <section className="mt-5">
             <h3 className="eyebrow mb-2.5">Student</h3>
-            <div className="glass flex items-center gap-3 rounded-xl p-3">
+            <div className="flex items-center gap-3 rounded-xl bg-[var(--fill-4)] p-3">
               <Avatar name={student?.name} size={40} />
               <div className="min-w-0 flex-1">
                 <p className="truncate t-subhead font-semibold">{student?.name ?? 'Unknown'}</p>

@@ -9,3 +9,6 @@ app/google-services.json
 keystore.properties
 *.jks
 *.keystore
+
+# Downloaded 3D source models (licensed; not redistributable)
+art/.cache/

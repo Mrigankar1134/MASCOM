@@ -83,7 +83,7 @@ export function Hero({ ordersOpen, dropName }: { ordersOpen: boolean; dropName?:
               <Icon.ArrowRight size={18} />
             </Link>
             <Link
-              href="#gallery"
+              href="/gallery"
               className="glass glass-lens press inline-flex items-center gap-2 rounded-2xl px-5 py-3.5 t-subhead font-semibold"
             >
               See the work

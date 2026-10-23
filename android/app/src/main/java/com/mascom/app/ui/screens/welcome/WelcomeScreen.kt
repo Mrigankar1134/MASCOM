@@ -115,7 +115,8 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
     ) {
         val w = maxWidth
         val h = maxHeight
-        val shirt = w * 0.66f
+        // The renders carry some margin around the shirt, so the box is a little wider than the shirt itself.
+        val shirt = w * 0.8f
         val shirtTop = h * 0.42f - shirt / 2
         // The sheet's top edge settles across the lower third of the shirt.
         val sheetTop = shirtTop + shirt * 0.68f
@@ -127,19 +128,16 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
                 val r = shirt.toPx() * 0.75f
                 drawCircle(Brush.radialGradient(listOf(Gold.g400.copy(alpha = if (c.isDark) 0.28f else 0.32f), Color.Transparent), center, r), r, center)
             }
-            Polo3D(
+            // The rendered 3D polo: spins slowly, drag sideways to turn it yourself.
+            PoloTurntable(
                 modifier = Modifier
                     .offset(x = (w - shirt) / 2, y = shirtTop)
                     .size(shirt)
                     .graphicsLayer {
-                        rotationY = sin(phase) * 16f
-                        rotationX = 5f + cos(phase * 2) * 3f
                         translationY = sin(phase * 2) * 6.dp.toPx()
                         scaleX = bounce.value
                         scaleY = bounce.value
-                        cameraDistance = 14f * density
                     },
-                tilt = { sin(phase) },
             )
         }
 

@@ -148,7 +148,7 @@ export function ConsoleShell({
         </div>
         <button
           onClick={signOut}
-          className="press grid h-7 w-7 shrink-0 place-items-center rounded-md text-[var(--label-3)] hover:text-[var(--label)]"
+          className="press tap-44 grid h-7 w-7 shrink-0 place-items-center rounded-md text-[var(--label-3)] hover:text-[var(--label)]"
           aria-label="Sign out"
           title="Sign out"
         >

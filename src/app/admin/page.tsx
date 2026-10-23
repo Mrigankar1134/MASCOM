@@ -1,9 +1,10 @@
+import { redirect } from 'next/navigation'
 import { connectDB } from '@/lib/db'
 import { Order } from '@/lib/models/Order'
 import { Product } from '@/lib/models/Product'
 import { User } from '@/lib/models/User'
 import { PaymentRecipient } from '@/lib/models/PaymentRecipient'
-import { getCurrentUser, isStaff } from '@/lib/auth'
+import { canOpenConsole, getCurrentUser, isStaff } from '@/lib/auth'
 import { plain } from '@/lib/json'
 import { Overview, type OverviewData } from '@/components/admin/Overview'
 
@@ -11,10 +12,15 @@ export const dynamic = 'force-dynamic'
 
 export default async function ConsoleOverview() {
   const user = await getCurrentUser()
+  // The layout guards too, but App Router renders layout and page in parallel,
+  // so the layout's redirect does not stop this page from running.
+  if (!user) redirect('/signin?next=/admin')
+  if (!canOpenConsole(user)) redirect('/shop')
+
   await connectDB()
 
   const staff = isStaff(user)
-  const mine = await PaymentRecipient.findOne({ userId: user!._id }).lean()
+  const mine = await PaymentRecipient.findOne({ userId: user._id }).lean()
   const scope = staff ? {} : { paymentRecipientId: mine?._id ?? null }
 
   const [totals] = await Order.aggregate([
@@ -75,7 +81,7 @@ export default async function ConsoleOverview() {
       data={{
         scope: staff ? 'all' : 'mine',
         recipientName: mine?.name ?? null,
-        viewerName: user!.name,
+        viewerName: user.name,
         totals: totals ?? {
           revenue: 0, orders: 0, pending: 0, paid: 0, failed: 0, units: 0, awaiting: 0,
         },

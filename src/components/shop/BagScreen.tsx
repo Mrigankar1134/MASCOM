@@ -119,7 +119,7 @@ export function BagScreen() {
                       </div>
                       <button
                         onClick={() => cart.remove(key)}
-                        className="press -mr-1 -mt-1 grid h-8 w-8 place-items-center rounded-full text-[var(--label-3)] hover:text-[var(--danger)]"
+                        className="press tap-44 -mr-1 -mt-1 grid h-8 w-8 place-items-center rounded-full text-[var(--label-3)] hover:text-[var(--danger)]"
                         aria-label={`Remove ${line.name}`}
                       >
                         <Icon.X size={16} />
@@ -127,10 +127,10 @@ export function BagScreen() {
                     </div>
 
                     <div className="mt-auto flex items-center justify-between pt-3">
-                      <div className="glass inline-flex items-center gap-0.5 rounded-full p-0.5">
+                      <div className="inline-flex items-center gap-0.5 rounded-full bg-[var(--fill-4)] p-0.5">
                         <button
                           onClick={() => cart.setQuantity(key, line.quantity - 1)}
-                          className="press grid h-8 w-8 place-items-center rounded-full"
+                          className="press tap-44 grid h-8 w-8 place-items-center rounded-full"
                           aria-label="Reduce quantity"
                         >
                           <Icon.Minus size={15} />
@@ -140,7 +140,7 @@ export function BagScreen() {
                         </span>
                         <button
                           onClick={() => cart.setQuantity(key, line.quantity + 1)}
-                          className="press grid h-8 w-8 place-items-center rounded-full"
+                          className="press tap-44 grid h-8 w-8 place-items-center rounded-full"
                           aria-label="Increase quantity"
                         >
                           <Icon.Plus size={15} />
